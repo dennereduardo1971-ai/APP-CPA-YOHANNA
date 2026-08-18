@@ -129,7 +129,9 @@ export function QuestaoPlayer({
       <div className="mb-3 flex flex-wrap items-center gap-2">
         <Pill>{ROTULO_TIPO[questao.tipo]}</Pill>
         <DificuldadeBadge nivel={questao.dificuldade} />
-        {conceito && <span className="text-xs text-muted">· {conceito.titulo}</span>}
+        {conceito && (
+          <span className="min-w-0 truncate text-xs text-muted">{conceito.titulo}</span>
+        )}
         {onAlternarFavorito && (
           <button
             type="button"

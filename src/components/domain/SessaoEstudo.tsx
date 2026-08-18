@@ -290,10 +290,8 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
 
   return (
     <div>
-      <div className="mb-4 flex items-center justify-between">
-        <p className="tnum text-xs text-muted">
-          {indice + 1} de {passos.length}
-        </p>
+      {/* O contador da sessão vive dentro do player, para não duplicar. */}
+      <div className="mb-4 flex justify-end">
         <Link to={aoSair} className="text-xs text-muted hover:text-ink">
           sair
         </Link>
