@@ -1,0 +1,87 @@
+name: Build APK Android
+
+# Gera o APK e publica como artefato do workflow.
+# Ao criar uma tag "v*", também publica em Releases — que é de onde a
+# página /baixar do app puxa o arquivo.
+on:
+  push:
+    tags: ['v*']
+  workflow_dispatch:
+    inputs:
+      release:
+        description: 'Publicar em Releases (além do artefato)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - uses: android-actions/setup-android@v3
+
+      - name: Instalar dependências
+        run: npm ci
+
+      - name: Verificar tipos
+        run: npm run typecheck
+
+      - name: Rodar testes
+        run: npm test
+
+      - name: Build web
+        run: npm run build
+
+      - name: Instalar Capacitor
+        run: npm i -D @capacitor/cli@^6 @capacitor/core@^6 @capacitor/android@^6
+
+      - name: Criar projeto Android
+        run: npx cap add android
+
+      - name: Gerar ícones e splash
+        run: |
+          mkdir -p resources
+          cp public/icon-source-1024.png resources/icon.png
+          cp public/icon-source-1024.png resources/splash.png
+          npx @capacitor/assets generate --android || echo "assets padrão mantidos"
+
+      - name: Sincronizar web -> Android
+        run: npx cap sync android
+
+      - name: Compilar APK de debug
+        working-directory: android
+        run: ./gradlew assembleDebug --no-daemon
+
+      - name: Renomear APK
+        run: |
+          mkdir -p artefatos
+          cp android/app/build/outputs/apk/debug/app-debug.apk artefatos/preparatorio-cpa.apk
+
+      - name: Publicar artefato do workflow
+        uses: actions/upload-artifact@v4
+        with:
+          name: preparatorio-cpa-apk
+          path: artefatos/preparatorio-cpa.apk
+          retention-days: 30
+
+      - name: Publicar em Releases
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: artefatos/preparatorio-cpa.apk
+          generate_release_notes: true
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('build-{0}', github.run_number) }}
