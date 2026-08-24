@@ -306,7 +306,7 @@ export const M2: Macrotema = {
           erroComum:
             'Comparar taxas brutas entre um produto isento e um tributado. É a comparação errada — e a que a banca usa para pegar o candidato.',
           alertaProva:
-            'ALÍQUOTAS E PRAZOS MUDAM POR LEGISLAÇÃO. A lógica regressiva é estável, mas confirme os percentuais vigentes no material oficial antes da prova.',
+            'Alíquotas conferidas em 24/08/2026: Lei 11.033/2004 (tabela regressiva e isenções) e Decreto 6.306/2007 (IOF). A MP 1.303/2025, que propunha alíquota única de 17,5% e 5% sobre os títulos isentos, NÃO virou lei. Ainda assim, alíquotas mudam por legislação — confirme antes da prova.',
           tabela: {
             titulo: 'Tabela regressiva de IR (renda fixa)',
             colunas: ['Prazo da aplicação', 'Alíquota'],
@@ -630,7 +630,7 @@ export const M2: Macrotema = {
               'PGBL: permite deduzir as contribuições da base de cálculo do IR, limitado a 12% da renda bruta anual tributável. Exige declaração no modelo COMPLETO e contribuição ao INSS ou regime próprio.',
               'No resgate do PGBL, o IR incide sobre o VALOR TOTAL resgatado — principal mais rendimento.',
               'VGBL: não permite dedução. No resgate, o IR incide APENAS sobre o rendimento.',
-              'Em ambos, o titular escolhe o regime tributário: progressivo (tabela do IR, com ajuste na declaração) ou regressivo (alíquota cai com o tempo, chegando ao piso após 10 anos).',
+              'Em ambos, o titular escolhe o regime tributário: progressivo (tabela do IR, com ajuste na declaração) ou regressivo (Lei 11.053/2004: começa em 35% e cai até o piso de 10% acima de 10 anos).',
               'A escolha do regime regressivo costuma ser irreversível — atenção ao recomendar.',
             ],
             exemploSimples:

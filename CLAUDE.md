@@ -83,8 +83,11 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 - [ ] Rateio de questões por formato e distribuição por grau de dificuldade:
       a ANBIMA **não publica** esses dados. Manter fora do `blueprint.ts`
       enquanto não houver fonte.
-- [ ] Conferir alíquotas tributárias citadas no conteúdo (mudam por
-      legislação).
+- [~] Alíquotas tributárias: conferidas em 24/08/2026 e todas vigentes — a
+      MP 1.303/2025 não virou lei. Base legal em `docs/ALIQUOTAS.md`. Falta
+      ler o texto das leis: `planalto.gov.br` está bloqueado neste ambiente.
+- [ ] Res. CMN 5.295/2026 (novas regras de captação com garantia do FGC,
+      vigente desde 01/06/2026): incorporar ao conceito `c-fgc`.
 - [ ] Gerar ícones definitivos e keystore de assinatura do APK.
 
 <!-- AUTO:INICIO -->
