@@ -1,5 +1,5 @@
 import type { Dificuldade, EstadoConceito, Resposta } from '../types'
-import { CONCEITOS, MACROTEMAS, pesosEfetivos } from '../content'
+import { CONCEITOS, MACROTEMAS, MICROTEMAS, pesosEfetivos } from '../content'
 import { dominioEfetivo, nivelDominio } from './mastery'
 
 /** Cálculo de desempenho. Puro: recebe respostas e estados, devolve números. */
@@ -29,6 +29,14 @@ export function porMacrotema(respostas: Resposta[]): Record<string, Agregado> {
   const saida: Record<string, Agregado> = {}
   for (const macro of MACROTEMAS) {
     saida[macro.id] = agregar(respostas.filter((r) => r.macrotemaId === macro.id))
+  }
+  return saida
+}
+
+export function porMicrotema(respostas: Resposta[]): Record<string, Agregado> {
+  const saida: Record<string, Agregado> = {}
+  for (const micro of MICROTEMAS) {
+    saida[micro.id] = agregar(respostas.filter((r) => r.microtemaId === micro.id))
   }
   return saida
 }
@@ -75,6 +83,57 @@ export function dominioMicrotema(
     return s + (estado ? dominioEfetivo(estado, agora) : 0)
   }, 0)
   return soma / micro.conceitos.length
+}
+
+export interface LinhaMicrotema {
+  microtemaId: string
+  macrotemaId: string
+  codigo: string
+  nome: string
+  dominio: number
+  nivel: ReturnType<typeof nivelDominio>
+  /** Conceitos escritos neste microtema. */
+  conceitos: number
+  /** Quantos deles já receberam ao menos uma resposta. */
+  praticados: number
+  respostas: number
+  /**
+   * `true` quando ainda não escrevemos nenhuma aula aqui. Sem esta marca,
+   * uma barra em 0% acusaria o aluno de não saber o que ninguém ensinou —
+   * a mesma distinção que a trilha faz entre etapa `vazia` e `bloqueada`.
+   */
+  semConteudo: boolean
+}
+
+/**
+ * Uma linha por microtema oficial, na ordem do Programa Detalhado.
+ * Inclui os microtemas sem conteúdo: escondê-los faria a plataforma parecer
+ * mais completa do que é (a Regra de Ouro da especificação).
+ */
+export function panoramaMicrotemas(
+  estados: Record<string, EstadoConceito>,
+  agora: number,
+  macrotemaId?: string,
+): LinhaMicrotema[] {
+  const micros = macrotemaId
+    ? MICROTEMAS.filter((mt) => mt.macrotemaId === macrotemaId)
+    : MICROTEMAS
+
+  return micros.map((mt) => {
+    const dominio = dominioMicrotema(mt.id, estados, agora)
+    return {
+      microtemaId: mt.id,
+      macrotemaId: mt.macrotemaId,
+      codigo: mt.codigo,
+      nome: mt.nome,
+      dominio,
+      nivel: nivelDominio(dominio),
+      conceitos: mt.conceitos.length,
+      praticados: mt.conceitos.filter((c) => (estados[c.id]?.n ?? 0) > 0).length,
+      respostas: mt.conceitos.reduce((s, c) => s + (estados[c.id]?.n ?? 0), 0),
+      semConteudo: mt.conceitos.length === 0,
+    }
+  })
 }
 
 /**

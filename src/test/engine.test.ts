@@ -8,9 +8,12 @@ import {
   registrarResposta,
   retencao,
   TEXTO_DOMINIO,
+  tomAcerto,
   tomDominio,
 } from '@/lib/engine/mastery'
-import { MACROTEMAS } from '@/lib/content'
+import { CONCEITOS, getConceito, MACROTEMAS, MICROTEMAS } from '@/lib/content'
+import { questoesDoConceito } from '@/lib/questions'
+import { BLUEPRINT } from '@/lib/blueprint'
 import { ICONES } from '@/components/ui/Icone'
 import {
   atualizarSequencia,
@@ -26,9 +29,18 @@ import {
   proximoMarco,
   xpPorResposta,
 } from '@/lib/engine/gamification'
-import { escolherQuestao, pontuarConceito } from '@/lib/engine/scheduler'
-import { agregar, cobertura, prontidao } from '@/lib/engine/stats'
-import type { Questao, Resposta } from '@/lib/types'
+import { escolherQuestao, pontuarConceito, ROTULO_SELECAO } from '@/lib/engine/scheduler'
+import { recomendar, ROTULO_ACAO } from '@/lib/engine/planner'
+import {
+  agregar,
+  cobertura,
+  dominioMicrotema,
+  panoramaMicrotemas,
+  porMacrotema,
+  porMicrotema,
+  prontidao,
+} from '@/lib/engine/stats'
+import type { EstadoConceito, Questao, Resposta } from '@/lib/types'
 
 const DIA = 86_400_000
 const novo = () => estadoInicial('c-x', 'm1.1', 'm1')
@@ -537,6 +549,247 @@ describe('desbloqueios', () => {
     })
     for (const d of todos.filter((x) => x.liberado)) {
       expect(d.desbloqueio.destino, d.desbloqueio.id).toBeTruthy()
+    }
+  })
+})
+
+describe('tom de taxa de acerto', () => {
+  it('verde só a partir da nota de corte da prova', () => {
+    for (let v = 0; v < BLUEPRINT.notaCorte - 1e-9; v += 0.01) {
+      expect(tomAcerto(v), `${v.toFixed(2)} não pode ser jade`).not.toBe('jade')
+    }
+    expect(tomAcerto(BLUEPRINT.notaCorte)).toBe('jade')
+    expect(tomAcerto(1)).toBe('jade')
+  })
+
+  it('nunca retrocede conforme a taxa sobe', () => {
+    const ordem = { danger: 0, warn: 1, jade: 2 }
+    let anterior = -1
+    for (let v = 0; v <= 1.0001; v += 0.01) {
+      const t = ordem[tomAcerto(v)]
+      expect(t, `retrocedeu em ${v.toFixed(2)}`).toBeGreaterThanOrEqual(anterior)
+      anterior = t
+    }
+  })
+
+  it('é uma escala diferente da de domínio, e mais exigente no verde', () => {
+    // As duas coexistem de propósito: domínio usa as faixas pedagógicas,
+    // acerto usa o corte da prova. O teste trava a relação entre elas para
+    // que ninguém "unifique" as duas por engano.
+    expect(BLUEPRINT.notaCorte).toBeLessThan(0.75)
+    expect(tomDominio(0.72)).toBe('warn')
+    expect(tomAcerto(0.72)).toBe('jade')
+  })
+})
+
+describe('panorama por microtema', () => {
+  const agora = Date.now()
+
+  it('devolve uma linha por microtema oficial, na ordem do programa', () => {
+    const linhas = panoramaMicrotemas({}, agora)
+    expect(linhas).toHaveLength(MICROTEMAS.length)
+    expect(linhas.map((l) => l.codigo)).toEqual(MICROTEMAS.map((mt) => mt.codigo))
+  })
+
+  it('filtra por macrotema sem perder nem inventar linhas', () => {
+    const total = MACROTEMAS.reduce(
+      (s, m) => s + panoramaMicrotemas({}, agora, m.id).length,
+      0,
+    )
+    expect(total).toBe(MICROTEMAS.length)
+    for (const m of MACROTEMAS) {
+      for (const linha of panoramaMicrotemas({}, agora, m.id)) {
+        expect(linha.macrotemaId).toBe(m.id)
+      }
+    }
+  })
+
+  it('marca semConteudo exatamente nos microtemas sem aula escrita', () => {
+    for (const linha of panoramaMicrotemas({}, agora)) {
+      const micro = MICROTEMAS.find((mt) => mt.id === linha.microtemaId)!
+      expect(linha.semConteudo).toBe(micro.conceitos.length === 0)
+      expect(linha.conceitos).toBe(micro.conceitos.length)
+    }
+  })
+
+  it('microtema sem conteúdo nunca é apresentado como lacuna do aluno', () => {
+    // 0% aqui significa "ninguém escreveu", não "você não sabe". A interface
+    // usa esta marca para esconder a barra em vez de acusar o estudante.
+    for (const linha of panoramaMicrotemas({}, agora)) {
+      if (!linha.semConteudo) continue
+      expect(linha.praticados).toBe(0)
+      expect(linha.respostas).toBe(0)
+      expect(linha.dominio).toBe(0)
+    }
+  })
+
+  it('praticados nunca passa do total de conceitos, e conta só quem respondeu', () => {
+    const comConteudo = MICROTEMAS.find((mt) => mt.conceitos.length > 0)!
+    const alvo = comConteudo.conceitos[0]
+    const estados = {
+      [alvo.id]: {
+        ...estadoInicial(alvo.id, comConteudo.id, comConteudo.macrotemaId),
+        n: 4,
+        acertos: 3,
+        m: 0.8,
+        ultimaPratica: agora,
+      },
+    }
+    const linha = panoramaMicrotemas(estados, agora).find(
+      (l) => l.microtemaId === comConteudo.id,
+    )!
+    expect(linha.praticados).toBe(1)
+    expect(linha.respostas).toBe(4)
+    expect(linha.praticados).toBeLessThanOrEqual(linha.conceitos)
+    expect(linha.dominio).toBeGreaterThan(0)
+  })
+
+  it('o domínio do microtema é o mesmo que a trilha usa', () => {
+    const estados: Record<string, EstadoConceito> = {}
+    for (const c of CONCEITOS) {
+      estados[c.id] = { ...estadoInicial(c.id, c.microtemaId, 'm1'), n: 2, m: 0.7, ultimaPratica: agora }
+    }
+    for (const linha of panoramaMicrotemas(estados, agora)) {
+      expect(linha.dominio).toBe(dominioMicrotema(linha.microtemaId, estados, agora))
+    }
+  })
+
+  it('a soma dos microtemas fecha com o total do macrotema', () => {
+    const respostas: Resposta[] = MICROTEMAS.filter((mt) => mt.conceitos.length).map((mt) => ({
+      id: mt.id,
+      questaoId: 'q',
+      macrotemaId: mt.macrotemaId,
+      microtemaId: mt.id,
+      conceitoId: mt.conceitos[0].id,
+      dificuldade: 'media' as const,
+      escolhida: 'a',
+      correta: 'a',
+      acertou: true,
+      tempoMs: 1000,
+      tentativa: 1,
+      data: Date.now(),
+      origem: 'pratica' as const,
+    }))
+
+    const macro = porMacrotema(respostas)
+    const micro = porMicrotema(respostas)
+    for (const m of MACROTEMAS) {
+      const soma = m.microtemas.reduce((s, mt) => s + micro[mt.id].total, 0)
+      expect(soma, m.nome).toBe(macro[m.id].total)
+    }
+  })
+})
+
+describe('recomendações do "Estude agora"', () => {
+  const agora = Date.now()
+
+  const opcoes = (estados: Record<string, EstadoConceito>) => ({
+    minutos: 30,
+    estados,
+    agora,
+    recentes: new Set<string>(),
+    jaVistas: new Set<string>(),
+  })
+
+  /** Todos os conceitos estudados e bem sabidos — o piso da comparação. */
+  const tudoDominado = (): Record<string, EstadoConceito> => {
+    const estados: Record<string, EstadoConceito> = {}
+    for (const c of CONCEITOS) {
+      const micro = MICROTEMAS.find((mt) => mt.id === c.microtemaId)!
+      estados[c.id] = {
+        ...estadoInicial(c.id, c.microtemaId, micro.macrotemaId),
+        n: 10,
+        acertos: 10,
+        m: 0.95,
+        theta: 2,
+        estabilidade: 120,
+        ultimaPratica: agora,
+        revisarEm: agora + 100 * DIA,
+        aulaConcluida: true,
+      }
+    }
+    return estados
+  }
+
+  it('respeita o limite pedido', () => {
+    expect(recomendar(opcoes({}), 3).length).toBeLessThanOrEqual(3)
+    expect(recomendar(opcoes({}), 1).length).toBeLessThanOrEqual(1)
+  })
+
+  it('nunca recomenda dois passos do mesmo microtema', () => {
+    // Três cartões do mesmo assunto não são três recomendações.
+    for (const estados of [{}, tudoDominado()]) {
+      const micros = recomendar(opcoes(estados), 3).map((r) => r.microtemaId)
+      expect(new Set(micros).size).toBe(micros.length)
+    }
+  })
+
+  it('para quem nunca estudou, tudo é aula — e aponta para a aula certa', () => {
+    const recs = recomendar(opcoes({}), 3)
+    expect(recs.length).toBeGreaterThan(0)
+    for (const r of recs) {
+      expect(r.acao).toBe('aula')
+      expect(r.destino).toBe(`/conteudo/${r.conceitoId}`)
+      expect(getConceito(r.conceitoId)).toBeTruthy()
+    }
+  })
+
+  it('erro em aberto vira revisão e ganha a primeira posição', () => {
+    const estados = tudoDominado()
+    const alvo = CONCEITOS.find((c) => questoesDoConceito(c.id).length > 0)!
+    estados[alvo.id] = { ...estados[alvo.id], errosAbertos: 2, m: 0.5, theta: 0 }
+
+    const primeira = recomendar(opcoes(estados), 3)[0]
+    expect(primeira.conceitoId).toBe(alvo.id)
+    expect(primeira.acao).toBe('revisar')
+    expect(primeira.destino).toBe('/revisao')
+    expect(primeira.justificativa).toContain('erros ainda não superados')
+  })
+
+  it('revisão vencida diz há quantos dias venceu', () => {
+    const estados = tudoDominado()
+    const alvo = CONCEITOS.find((c) => questoesDoConceito(c.id).length > 0)!
+    // Estado coerente: praticado há 90 dias com estabilidade de 2 dias, logo
+    // a revisão venceu 88 dias atrás. Só com a retenção realmente no chão a
+    // urgência supera a lacuna — que é exatamente a ordem desejada.
+    estados[alvo.id] = {
+      ...estados[alvo.id],
+      estabilidade: 2,
+      ultimaPratica: agora - 90 * DIA,
+      revisarEm: agora - 88 * DIA,
+    }
+
+    const rec = recomendar(opcoes(estados), 3).find((r) => r.conceitoId === alvo.id)
+    expect(rec?.acao).toBe('revisar')
+    expect(rec?.justificativa).toMatch(/vencida há 88 dias/)
+  })
+
+  it('nunca manda praticar um conceito que ainda não tem questão escrita', () => {
+    const estados = tudoDominado()
+    for (const r of recomendar(opcoes(estados), 3)) {
+      if (r.acao === 'aula') continue
+      expect(questoesDoConceito(r.conceitoId).length, r.titulo).toBeGreaterThan(0)
+    }
+  })
+
+  it('toda recomendação explica a escolha e leva a algum lugar', () => {
+    const cenarios = [{}, tudoDominado()]
+    for (const estados of cenarios) {
+      for (const r of recomendar(opcoes(estados), 3)) {
+        expect(r.justificativa.length, r.titulo).toBeGreaterThan(10)
+        expect(r.destino.startsWith('/'), r.destino).toBe(true)
+        expect(ROTULO_ACAO[r.acao]).toBeTruthy()
+        expect(r.minutos).toBeGreaterThan(0)
+      }
+    }
+  })
+
+  it('a justificativa nunca é um rótulo genérico do agendador', () => {
+    // O ponto do bloco é dizer POR QUE, com os números do aluno. Se a frase
+    // for igual ao rótulo interno do motivo, a recomendação não explicou nada.
+    const estados = tudoDominado()
+    for (const r of recomendar(opcoes(estados), 3)) {
+      expect(r.justificativa, r.titulo).not.toBe(ROTULO_SELECAO[r.motivo])
     }
   })
 })

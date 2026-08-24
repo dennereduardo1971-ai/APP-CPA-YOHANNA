@@ -52,8 +52,11 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    documenta a estrutura.
    - **Acerto nunca usa o acento.** Num app de questões, "certo" em carmesim ao
      lado de "errado" em vermelho é indistinguível. Acerto é `jade`.
-   - **Cor de desempenho sai de `tomDominio()`** (`engine/mastery.ts`). Barra,
-     anel e rótulo têm de vir da mesma função, senão 74% aparece com rótulo
+   - **Cor de desempenho sai do motor** (`engine/mastery.ts`), nunca de um
+     ternário dentro da página. São duas escalas, de propósito: `tomDominio()`
+     para nível de domínio (faixas pedagógicas) e `tomAcerto()` para taxa de
+     acerto (ancorada na nota de corte do `blueprint.ts`). Barra, anel e
+     rótulo do mesmo número usam a mesma função, senão 74% aparece com rótulo
      verde sobre barra âmbar.
 9. **A temática vive em `src/lib/personagens.ts`.** Nome, papel ou fala de
    personagem não entram em componente. Arte é opcional
@@ -82,9 +85,9 @@ src/
       mastery.ts      Elo + nível de domínio com esquecimento
       scheduler.ts    revisão espaçada explicável
       trilha.ts       jornada: estágios, nós e a etapa "você está aqui"
-      planner.ts      monta a sessão de estudo rápido
+      planner.ts      monta a sessão de estudo rápido e o "Estude agora"
       gamification.ts XP, níveis, conquistas, desbloqueios, sequência
-      stats.ts        desempenho por tema, dificuldade e tempo
+      stats.ts        desempenho por macrotema, microtema, dificuldade e tempo
     store.ts        Zustand + persistência local (camada única de I/O)
   components/ui|layout|domain
   pages/            uma página por rota
@@ -142,7 +145,7 @@ _Atualizado em 2026-08-24._
 | Páginas | 21 |
 | Componentes | 16 |
 | Arquivos de teste | 3 |
-| Linhas em `src/` | 13.272 |
+| Linhas em `src/` | 13.957 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte
