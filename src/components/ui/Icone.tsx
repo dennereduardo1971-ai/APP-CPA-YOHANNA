@@ -31,6 +31,10 @@ export type IconeNome =
   | 'chama'
   | 'lanca'
   | 'pena'
+  | 'livro'
+  | 'cadeado'
+  | 'bandeira'
+  | 'check'
 
 const TRACOS: Record<IconeNome, string> = {
   inicio: 'M3 11.2 12 4l9 7.2M5.5 9.7V19a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.7M9.8 20v-5.4h4.4V20',
@@ -55,6 +59,10 @@ const TRACOS: Record<IconeNome, string> = {
   chama: 'M12 21c3.3 0 5.5-2.2 5.5-5.2 0-3.7-3-5.5-3.5-9.3-1.6 1.3-2.4 2.8-2.4 4.4 0 .9-.7 1.4-1.3 1-.9-.7-1.3-1.8-1.3-3-1.4 1.6-2.5 3.7-2.5 6.1C6.5 18.6 8.9 21 12 21Z',
   lanca: 'M4 20 20 4M20 4h-5m5 0v5M4 20l3.5-1.2L5.2 16.5 4 20Z',
   pena: 'M4 20c0-7 4.5-13 15-14-1 10-6 13.5-12 13.5H4Zm3.5-2.5L14 11',
+  livro: 'M4 5.2c2.7-.9 5.3-.9 8 0v14c-2.7-.9-5.3-.9-8 0v-14Zm16 0c-2.7-.9-5.3-.9-8 0v14c2.7-.9 5.3-.9 8 0v-14Z',
+  cadeado: 'M6.5 10.5h11a1 1 0 0 1 1 1V19a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1Zm1.8 0V8a3.7 3.7 0 0 1 7.4 0v2.5M12 14v2.5',
+  bandeira: 'M6 21V4m0 1.2c4-2 8 2 12 0v8.6c-4 2-8-2-12 0',
+  check: 'm5 12.6 4.6 4.6L19 7.4',
 }
 
 interface Props {

@@ -59,6 +59,25 @@ export function dominioMacrotema(
 }
 
 /**
+ * Domínio médio de um microtema. Vivia ad-hoc dentro de `pages/Trilha.tsx`;
+ * subiu para cá porque a trilha, o progresso e as recomendações precisam da
+ * mesma conta — e duas cópias divergem.
+ */
+export function dominioMicrotema(
+  microtemaId: string,
+  estados: Record<string, EstadoConceito>,
+  agora: number,
+): number {
+  const micro = MACROTEMAS.flatMap((m) => m.microtemas).find((mt) => mt.id === microtemaId)
+  if (!micro?.conceitos.length) return 0
+  const soma = micro.conceitos.reduce((s, c) => {
+    const estado = estados[c.id]
+    return s + (estado ? dominioEfetivo(estado, agora) : 0)
+  }, 0)
+  return soma / micro.conceitos.length
+}
+
+/**
  * Progresso geral: domínio ponderado pelo peso de cada macrotema na prova.
  * É um indicador pedagógico — nunca uma previsão de aprovação.
  */

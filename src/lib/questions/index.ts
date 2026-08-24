@@ -12,11 +12,15 @@ export const getQuestao = (id: string) => porId.get(id)
 export const questoesDoConceito = (conceitoId: string) =>
   QUESTOES.filter((q) => q.conceitoId === conceitoId)
 
+export const questoesDoMicrotema = (microtemaId: string) =>
+  QUESTOES.filter((q) => q.microtemaId === microtemaId)
+
 export const questoesDoMacrotema = (macrotemaId: string) =>
   QUESTOES.filter((q) => q.macrotemaId === macrotemaId)
 
 export interface FiltroQuestoes {
   macrotemas?: string[]
+  microtemas?: string[]
   conceitos?: string[]
   dificuldades?: Dificuldade[]
   tipos?: QuestionKind[]
@@ -26,6 +30,7 @@ export interface FiltroQuestoes {
 export function filtrarQuestoes(filtro: FiltroQuestoes): Questao[] {
   return QUESTOES.filter((q) => {
     if (filtro.macrotemas?.length && !filtro.macrotemas.includes(q.macrotemaId)) return false
+    if (filtro.microtemas?.length && !filtro.microtemas.includes(q.microtemaId)) return false
     if (filtro.conceitos?.length && !filtro.conceitos.includes(q.conceitoId)) return false
     if (filtro.dificuldades?.length && !filtro.dificuldades.includes(q.dificuldade)) return false
     if (filtro.tipos?.length && !filtro.tipos.includes(q.tipo)) return false

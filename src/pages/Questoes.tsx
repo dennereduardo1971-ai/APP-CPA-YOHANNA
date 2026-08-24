@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Vazio } from '@/components/ui/Empty'
 import { SessaoEstudo } from '@/components/domain/SessaoEstudo'
-import { MACROTEMAS } from '@/lib/content'
+import { MACROTEMAS, MICROTEMAS } from '@/lib/content'
 import {
   filtrarQuestoes,
   ROTULO_DIFICULDADE,
@@ -53,11 +53,27 @@ export default function Questoes() {
     const inicial = params.get('macro')
     return inicial && MACROTEMAS.some((m) => m.id === inicial) ? [inicial] : []
   })
-  const [difs, setDifs] = useState<Dificuldade[]>([])
+  /*
+   * Os nós de miniquiz e desafio da trilha entram por aqui: `?micro=<id>` diz
+   * o tópico, `?dif=` o recorte e `?iniciar=1` pula a tela de filtros. Sem
+   * isso a jornada viraria enfeite — cada nó levaria a uma tela genérica onde
+   * o aluno teria de remontar o filtro na mão.
+   */
+  const [micros, setMicros] = useState<string[]>(() => {
+    const inicial = params.get('micro')
+    return inicial && MICROTEMAS.some((m) => m.id === inicial) ? [inicial] : []
+  })
+  const [difs, setDifs] = useState<Dificuldade[]>(() =>
+    (params.get('dif')?.split(',') ?? []).filter((d): d is Dificuldade =>
+      DIFICULDADES.includes(d as Dificuldade),
+    ),
+  )
   const [tipos, setTipos] = useState<QuestionKind[]>([])
   const [quantidade, setQuantidade] = useState(10)
   const [evitarRespondidas, setEvitarRespondidas] = useState(true)
-  const [emSessao, setEmSessao] = useState(false)
+  const [emSessao, setEmSessao] = useState(params.get('iniciar') === '1')
+
+  const microFiltrado = MICROTEMAS.find((m) => m.id === micros[0])
 
   const respondidas = useMemo(() => new Set(respostas.map((r) => r.questaoId)), [respostas])
 
@@ -65,11 +81,12 @@ export default function Questoes() {
     () =>
       filtrarQuestoes({
         macrotemas: macros,
+        microtemas: micros,
         dificuldades: difs,
         tipos,
         excluir: evitarRespondidas ? [...respondidas] : [],
       }),
-    [macros, difs, tipos, evitarRespondidas, respondidas],
+    [macros, micros, difs, tipos, evitarRespondidas, respondidas],
   )
 
   const passos = useMemo<PassoSessao[]>(() => {
@@ -89,13 +106,17 @@ export default function Questoes() {
     set(lista.includes(valor) ? lista.filter((x) => x !== valor) : [...lista, valor])
   }
 
-  if (emSessao) {
+  if (emSessao && passos.length > 0) {
     return (
       <SessaoEstudo
         passos={passos}
         origem="pratica"
-        titulo="Prática dirigida"
-        justificativa={`${passos.length} questões com os filtros que você escolheu.`}
+        titulo={microFiltrado ? microFiltrado.nome : 'Prática dirigida'}
+        justificativa={
+          microFiltrado
+            ? `${passos.length} questões de ${microFiltrado.codigo} ${microFiltrado.nome}.`
+            : `${passos.length} questões com os filtros que você escolheu.`
+        }
         aoSair="/questoes"
       />
     )
@@ -107,6 +128,25 @@ export default function Questoes() {
         titulo="Questões"
         descricao="Escolha o recorte e pratique. Todas as questões são autorais."
       />
+
+      {microFiltrado && (
+        <Card className="mb-4 border-aurora/40 bg-aurora/5">
+          <div className="flex items-center justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
+                Recorte da trilha
+              </p>
+              <p className="mt-0.5 truncate text-sm font-semibold">
+                <span className="tnum mr-1.5 font-normal text-muted">{microFiltrado.codigo}</span>
+                {microFiltrado.nome}
+              </p>
+            </div>
+            <Button variante="secundaria" tamanho="sm" onClick={() => setMicros([])}>
+              Remover
+            </Button>
+          </div>
+        </Card>
+      )}
 
       <Card className="mb-4">
         <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.13em] text-muted">

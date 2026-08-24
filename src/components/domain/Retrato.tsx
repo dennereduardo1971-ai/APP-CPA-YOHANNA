@@ -53,13 +53,19 @@ const TRACOS: Record<RetratoNome, JSX.Element> = {
       <circle cx="18.2" cy="30.6" r="1.7" fill={VAZIO} />
     </>
   ),
-  // Garra do dragão branco — o braço que protege.
+  // Garra do dragão branco — o braço que protege. Centrada na moldura: a
+  // versão anterior crescia para baixo e o recorte circular comia as pontas.
   kija: (
     <g fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round">
-      <path d="M13.6 25.4c3-3.8 7-5.7 12-5.7 4.6 0 8.5 1.7 11.4 5.1" strokeWidth="3.2" />
-      <path d="M16.6 44c-3.4-6.9-3.6-13.5-.6-19.9" strokeWidth="3.4" />
-      <path d="M25 44c1-7.3.2-13.6-2.4-18.8" strokeWidth="3.4" />
-      <path d="M33 41c3-5.9 4-11.9 3-18.2" strokeWidth="3.4" />
+      <path
+        d="M14.2 30.2c0-5.2 4.4-8.8 9.8-8.8s9.8 3.6 9.8 8.8c0 5.6-4.4 9.6-9.8 9.6s-9.8-4-9.8-9.6Z"
+        fill="currentColor"
+        fillOpacity=".22"
+        strokeWidth="2.6"
+      />
+      <path d="M15.8 24.2c-1.8-4.2-1.6-8.2.4-12" strokeWidth="3.2" />
+      <path d="M24 20.8c-.6-4.8-.2-9 1.2-12.8" strokeWidth="3.2" />
+      <path d="M32.2 24.2c1.8-4.2 1.6-8.2-.4-12" strokeWidth="3.2" />
     </g>
   ),
   // Máscara de fendas — o guardião que enxerga longe.
