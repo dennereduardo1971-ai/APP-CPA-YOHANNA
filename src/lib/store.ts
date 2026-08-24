@@ -1,20 +1,35 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import type {
+  Conceito,
   Conquista,
   Dificuldade,
   EstadoConceito,
   EventoXP,
   Favoritos,
+  Macrotema,
   Metas,
+  Microtema,
   Origem,
   Perfil,
+  Questao,
   Resposta,
   ResultadoSimulado,
   SessaoHistorico,
   Sequencia,
+  VersaoConteudo,
 } from './types'
 import { CONCEITOS, getConceito, MACROTEMAS } from './content'
+import type {
+  OverlayConteudo,
+  PatchConceito,
+  PatchMacrotema,
+  PatchMicrotema,
+  PatchQuestao,
+  TipoConteudo,
+} from './content/overlay'
+import { normalizarOverlay, overlayVazio } from './content/overlay'
+import { aplicarOverlayLocal } from './pacote'
 import { getQuestao } from './questions'
 import {
   dominioEfetivo,
@@ -71,6 +86,10 @@ export interface Estado {
   /** Minutos estudados por dia local — base da meta diária. */
   minutosPorDia: Record<string, number>
   questoesPorDia: Record<string, number>
+  /** Edições locais de conteúdo feitas no painel `/admin`. */
+  overlay: OverlayConteudo
+  /** Histórico manual de versões de conteúdo (item 18 da especificação). */
+  versoesConteudo: VersaoConteudo[]
 }
 
 export interface Acoes {
@@ -87,6 +106,24 @@ export interface Acoes {
   resetarProgresso: () => void
   importar: (json: string) => boolean
   exportar: () => string
+  /** Importa só o conteúdo editado, sem tocar no progresso de estudo. */
+  importarConteudo: (json: string) => boolean
+
+  /* Painel de conteúdo (`/admin`) */
+  editarMacrotema: (id: string, patch: PatchMacrotema) => void
+  editarMicrotema: (id: string, patch: PatchMicrotema) => void
+  editarConceito: (id: string, patch: PatchConceito) => void
+  editarQuestao: (id: string, patch: PatchQuestao) => void
+  criarMacrotema: (item: Macrotema) => void
+  criarMicrotema: (item: Microtema) => void
+  criarConceito: (item: Conceito) => void
+  criarQuestao: (item: Questao) => void
+  removerItem: (tipo: TipoConteudo, id: string) => void
+  /** Desfaz as edições locais de um item, voltando ao conteúdo do código. */
+  reverterItem: (tipo: TipoConteudo, id: string) => void
+  limparOverlay: () => void
+  registrarVersao: (versao: Omit<VersaoConteudo, 'id'>) => void
+  removerVersao: (id: string) => void
 }
 
 export interface RegistroResposta {
@@ -143,6 +180,77 @@ const estadoInicialCompleto: Estado = {
   favoritos: { conceitos: [], questoes: [], mapas: [] },
   minutosPorDia: {},
   questoesPorDia: {},
+  overlay: overlayVazio(),
+  versoesConteudo: [],
+}
+
+/**
+ * Toda escrita no overlay passa por aqui: grava no estado E remonta o
+ * conteúdo. Separar as duas coisas convidaria a um bug em que o painel diz
+ * que salvou e o app continua mostrando o texto antigo.
+ */
+function aplicar(overlay: OverlayConteudo) {
+  aplicarOverlayLocal(overlay)
+  return { overlay }
+}
+
+/** O tipo é singular na interface; a chave do overlay é plural. */
+const CHAVE_OVERLAY = {
+  macrotema: 'macrotemas',
+  microtema: 'microtemas',
+  conceito: 'conceitos',
+  questao: 'questoes',
+} as const
+
+/*
+ * As duas funções abaixo montam objetos com chave computada, algo que o TS
+ * não consegue estreitar sozinho — daí o único `as OverlayConteudo` de cada
+ * uma. A alternativa seria repetir o mesmo corpo quatro vezes.
+ */
+
+function removerDoOverlay(
+  overlay: OverlayConteudo,
+  tipo: TipoConteudo,
+  itemId: string,
+): OverlayConteudo {
+  const chave = CHAVE_OVERLAY[tipo]
+  const criados = overlay.criados[chave] as { id: string }[]
+  // Item criado no painel some de vez. Item que veio do código entra na lista
+  // de removidos, para poder ser restaurado com `reverterItem`.
+  const eraLocal = criados.some((item) => item.id === itemId)
+  const patches: Record<string, unknown> = { ...overlay[chave] }
+  delete patches[itemId]
+
+  return {
+    ...overlay,
+    [chave]: patches,
+    criados: { ...overlay.criados, [chave]: criados.filter((item) => item.id !== itemId) },
+    removidos: {
+      ...overlay.removidos,
+      [chave]: eraLocal
+        ? overlay.removidos[chave]
+        : [...new Set([...overlay.removidos[chave], itemId])],
+    },
+  } as OverlayConteudo
+}
+
+function reverterNoOverlay(
+  overlay: OverlayConteudo,
+  tipo: TipoConteudo,
+  itemId: string,
+): OverlayConteudo {
+  const chave = CHAVE_OVERLAY[tipo]
+  const patches: Record<string, unknown> = { ...overlay[chave] }
+  delete patches[itemId]
+
+  return {
+    ...overlay,
+    [chave]: patches,
+    removidos: {
+      ...overlay.removidos,
+      [chave]: overlay.removidos[chave].filter((removido) => removido !== itemId),
+    },
+  } as OverlayConteudo
 }
 
 const id = () => Math.random().toString(36).slice(2, 11)
@@ -243,6 +351,8 @@ function snapshot(s: Estado & Acoes): Estado {
     favoritos: s.favoritos,
     minutosPorDia: s.minutosPorDia,
     questoesPorDia: s.questoesPorDia,
+    overlay: s.overlay,
+    versoesConteudo: s.versoesConteudo,
   }
 }
 
@@ -436,6 +546,9 @@ export const useStore = create<Estado & Acoes>()(
           minutosPorDia: creditarMinutos(s.minutosPorDia, diaLocal(Date.now()), minutos),
         })),
 
+      // Zera o PROGRESSO do estudante. As edições de conteúdo e o histórico
+      // de versões sobrevivem: são trabalho editorial, não progresso — quem
+      // recomeça os estudos não está pedindo para perder suas correções.
       resetarProgresso: () =>
         set({
           ...estadoInicialCompleto,
@@ -443,6 +556,8 @@ export const useStore = create<Estado & Acoes>()(
           perfil: get().perfil,
           metas: get().metas,
           preferencias: get().preferencias,
+          overlay: get().overlay,
+          versoesConteudo: get().versoesConteudo,
         }),
 
       exportar: () => JSON.stringify(snapshot(get()), null, 2),
@@ -452,37 +567,153 @@ export const useStore = create<Estado & Acoes>()(
           const dados = JSON.parse(json) as Partial<Estado>
           if (typeof dados !== 'object' || dados === null) return false
           if (dados.versao !== VERSAO_ESTADO) return false
-          set({ ...estadoInicialCompleto, ...dados })
+          const overlay = normalizarOverlay(dados.overlay)
+          set({ ...estadoInicialCompleto, ...dados, overlay })
+          // O backup pode trazer edições de conteúdo; sem isto o app ficaria
+          // com o estado importado e o conteúdo antigo.
+          aplicarOverlayLocal(overlay)
           return true
         } catch {
           return false
         }
       },
+
+      importarConteudo: (json) => {
+        try {
+          const dados = JSON.parse(json) as {
+            overlay?: Partial<OverlayConteudo>
+            versoesConteudo?: VersaoConteudo[]
+          }
+          if (!dados || typeof dados !== 'object' || !dados.overlay) return false
+          set({
+            ...aplicar(normalizarOverlay(dados.overlay)),
+            versoesConteudo: Array.isArray(dados.versoesConteudo)
+              ? dados.versoesConteudo
+              : get().versoesConteudo,
+          })
+          return true
+        } catch {
+          return false
+        }
+      },
+
+      /* ---- Painel de conteúdo (`/admin`) ----------------------------- */
+
+      editarMacrotema: (itemId, patch) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            macrotemas: {
+              ...s.overlay.macrotemas,
+              [itemId]: { ...s.overlay.macrotemas[itemId], ...patch },
+            },
+          }),
+        ),
+
+      editarMicrotema: (itemId, patch) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            microtemas: {
+              ...s.overlay.microtemas,
+              [itemId]: { ...s.overlay.microtemas[itemId], ...patch },
+            },
+          }),
+        ),
+
+      editarConceito: (itemId, patch) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            conceitos: {
+              ...s.overlay.conceitos,
+              [itemId]: {
+                ...s.overlay.conceitos[itemId],
+                ...patch,
+                // `versao`/`atualizadoEm` existem no tipo desde a fase 4 e
+                // ninguém os preenchia. Uma revisão editorial é exatamente o
+                // momento de carimbá-los.
+                versao: (getConceito(itemId)?.versao ?? 1) + 1,
+                atualizadoEm: new Date().toISOString().slice(0, 10),
+              },
+            },
+          }),
+        ),
+
+      editarQuestao: (itemId, patch) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            questoes: {
+              ...s.overlay.questoes,
+              [itemId]: { ...s.overlay.questoes[itemId], ...patch },
+            },
+          }),
+        ),
+
+      criarMacrotema: (item) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            criados: { ...s.overlay.criados, macrotemas: [...s.overlay.criados.macrotemas, item] },
+          }),
+        ),
+
+      criarMicrotema: (item) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            criados: { ...s.overlay.criados, microtemas: [...s.overlay.criados.microtemas, item] },
+          }),
+        ),
+
+      criarConceito: (item) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            criados: { ...s.overlay.criados, conceitos: [...s.overlay.criados.conceitos, item] },
+          }),
+        ),
+
+      criarQuestao: (item) =>
+        set((s) =>
+          aplicar({
+            ...s.overlay,
+            criados: { ...s.overlay.criados, questoes: [...s.overlay.criados.questoes, item] },
+          }),
+        ),
+
+      removerItem: (tipo, itemId) =>
+        set((s) => aplicar(removerDoOverlay(s.overlay, tipo, itemId))),
+
+      reverterItem: (tipo, itemId) =>
+        set((s) => aplicar(reverterNoOverlay(s.overlay, tipo, itemId))),
+
+      limparOverlay: () => set(() => aplicar(overlayVazio())),
+
+      registrarVersao: (versao) =>
+        set((s) => ({ versoesConteudo: [{ ...versao, id: id() }, ...s.versoesConteudo] })),
+
+      removerVersao: (versaoId) =>
+        set((s) => ({ versoesConteudo: s.versoesConteudo.filter((v) => v.id !== versaoId) })),
     }),
     {
       name: CHAVE,
       version: VERSAO_ESTADO,
       storage: createJSONStorage(() => localStorage),
-      // Lista explícita: garante que nenhuma ação vá parar no localStorage
-      // e que adicionar um campo novo exija uma decisão consciente.
-      partialize: (s): Estado => ({
-        versao: s.versao,
-        onboardingConcluido: s.onboardingConcluido,
-        perfil: s.perfil,
-        metas: s.metas,
-        preferencias: s.preferencias,
-        sequencia: s.sequencia,
-        xpTotal: s.xpTotal,
-        eventosXP: s.eventosXP,
-        conquistas: s.conquistas,
-        estados: s.estados,
-        respostas: s.respostas,
-        sessoes: s.sessoes,
-        simulados: s.simulados,
-        favoritos: s.favoritos,
-        minutosPorDia: s.minutosPorDia,
-        questoesPorDia: s.questoesPorDia,
-      }),
+      // `snapshot` é a lista explícita de campos persistidos: nenhuma ação vai
+      // parar no localStorage e um campo novo exige decisão consciente.
+      // Reusar a mesma função aqui e no `exportar()` impede que as duas listas
+      // divirjam — já foram duas cópias.
+      partialize: snapshot,
+      /*
+       * O conteúdo precisa ser remontado com o overlay ANTES do primeiro
+       * render: componentes leem `MACROTEMAS` na montagem, e aplicar depois
+       * deixaria a primeira tela com o conteúdo do código.
+       */
+      onRehydrateStorage: () => (estado) => {
+        if (estado) aplicarOverlayLocal(normalizarOverlay(estado.overlay))
+      },
     },
   ),
 )

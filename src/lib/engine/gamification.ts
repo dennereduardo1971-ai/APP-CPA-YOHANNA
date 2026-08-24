@@ -206,23 +206,24 @@ export const LIMIAR_DESAFIO_GUARDIAO = 0.6
  * escritos à mão. Trocar a temática ou renumerar os módulos não deve exigir
  * editar uma lista de conquistas em paralelo.
  */
-const SELOS_GUARDIAO: Conquista[] = MACROTEMAS.map((macro) => {
-  const guardiao = guardiaoDoMacrotema(macro.id)
-  return {
-    id: `guardiao-${macro.id}`,
-    nome: guardiao ? `Selo de ${guardiao.nome}` : `Selo do módulo ${macro.ordem}`,
-    descricao: `Levou o módulo ${macro.ordem} a ${Math.round(LIMIAR_GUARDIAO * 100)}% de domínio.`,
-    icone: guardiao?.icone ?? 'escudo',
-    incentiva: 'guardioes',
-  }
-})
+const selosGuardiao = (): Conquista[] =>
+  MACROTEMAS.map((macro) => {
+    const guardiao = guardiaoDoMacrotema(macro.id)
+    return {
+      id: `guardiao-${macro.id}`,
+      nome: guardiao ? `Selo de ${guardiao.nome}` : `Selo do módulo ${macro.ordem}`,
+      descricao: `Levou o módulo ${macro.ordem} a ${Math.round(LIMIAR_GUARDIAO * 100)}% de domínio.`,
+      icone: guardiao?.icone ?? 'escudo',
+      incentiva: 'guardioes',
+    }
+  })
 
 /*
  * O ícone é o NOME de um traço de `components/ui/Icone.tsx`, não um glifo
  * Unicode: no Android vários glifos caem em caixinha (regra 10). Há teste
  * garantindo que todo nome usado aqui existe lá.
  */
-export const CONQUISTAS: Conquista[] = [
+const CONQUISTAS_FIXAS: Conquista[] = [
   { id: 'primeira-aula', nome: 'Primeiro passo', descricao: 'Concluiu a primeira aula.', icone: 'livro', incentiva: 'conclusao' },
   { id: 'primeira-sessao', nome: 'Rotina iniciada', descricao: 'Concluiu a primeira sessão de estudo.', icone: 'raio', incentiva: 'consistencia' },
   { id: 'sequencia-3', nome: 'Três seguidos', descricao: 'Manteve 3 dias de sequência.', icone: 'chama', incentiva: 'consistencia' },
@@ -237,11 +238,32 @@ export const CONQUISTAS: Conquista[] = [
   { id: 'simulado-aprovado', nome: 'Passou no simulado', descricao: 'Atingiu a nota de corte em um simulado completo.', icone: 'cronometro', incentiva: 'desempenho' },
   { id: 'meta-7', nome: 'Meta batida 7 vezes', descricao: 'Cumpriu a meta diária em 7 dias.', icone: 'meta', incentiva: 'meta' },
   { id: 'sem-pressa', nome: 'Sem pressa', descricao: 'Concluiu uma sessão inteira sem respostas apressadas.', icone: 'olho', incentiva: 'desempenho' },
-  ...SELOS_GUARDIAO,
-  { id: 'quatro-dragoes', nome: 'Os quatro dragões', descricao: 'Reuniu os selos de todos os guardiões.', icone: 'estrela', incentiva: 'guardioes' },
 ]
 
-export const CONQUISTA_POR_ID = new Map(CONQUISTAS.map((c) => [c.id, c]))
+/** Fecha a lista: só faz sentido depois dos selos individuais. */
+const QUATRO_DRAGOES: Conquista = {
+  id: 'quatro-dragoes',
+  nome: 'Os quatro dragões',
+  descricao: 'Reuniu os selos de todos os guardiões.',
+  icone: 'estrela',
+  incentiva: 'guardioes',
+}
+
+/**
+ * A lista completa é FUNÇÃO, não constante de módulo.
+ *
+ * Os selos dos guardiões saem de `MACROTEMAS`, e o painel `/admin` pode
+ * renomear ou acrescentar um módulo em tempo de execução. Uma constante
+ * calculada no import congelaria a lista no conteúdo anterior à edição —
+ * e o app passaria a premiar módulos que não existem mais.
+ */
+export const conquistas = (): Conquista[] => [
+  ...CONQUISTAS_FIXAS,
+  ...selosGuardiao(),
+  QUATRO_DRAGOES,
+]
+
+export const getConquista = (id: string) => conquistas().find((c) => c.id === id)
 
 /**
  * O recorte do estado que as regras precisam ver.
@@ -276,7 +298,7 @@ const temSeloDeTodos = (s: SnapshotGamificacao) =>
   MACROTEMAS.length > 0 &&
   MACROTEMAS.every((m) => (s.dominioPorMacrotema[m.id] ?? 0) >= LIMIAR_GUARDIAO)
 
-const REGRAS: Record<string, (s: SnapshotGamificacao) => boolean> = {
+const regras = (): Record<string, (s: SnapshotGamificacao) => boolean> => ({
   'primeira-aula': (s) => s.aulasConcluidas >= 1,
   'primeira-sessao': (s) => s.sessoes >= 1,
   'sequencia-3': (s) => s.sequenciaAtual >= 3,
@@ -298,14 +320,15 @@ const REGRAS: Record<string, (s: SnapshotGamificacao) => boolean> = {
       (s: SnapshotGamificacao) => (s.dominioPorMacrotema[macro.id] ?? 0) >= LIMIAR_GUARDIAO,
     ]),
   ),
-}
+})
 
 /** Conquistas que o snapshot satisfaz e que ainda não foram concedidas. */
 export function avaliarConquistas(
   snap: SnapshotGamificacao,
   jaObtidas: readonly string[],
 ): Conquista[] {
-  return CONQUISTAS.filter((c) => !jaObtidas.includes(c.id) && REGRAS[c.id]?.(snap))
+  const regra = regras()
+  return conquistas().filter((c) => !jaObtidas.includes(c.id) && regra[c.id]?.(snap))
 }
 
 /**

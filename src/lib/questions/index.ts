@@ -2,11 +2,38 @@ import type { Dificuldade, Questao, QuestionKind } from '../types'
 import { BANCO_M1 } from './banco-m1'
 import { BANCO_M2 } from './banco-m2'
 import { BANCO_M34 } from './banco-m34'
+import { MACROTEMAS } from '../content'
+import type { OverlayConteudo } from '../content/overlay'
+import { montarQuestoes, overlayVazio } from '../content/overlay'
 
-/** Banco completo de questões autorais. */
-export const QUESTOES: Questao[] = [...BANCO_M1, ...BANCO_M2, ...BANCO_M34]
+const BASE: Questao[] = [...BANCO_M1, ...BANCO_M2, ...BANCO_M34]
 
-const porId = new Map(QUESTOES.map((q) => [q.id, q]))
+/**
+ * Banco completo de questões autorais.
+ *
+ * Como em `content/index.ts`, a lista é mutada no lugar — nunca reatribuída —
+ * para que quem já importou continue lendo o banco em vigor.
+ */
+export const QUESTOES: Questao[] = []
+
+const porId = new Map<string, Questao>()
+
+function reconstruir(overlay: OverlayConteudo) {
+  QUESTOES.splice(0, QUESTOES.length, ...montarQuestoes(BASE, MACROTEMAS, overlay))
+  porId.clear()
+  for (const q of QUESTOES) porId.set(q.id, q)
+}
+
+/**
+ * Remonta o banco com o overlay em vigor.
+ * Exige que o CONTEÚDO já tenha sido remontado — questão de conceito que
+ * sumiu é descartada, e essa decisão depende da árvore atual. Use
+ * `aplicarOverlayLocal` (em `lib/pacote.ts`) para não errar a ordem.
+ */
+export const aplicarOverlayQuestoes = (overlay: OverlayConteudo) => reconstruir(overlay)
+
+reconstruir(overlayVazio())
+
 export const getQuestao = (id: string) => porId.get(id)
 
 export const questoesDoConceito = (conceitoId: string) =>

@@ -10,9 +10,9 @@ import { MarcaPersonagem, TOM_PERSONAGEM } from '@/components/domain/Personagem'
 import { EtapaTrilha } from '@/components/domain/EtapaTrilha'
 import { guardiaoDoMacrotema } from '@/lib/personagens'
 import {
-  COBERTURA_PENDENTE,
+  coberturaPendente,
   MICROTEMAS,
-  PESOS_PENDENTES,
+  pesosPendentes,
   coberturaGeral,
   microtemasSemConteudo,
   pesosEfetivos,
@@ -90,7 +90,7 @@ export default function Trilha() {
         </div>
       )}
 
-      {PESOS_PENDENTES && (
+      {pesosPendentes() && (
         <div className="mb-6">
           <AvisoVerificacao>
             Os pesos por módulo ainda não foram conferidos contra o Programa Detalhado oficial
@@ -99,7 +99,7 @@ export default function Trilha() {
         </div>
       )}
 
-      {COBERTURA_PENDENTE && (
+      {coberturaPendente() && (
         <div className="mb-6">
           <AvisoVerificacao>
             Cobertura do programa oficial: {Math.round(coberturaGeral() * 100)}% dos microtemas já

@@ -7,6 +7,7 @@ import { BLUEPRINT } from '@/lib/blueprint'
 import { CONCEITOS, MACROTEMAS } from '@/lib/content'
 import { QUESTOES } from '@/lib/questions'
 import { useStore, VERSAO_ESTADO } from '@/lib/store'
+import { contarAlteracoes } from '@/lib/content/overlay'
 
 function Alternador({
   rotulo,
@@ -51,6 +52,7 @@ export default function Config() {
   const exportar = useStore((s) => s.exportar)
   const importar = useStore((s) => s.importar)
   const resetar = useStore((s) => s.resetarProgresso)
+  const edicoesLocais = useStore((s) => contarAlteracoes(s.overlay))
 
   const [confirmarReset, setConfirmarReset] = useState(false)
   const [mensagem, setMensagem] = useState<string | null>(null)
@@ -190,13 +192,36 @@ export default function Config() {
         </Card>
       </Secao>
 
+      <Secao titulo="Painel de conteúdo" descricao="Auditoria da matéria e edição local.">
+        <Card to="/admin">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="font-semibold">Abrir o painel</p>
+              <p className="mt-1 text-sm leading-relaxed text-muted">
+                Mostra o que falta escrever, o que está incompleto e o que está quebrado. Permite
+                corrigir um texto sem esperar uma nova versão do app.
+              </p>
+            </div>
+            <span aria-hidden className="shrink-0 text-muted">
+              →
+            </span>
+          </div>
+          {edicoesLocais > 0 && (
+            <p className="mt-3 text-xs font-semibold text-warn">
+              {edicoesLocais} {edicoesLocais === 1 ? 'edição local' : 'edições locais'} de conteúdo
+              neste aparelho.
+            </p>
+          )}
+        </Card>
+      </Secao>
+
       <Secao titulo="Zona de risco">
         <Card className="border-danger/30">
           {!confirmarReset ? (
             <>
               <p className="text-sm text-ink-2">
-                Apaga respostas, domínio, XP, sequência, histórico e favoritos. Perfil e metas são
-                mantidos. Não dá para desfazer.
+                Apaga respostas, domínio, XP, sequência, histórico e favoritos. Perfil, metas e
+                as edições de conteúdo do painel são mantidos. Não dá para desfazer.
               </p>
               <Button variante="perigo" className="mt-4" onClick={() => setConfirmarReset(true)}>
                 Zerar progresso

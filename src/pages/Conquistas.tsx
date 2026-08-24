@@ -3,7 +3,7 @@ import { Card, Secao } from '@/components/ui/Card'
 import { SeloConquista } from '@/components/ui/Ornamento'
 import { Barra } from '@/components/ui/Progress'
 import {
-  CONQUISTAS,
+  conquistas,
   desbloqueios,
   nivelPorXP,
   tituloDoNivel,
@@ -134,7 +134,7 @@ export default function Conquistas() {
       </Secao>
 
       {GRUPOS.map((grupo) => {
-        const doGrupo = CONQUISTAS.filter((c) => c.incentiva === grupo.chave)
+        const doGrupo = conquistas().filter((c) => c.incentiva === grupo.chave)
         if (!doGrupo.length) return null
         return (
           <Secao key={grupo.chave} titulo={grupo.rotulo}>

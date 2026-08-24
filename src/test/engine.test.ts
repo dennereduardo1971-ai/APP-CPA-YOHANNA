@@ -18,7 +18,7 @@ import { ICONES } from '@/components/ui/Icone'
 import {
   atualizarSequencia,
   avaliarConquistas,
-  CONQUISTAS,
+  conquistas,
   cruzouMarco,
   desbloqueios,
   LIMIAR_GUARDIAO,
@@ -473,13 +473,13 @@ describe('conquistas', () => {
       etapasConcluidas: 99,
     }
     const obtidas = avaliarConquistas(tudo, []).map((c) => c.id)
-    for (const c of CONQUISTAS) {
+    for (const c of conquistas()) {
       expect(obtidas, `${c.id} não é alcançável por nenhuma regra`).toContain(c.id)
     }
   })
 
   it('há um selo para cada macrotema, e nenhum sem guardião', () => {
-    const selos = CONQUISTAS.filter((c) => c.incentiva === 'guardioes')
+    const selos = conquistas().filter((c) => c.incentiva === 'guardioes')
     // Um por macrotema, mais o de reunir todos.
     expect(selos).toHaveLength(MACROTEMAS.length + 1)
     for (const m of MACROTEMAS) {
@@ -509,13 +509,13 @@ describe('conquistas', () => {
   })
 
   it('todo ícone de conquista existe no conjunto autoral — nada de glifo Unicode', () => {
-    for (const c of CONQUISTAS) {
+    for (const c of conquistas()) {
       expect(Object.keys(ICONES), `${c.id} usa ícone inexistente: ${c.icone}`).toContain(c.icone)
     }
   })
 
   it('os IDs de conquista são únicos', () => {
-    const ids = CONQUISTAS.map((c) => c.id)
+    const ids = conquistas().map((c) => c.id)
     expect(new Set(ids).size).toBe(ids.length)
   })
 })
