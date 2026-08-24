@@ -27,14 +27,20 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    acontece em `src/lib/content/*` e `src/lib/questions/*`. Nunca embutir
    texto de aula em componente.
 3. **A estrutura da prova vive em `src/lib/blueprint.ts`.** Não espalhar
-   número de questões, duração ou nota de corte pelo código.
+   número de questões, duração ou nota de corte pelo código. Os 20 microtemas
+   oficiais são declarados em `src/lib/content/m*.ts` com o campo `codigo`
+   (ex.: `'2.1'`), que deve espelhar o Programa Detalhado.
 4. **Nada de inventar regra de prova.** Se um dado oficial não pôde ser
    verificado, marcar `verificado: false` / `pesoVerificado: false` — a
    interface exibe aviso sozinha.
 5. **Toda questão é autoral.** É proibido copiar questões de provas
    anteriores, cursos ou bancos de terceiros.
-6. **Explicação segue os 5 passos obrigatórios**: o que é / para que serve /
-   como funciona / exemplo simples / o que lembrar na prova.
+6. **Lição segue os 9 blocos obrigatórios**: o que é / por que importa /
+   como funciona / exemplo simples / exemplo aplicado ao mercado / o que
+   lembrar na prova / erro comum / miniquestão / revisão rápida. Além disso,
+   três níveis de profundidade — o nível 2 ("Aprenda") é a própria
+   `explicacao`; `niveis` guarda só o 1 e o 3. Validado em
+   `src/test/conteudo.test.ts`.
 7. **Uma cor de destaque só: verde-água (`aqua`).** `warn` e `danger` são
    semânticos e não contam como acento. Não introduzir novas cores.
 8. **Persistência passa sempre pelo store** (`src/lib/store.ts`). Não
@@ -100,13 +106,13 @@ _Atualizado em 2026-08-24._
 | Métrica | Valor |
 |---|---|
 | Macrotemas | 4 |
-| Microtemas | 9 |
+| Microtemas | 20 |
 | Conceitos (aulas) | 14 |
 | Questões no banco | 43 |
 | Páginas | 21 |
-| Componentes | 10 |
+| Componentes | 11 |
 | Arquivos de teste | 2 |
-| Linhas em `src/` | 10.474 |
+| Linhas em `src/` | 11.178 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

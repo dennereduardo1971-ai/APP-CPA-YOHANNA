@@ -4,7 +4,15 @@ import { Card } from '@/components/ui/Card'
 import { Barra } from '@/components/ui/Progress'
 import { Pill } from '@/components/ui/Badge'
 import { AvisoVerificacao } from '@/components/ui/Empty'
-import { MACROTEMAS, PESOS_PENDENTES, pesosEfetivos } from '@/lib/content'
+import {
+  COBERTURA_PENDENTE,
+  MACROTEMAS,
+  MICROTEMAS,
+  PESOS_PENDENTES,
+  coberturaGeral,
+  microtemasSemConteudo,
+  pesosEfetivos,
+} from '@/lib/content'
 import { questoesDoMacrotema } from '@/lib/questions'
 import { useStore } from '@/lib/store'
 import { dominioMacrotema } from '@/lib/engine/stats'
@@ -42,6 +50,17 @@ export default function Trilha() {
           <AvisoVerificacao>
             Os pesos por módulo ainda não foram conferidos contra o Programa Detalhado oficial
             vigente. Os percentuais exibidos são estimativas de distribuição, não dados da ANBIMA.
+          </AvisoVerificacao>
+        </div>
+      )}
+
+      {COBERTURA_PENDENTE && (
+        <div className="mb-6">
+          <AvisoVerificacao>
+            Cobertura do programa oficial: {Math.round(coberturaGeral() * 100)}% dos microtemas já
+            têm aula ({MICROTEMAS.length - microtemasSemConteudo().length} de {MICROTEMAS.length}).
+            Os tópicos marcados como “conteúdo em produção” fazem parte do Programa Detalhado da
+            ANBIMA e ainda não têm material — estude por outra fonte até que estejam prontos.
           </AvisoVerificacao>
         </div>
       )}
@@ -127,35 +146,51 @@ export default function Trilha() {
                     })
                     const dominioMicro = dominioMicrotema(micro.conceitos, estados, agora)
                     const feitas = micro.conceitos.filter((c) => estados[c.id]?.aulaConcluida).length
+                    const semConteudo = micro.conceitos.length === 0
 
                     return (
                       <li key={micro.id}>
                         <div
                           className={`rounded-xl border p-3 transition-colors ${
-                            preOk ? 'border-line bg-elevated/50' : 'border-line/50 bg-surface opacity-70'
+                            semConteudo
+                              ? 'border-dashed border-line/70 bg-surface'
+                              : preOk
+                                ? 'border-line bg-elevated/50'
+                                : 'border-line/50 bg-surface opacity-70'
                           }`}
                         >
                           <div className="flex items-center justify-between gap-3">
                             <div className="min-w-0">
                               <p className="truncate text-sm font-semibold">
+                                <span className="tnum mr-1.5 text-xs font-normal text-muted">
+                                  {micro.codigo}
+                                </span>
                                 {micro.nome}
-                                {!preOk && (
+                                {!preOk && !semConteudo && (
                                   <span aria-label="bloqueado" className="ml-2 text-xs text-muted">
                                     bloqueado
                                   </span>
                                 )}
                               </p>
-                              <p className="tnum mt-0.5 text-xs text-muted">
-                                {feitas}/{micro.conceitos.length} aulas ·{' '}
-                                {Math.round(dominioMicro * 100)}% domínio
-                              </p>
+                              {semConteudo ? (
+                                <p className="mt-0.5 text-xs text-muted">
+                                  Conteúdo em produção — item do programa oficial ainda sem aula.
+                                </p>
+                              ) : (
+                                <p className="tnum mt-0.5 text-xs text-muted">
+                                  {feitas}/{micro.conceitos.length} aulas ·{' '}
+                                  {Math.round(dominioMicro * 100)}% domínio
+                                </p>
+                              )}
                             </div>
-                            <div className="w-20 shrink-0">
-                              <Barra valor={dominioMicro} altura="h-1.5" />
-                            </div>
+                            {!semConteudo && (
+                              <div className="w-20 shrink-0">
+                                <Barra valor={dominioMicro} altura="h-1.5" />
+                              </div>
+                            )}
                           </div>
 
-                          {!preOk && (
+                          {!preOk && !semConteudo && (
                             <p className="mt-2 text-xs text-muted">
                               Libera ao atingir 60% no tópico anterior — ou{' '}
                               <Link to="/questoes" className="font-semibold text-aqua">

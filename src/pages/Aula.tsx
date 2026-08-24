@@ -6,6 +6,7 @@ import { EtiquetaBadge } from '@/components/ui/Badge'
 import { Vazio } from '@/components/ui/Empty'
 import { MapaMental } from '@/components/domain/MapaMental'
 import { ExpliqueDeOutroJeito } from '@/components/domain/ExpliqueDeOutroJeito'
+import { SeletorNivel } from '@/components/domain/SeletorNivel'
 import { CONCEITOS, getConceito, MACROTEMAS } from '@/lib/content'
 import { useStore } from '@/lib/store'
 
@@ -96,9 +97,19 @@ export default function Aula() {
         <p className="text-[15px] leading-relaxed">{conceito.resumo30s}</p>
       </div>
 
+      {conceito.niveis && <SeletorNivel niveis={conceito.niveis} />}
+
       <Bloco rotulo="O que é">
         <p className="text-[15px] leading-relaxed text-ink-2">{conceito.explicacao.oQueE}</p>
       </Bloco>
+
+      {conceito.explicacao.porQueImporta && (
+        <Bloco rotulo="Por que isso importa">
+          <p className="text-[15px] leading-relaxed text-ink-2">
+            {conceito.explicacao.porQueImporta}
+          </p>
+        </Bloco>
+      )}
 
       <Bloco rotulo="Para que serve">
         <p className="text-[15px] leading-relaxed text-ink-2">{conceito.explicacao.paraQueServe}</p>
@@ -122,6 +133,16 @@ export default function Aula() {
           </p>
         </Card>
       </Bloco>
+
+      {conceito.explicacao.exemploAplicado && (
+        <Bloco rotulo="Exemplo aplicado ao mercado">
+          <Card className="bg-elevated/60">
+            <p className="text-[15px] leading-relaxed text-ink-2">
+              {conceito.explicacao.exemploAplicado}
+            </p>
+          </Card>
+        </Bloco>
+      )}
 
       {conceito.exemplos.length > 0 && (
         <Bloco rotulo="Mais exemplos">
@@ -208,6 +229,24 @@ export default function Aula() {
           </p>
           <p className="text-[15px] leading-relaxed text-ink-2">{conceito.alertaProva}</p>
         </div>
+      )}
+
+      {conceito.explicacao.revisaoRapida && (
+        <Bloco rotulo="Revisão rápida">
+          <ol className="flex flex-col gap-2">
+            {conceito.explicacao.revisaoRapida.map((linha, i) => (
+              <li key={i} className="flex gap-2.5 text-[15px] leading-relaxed text-ink-2">
+                <span
+                  aria-hidden
+                  className="tnum mt-0.5 shrink-0 text-[13px] font-semibold text-aqua"
+                >
+                  {i + 1}.
+                </span>
+                {linha}
+              </li>
+            ))}
+          </ol>
+        </Bloco>
       )}
 
       <Bloco rotulo="Pontos-chave">

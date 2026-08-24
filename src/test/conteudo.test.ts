@@ -1,5 +1,14 @@
 import { describe, expect, it } from 'vitest'
-import { CONCEITOS, MACROTEMAS, MICROTEMAS, pesosEfetivos } from '@/lib/content'
+import {
+  COBERTURA_PENDENTE,
+  CONCEITOS,
+  MACROTEMAS,
+  MICROTEMAS,
+  coberturaGeral,
+  coberturaMacrotema,
+  microtemasSemConteudo,
+  pesosEfetivos,
+} from '@/lib/content'
 import { QUESTOES, questoesDoConceito } from '@/lib/questions'
 import { BLUEPRINT } from '@/lib/blueprint'
 import type { MapaMentalNode } from '@/lib/types'
@@ -189,5 +198,112 @@ describe('blueprint da prova', () => {
 
   it('há questões suficientes para montar o simulado rápido', () => {
     expect(QUESTOES.length).toBeGreaterThanOrEqual(10)
+  })
+})
+
+describe('estrutura oficial do programa', () => {
+  it('declara os 20 microtemas do Programa Detalhado', () => {
+    expect(MICROTEMAS).toHaveLength(20)
+  })
+
+  it('todo microtema traz código oficial coerente com o macrotema', () => {
+    for (const mt of MICROTEMAS) {
+      expect(mt.codigo).toMatch(/^\d+\.\d+$/)
+      const macro = MACROTEMAS.find((m) => m.id === mt.macrotemaId)
+      expect(macro).toBeDefined()
+      expect(mt.codigo.split('.')[0]).toBe(String(macro!.ordem))
+    }
+  })
+
+  it('os códigos oficiais são únicos', () => {
+    const codigos = MICROTEMAS.map((mt) => mt.codigo)
+    expect(new Set(codigos).size).toBe(codigos.length)
+  })
+
+  it('todo pré-requisito aponta para um microtema existente', () => {
+    const ids = new Set(MICROTEMAS.map((mt) => mt.id))
+    for (const mt of MICROTEMAS) {
+      for (const pre of mt.preRequisitos) expect(ids.has(pre)).toBe(true)
+    }
+  })
+
+  it('nenhum microtema é pré-requisito de si mesmo', () => {
+    for (const mt of MICROTEMAS) expect(mt.preRequisitos).not.toContain(mt.id)
+  })
+
+  it('todo conceito aponta para o microtema que de fato o contém', () => {
+    for (const mt of MICROTEMAS) {
+      for (const c of mt.conceitos) expect(c.microtemaId).toBe(mt.id)
+    }
+  })
+})
+
+describe('cobertura de conteúdo', () => {
+  it('a cobertura geral reflete os microtemas ainda sem aula', () => {
+    const esperado = (MICROTEMAS.length - microtemasSemConteudo().length) / MICROTEMAS.length
+    expect(coberturaGeral()).toBeCloseTo(esperado)
+  })
+
+  it('COBERTURA_PENDENTE acompanha a existência de microtema vazio', () => {
+    expect(COBERTURA_PENDENTE).toBe(microtemasSemConteudo().length > 0)
+  })
+
+  it('a cobertura por macrotema fica entre 0 e 1', () => {
+    for (const m of MACROTEMAS) {
+      const c = coberturaMacrotema(m.id)
+      expect(c).toBeGreaterThanOrEqual(0)
+      expect(c).toBeLessThanOrEqual(1)
+    }
+  })
+})
+
+describe('lição em nove blocos e três níveis', () => {
+  it('todo conceito preenche os nove blocos obrigatórios', () => {
+    for (const c of CONCEITOS) {
+      const e = c.explicacao
+      expect(e.oQueE.length, `${c.id}/1 o que é`).toBeGreaterThan(20)
+      expect(e.porQueImporta?.length ?? 0, `${c.id}/2 por que importa`).toBeGreaterThan(20)
+      expect(e.comoFunciona.length, `${c.id}/3 como funciona`).toBeGreaterThanOrEqual(3)
+      expect(e.exemploSimples.length, `${c.id}/4 exemplo simples`).toBeGreaterThan(20)
+      expect(e.exemploAplicado?.length ?? 0, `${c.id}/5 exemplo aplicado`).toBeGreaterThan(20)
+      expect(e.lembrarNaProva.length, `${c.id}/6 lembrar na prova`).toBeGreaterThanOrEqual(2)
+      expect(c.erroComum.length, `${c.id}/7 erro comum`).toBeGreaterThan(20)
+      expect(c.perguntaRapida.enunciado.length, `${c.id}/8 miniquestão`).toBeGreaterThan(10)
+      expect(e.revisaoRapida?.length ?? 0, `${c.id}/9 revisão rápida`).toBeGreaterThanOrEqual(3)
+    }
+  })
+
+  it('o exemplo aplicado é distinto do exemplo simples', () => {
+    for (const c of CONCEITOS) {
+      expect(c.explicacao.exemploAplicado, c.id).not.toBe(c.explicacao.exemploSimples)
+    }
+  })
+
+  it('todo conceito traz os níveis 1 e 3 — o nível 2 é a própria explicação', () => {
+    for (const c of CONCEITOS) {
+      expect(c.niveis?.entenda.length ?? 0, `${c.id}: nível 1`).toBeGreaterThan(20)
+      expect(c.niveis?.aprofunde.length ?? 0, `${c.id}: nível 3`).toBeGreaterThan(20)
+    }
+  })
+
+  it('os níveis são progressivos: entenda é mais curto que aprofunde', () => {
+    for (const c of CONCEITOS) {
+      expect(c.niveis!.entenda.length, c.id).toBeLessThan(c.niveis!.aprofunde.length)
+    }
+  })
+
+  it('a revisão rápida é composta por linhas curtas', () => {
+    for (const c of CONCEITOS) {
+      for (const linha of c.explicacao.revisaoRapida!) {
+        expect(linha.length, `${c.id}: "${linha}"`).toBeLessThan(120)
+      }
+    }
+  })
+
+  it('todo conceito declara versão e data de revisão editorial', () => {
+    for (const c of CONCEITOS) {
+      expect(c.versao ?? 0, c.id).toBeGreaterThanOrEqual(1)
+      expect(c.atualizadoEm, c.id).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    }
   })
 })

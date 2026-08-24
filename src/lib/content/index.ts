@@ -52,3 +52,31 @@ export function pesosEfetivos(): Record<string, number> {
 
 /** `true` quando algum peso ainda não foi conferido contra o programa oficial. */
 export const PESOS_PENDENTES = MACROTEMAS.some((m) => !m.pesoVerificado)
+
+/* ------------------------------------------------------------------ */
+/* Cobertura de conteúdo                                               */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Regra de Ouro da especificação: a aplicação não está completa enquanto
+ * houver microtema oficial sem material didático. Estas funções tornam a
+ * lacuna visível ao estudante em vez de escondê-la.
+ */
+export const microtemasSemConteudo = (): Microtema[] =>
+  MICROTEMAS.filter((mt) => mt.conceitos.length === 0)
+
+/** Fração de microtemas do macrotema que já têm ao menos um conceito (0–1). */
+export function coberturaMacrotema(macrotemaId: string): number {
+  const micros = MICROTEMAS.filter((mt) => mt.macrotemaId === macrotemaId)
+  if (micros.length === 0) return 0
+  return micros.filter((mt) => mt.conceitos.length > 0).length / micros.length
+}
+
+/** Fração de microtemas cobertos no programa inteiro (0–1). */
+export function coberturaGeral(): number {
+  if (MICROTEMAS.length === 0) return 0
+  return (MICROTEMAS.length - microtemasSemConteudo().length) / MICROTEMAS.length
+}
+
+/** `true` enquanto houver microtema oficial sem nenhuma aula. */
+export const COBERTURA_PENDENTE = MICROTEMAS.some((mt) => mt.conceitos.length === 0)
