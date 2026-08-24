@@ -181,7 +181,7 @@ export default function SimuladoRun() {
   if (!questoes.length) {
     return (
       <Vazio
-        icone="⏱"
+        icone="cronometro"
         titulo="Sem questões para este recorte"
         descricao="Não há questões suficientes com os filtros escolhidos."
         acao={<ButtonLink to="/simulados">Voltar aos simulados</ButtonLink>}

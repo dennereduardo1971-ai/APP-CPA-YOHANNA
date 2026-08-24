@@ -167,7 +167,7 @@ export default function Simulados() {
 
       <Secao titulo="Histórico">
         {historico.length === 0 ? (
-          <Vazio icone="⏱" titulo="Nenhum simulado ainda" descricao="Faça o primeiro para medir onde você está." />
+          <Vazio icone="cronometro" titulo="Nenhum simulado ainda" descricao="Faça o primeiro para medir onde você está." />
         ) : (
           <ul className="flex flex-col gap-2.5">
             {historico.map((s) => (

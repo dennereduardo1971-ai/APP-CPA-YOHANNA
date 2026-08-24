@@ -205,7 +205,7 @@ export default function Home() {
       <Secao titulo="Desempenho recente" descricao="Últimas 20 questões respondidas">
         {desempenho.total === 0 ? (
           <Vazio
-            icone="◔"
+            icone="estatistica"
             titulo="Sem dados ainda"
             descricao="Responda algumas questões para ver seu desempenho aqui."
           />

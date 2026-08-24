@@ -92,7 +92,7 @@ function BarraLateral() {
         </p>
         <div className="mt-2 flex items-center gap-1.5 text-xs text-muted">
           <span aria-hidden className="text-aurora">
-            ≡
+            <Icone nome="chama" tamanho={14} />
           </span>
           <span className="tnum">{sequencia}</span>{' '}
           {sequencia === 1 ? 'dia seguido' : 'dias seguidos'}

@@ -2,10 +2,20 @@ import { Cabecalho } from '@/components/layout/AppShell'
 import { Card, Secao } from '@/components/ui/Card'
 import { SeloConquista } from '@/components/ui/Ornamento'
 import { Barra } from '@/components/ui/Progress'
-import { CONQUISTAS, nivelPorXP, tituloDoNivel, XP } from '@/lib/engine/gamification'
-import { useStore } from '@/lib/store'
+import {
+  CONQUISTAS,
+  desbloqueios,
+  nivelPorXP,
+  tituloDoNivel,
+  XP,
+} from '@/lib/engine/gamification'
+import { snapshotGamificacao, useStore } from '@/lib/store'
+import { Icone, type IconeNome } from '@/components/ui/Icone'
+import { TOM_PERSONAGEM } from '@/components/domain/Personagem'
+import { Link } from 'react-router-dom'
 
 const GRUPOS = [
+  { chave: 'guardioes', rotulo: 'Selos dos guardiões' },
   { chave: 'consistencia', rotulo: 'Consistência' },
   { chave: 'revisao', rotulo: 'Revisão' },
   { chave: 'conclusao', rotulo: 'Conclusão de conteúdo' },
@@ -18,7 +28,9 @@ export default function Conquistas() {
   const conquistadas = useStore((s) => s.conquistas)
   const eventos = useStore((s) => s.eventosXP)
   const sequencia = useStore((s) => s.sequencia)
+  const estado = useStore()
   const nivel = nivelPorXP(xpTotal)
+  const liberaveis = desbloqueios(snapshotGamificacao(estado))
 
   return (
     <div>
@@ -43,6 +55,58 @@ export default function Conquistas() {
           {sequencia.atual === 1 ? 'dia' : 'dias'} · recorde {sequencia.recorde}
         </p>
       </Card>
+
+      <Secao
+        titulo="Desbloqueios"
+        descricao="Recompensa, não trava: nada que já estava aberto fecha para caber aqui."
+      >
+        <ul className="grid gap-2.5 sm:grid-cols-2">
+          {liberaveis.map(({ desbloqueio, liberado, progresso }) => {
+            const corpo = (
+              <>
+                <div className="flex items-start gap-3">
+                  <span
+                    aria-hidden
+                    className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border ${
+                      liberado
+                        ? `${TOM_PERSONAGEM[desbloqueio.cor ?? 'aurora'].borda} ${
+                            TOM_PERSONAGEM[desbloqueio.cor ?? 'aurora'].texto
+                          }`
+                        : 'border-line text-muted'
+                    }`}
+                  >
+                    <Icone
+                      nome={liberado ? (desbloqueio.icone as IconeNome) : 'cadeado'}
+                      tamanho={17}
+                    />
+                  </span>
+                  <div className="min-w-0">
+                    <p className={`font-semibold ${liberado ? '' : 'text-muted'}`}>
+                      {desbloqueio.nome}
+                    </p>
+                    <p className="mt-0.5 text-sm text-muted">
+                      {liberado ? desbloqueio.descricao : desbloqueio.requisito}
+                    </p>
+                  </div>
+                </div>
+                {!liberado && <Barra valor={progresso} altura="h-1" className="mt-3" />}
+              </>
+            )
+
+            return (
+              <li key={desbloqueio.id}>
+                {liberado && desbloqueio.destino ? (
+                  <Link to={desbloqueio.destino} className="card card-hover block p-4">
+                    {corpo}
+                  </Link>
+                ) : (
+                  <div className={`card p-4 ${liberado ? '' : 'opacity-70'}`}>{corpo}</div>
+                )}
+              </li>
+            )
+          })}
+        </ul>
+      </Secao>
 
       <Secao titulo="Como o XP é distribuído" descricao="Regras explícitas, sem caixa-preta.">
         <Card>
@@ -85,10 +149,8 @@ export default function Conquistas() {
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <SeloConquista tamanho={40} obtido={obtida}>
-                          <span aria-hidden className="text-sm">
-                            {c.icone}
-                          </span>
+                        <SeloConquista tamanho={42} obtido={obtida}>
+                          <Icone nome={c.icone as IconeNome} tamanho={18} />
                         </SeloConquista>
                         <div className="min-w-0">
                           <p className="font-semibold">{c.nome}</p>

@@ -10,6 +10,8 @@ import { Card } from '@/components/ui/Card'
 import { QuestaoPlayer, type ResultadoQuestao } from './QuestaoPlayer'
 import { EtiquetaBadge } from '@/components/ui/Badge'
 import { Vazio } from '@/components/ui/Empty'
+import { Icone, type IconeNome } from '@/components/ui/Icone'
+import { Horizonte, SeloConquista } from '@/components/ui/Ornamento'
 
 interface Props {
   passos: PassoSessao[]
@@ -39,6 +41,7 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
   const [acertos, setAcertos] = useState(0)
   const [xp, setXp] = useState(0)
   const [conquistas, setConquistas] = useState<Conquista[]>([])
+  const [ganhouRede, setGanhouRede] = useState(false)
   const inicio = useRef(Date.now())
   const registrado = useRef(false)
 
@@ -83,12 +86,13 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
     if (retorno.novasConquistas.length) {
       setConquistas((c) => [...c, ...retorno.novasConquistas])
     }
+    if (retorno.ganhouCongelamento) setGanhouRede(true)
   }
 
   if (!passos.length) {
     return (
       <Vazio
-        icone="✓"
+        icone="check"
         titulo="Nada pendente agora"
         descricao="Você está em dia. Volte mais tarde ou escolha um tema para praticar."
         acao={<ButtonLink to="/questoes">Praticar mesmo assim</ButtonLink>}
@@ -180,21 +184,45 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
         </Card>
 
         {conquistas.length > 0 && (
-          <Card className="mt-3 border-aurora/40 bg-aurora/10">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
+          <Card className="relative mt-3 overflow-hidden border-aurora/40">
+            <Horizonte />
+            <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
               {conquistas.length === 1 ? 'Nova conquista' : 'Novas conquistas'}
             </p>
-            <ul className="flex flex-col gap-1.5">
-              {conquistas.map((c) => (
-                <li key={c.id} className="flex items-center gap-2 text-sm">
-                  <span aria-hidden className="text-aurora">
-                    {c.icone}
+            <ul className="flex flex-col gap-3">
+              {conquistas.map((c, i) => (
+                <li key={c.id} className="flex items-center gap-3">
+                  {/* O selo entra com um leve atraso por item: o carimbo é o
+                      momento da recompensa, e todos de uma vez viram borrão. */}
+                  <span
+                    className="animate-pop"
+                    style={{ animationDelay: `${i * 140}ms` }}
+                  >
+                    <SeloConquista tamanho={40}>
+                      <Icone nome={c.icone as IconeNome} tamanho={17} />
+                    </SeloConquista>
                   </span>
-                  <span className="font-semibold">{c.nome}</span>
-                  <span className="text-muted">— {c.descricao}</span>
+                  <span className="min-w-0">
+                    <span className="block text-sm font-bold">{c.nome}</span>
+                    <span className="block text-xs text-muted">{c.descricao}</span>
+                  </span>
                 </li>
               ))}
             </ul>
+          </Card>
+        )}
+
+        {ganhouRede && (
+          <Card className="mt-3 border-ouro/40 bg-warn-soft">
+            <p className="flex items-center gap-2 text-sm">
+              <Icone nome="chama" tamanho={17} />
+              <span>
+                <span className="font-bold text-warn">Rede de segurança recuperada.</span>{' '}
+                <span className="text-ink-2">
+                  Você cruzou um marco de sequência e ganhou um congelamento.
+                </span>
+              </span>
+            </p>
           </Card>
         )}
 

@@ -64,6 +64,8 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    `src/components/ui/Ornamento.tsx`. Nada de glifo Unicode na navegação — no
    Android vira caixinha — e nada de asset externo: o APK roda sem rede.
    Desenhar com forma cheia, não traço fino: a marca aparece a partir de 18 px.
+   Ícone que vem de DADO (conquista, desbloqueio, estado vazio) guarda o **nome**
+   de um traço de `Icone.tsx`, nunca o glifo. Há teste conferindo os nomes.
 8. **Persistência passa sempre pelo store** (`src/lib/store.ts`). Não
    escrever em `localStorage` direto de dentro de componente.
 
@@ -81,7 +83,7 @@ src/
       scheduler.ts    revisão espaçada explicável
       trilha.ts       jornada: estágios, nós e a etapa "você está aqui"
       planner.ts      monta a sessão de estudo rápido
-      gamification.ts XP, níveis, conquistas, sequência
+      gamification.ts XP, níveis, conquistas, desbloqueios, sequência
       stats.ts        desempenho por tema, dificuldade e tempo
     store.ts        Zustand + persistência local (camada única de I/O)
   components/ui|layout|domain
@@ -102,6 +104,7 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 | 5 | "Explique de outro jeito" com textos pré-autorados | Garante explicação correta e funciona offline; hook de IA fica opcional |
 | 6 | Dark mode único, paleta "Alvorada": acento carmesim + as 4 cores dos dragões | Definido pelo cliente. Revisto em 24/08/2026, quando o cliente pediu fidelidade à estética da temática — substitui o acento verde-água anterior |
 | 7 | APK gerado por GitHub Actions, não localmente | Build Android exige SDK que não existe no ambiente de dev |
+| 9 | Desbloqueio é recompensa, nunca trava | Nada que já estava aberto fecha para caber na lista. Um desbloqueio fechado diz o que falta; os módulos seguem livres (decisão 8) |
 | 8 | Trilha é jornada de nós (`engine/trilha.ts`), não lista de aulas | **Macrotema nunca tranca** — a especificação pede acesso livre aos módulos. O pré-requisito vale entre microtemas (60%) e dentro deles (miniquiz depois das aulas, desafio depois do domínio). A regra vive no motor, não no JSX, para ser testável |
 
 ## Pendências externas
@@ -139,7 +142,7 @@ _Atualizado em 2026-08-24._
 | Páginas | 21 |
 | Componentes | 16 |
 | Arquivos de teste | 3 |
-| Linhas em `src/` | 12.758 |
+| Linhas em `src/` | 13.272 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

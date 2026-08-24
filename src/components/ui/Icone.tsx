@@ -35,8 +35,10 @@ export type IconeNome =
   | 'cadeado'
   | 'bandeira'
   | 'check'
+  | 'estrela'
 
-const TRACOS: Record<IconeNome, string> = {
+/** Exportado para que testes possam validar nomes de ícone vindos de dados. */
+export const ICONES: Record<IconeNome, string> = {
   inicio: 'M3 11.2 12 4l9 7.2M5.5 9.7V19a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.7M9.8 20v-5.4h4.4V20',
   trilha: 'M6 20V9m0 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm12 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm0-5V9a3 3 0 0 0-3-3H9',
   raio: 'M13.2 3 5 13.4h5.3L9.8 21 18 10.6h-5.3L13.2 3Z',
@@ -63,6 +65,7 @@ const TRACOS: Record<IconeNome, string> = {
   cadeado: 'M6.5 10.5h11a1 1 0 0 1 1 1V19a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1Zm1.8 0V8a3.7 3.7 0 0 1 7.4 0v2.5M12 14v2.5',
   bandeira: 'M6 21V4m0 1.2c4-2 8 2 12 0v8.6c-4 2-8-2-12 0',
   check: 'm5 12.6 4.6 4.6L19 7.4',
+  estrela: 'M12 3.4 14.7 9l6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.9 9.3 9 12 3.4Z',
 }
 
 interface Props {
@@ -92,7 +95,7 @@ export function Icone({ nome, tamanho = 20, className = '', titulo }: Props) {
       focusable="false"
     >
       {titulo && <title>{titulo}</title>}
-      <path d={TRACOS[nome]} />
+      <path d={ICONES[nome]} />
     </svg>
   )
 }

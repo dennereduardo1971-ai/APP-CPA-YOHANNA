@@ -295,7 +295,7 @@ export interface Conquista {
   descricao: string
   icone: string
   /** Categoria pedagógica que a conquista incentiva. */
-  incentiva: 'consistencia' | 'revisao' | 'conclusao' | 'desempenho' | 'meta'
+  incentiva: 'consistencia' | 'revisao' | 'conclusao' | 'desempenho' | 'meta' | 'guardioes'
 }
 
 export interface EventoXP {

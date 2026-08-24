@@ -211,7 +211,7 @@ export default function Perfil() {
       {aba === 'favoritos' &&
         (totalFavoritos === 0 ? (
           <Vazio
-            icone="☆"
+            icone="estrela"
             titulo="Nenhum favorito ainda"
             descricao="Use a estrela nas aulas, questões e mapas para salvar aqui."
           />

@@ -24,12 +24,15 @@ import {
 } from './engine/mastery'
 import {
   atualizarSequencia,
-  CONQUISTAS,
+  avaliarConquistas as avaliarNoMotor,
   diaLocal,
   nivelPorXP,
+  type SnapshotGamificacao,
   XP,
   xpPorResposta,
 } from './engine/gamification'
+import { dominioMacrotema } from './engine/stats'
+import { montarTrilha, progressoDaTrilha } from './engine/trilha'
 
 /**
  * Camada única de I/O. Nenhum componente escreve em localStorage direto.
@@ -101,6 +104,8 @@ export interface RetornoResposta {
   deltaDominio: number
   novasConquistas: Conquista[]
   sequenciaAtualizada: boolean
+  /** Cruzou um marco de sequência e ganhou um congelamento nesta resposta. */
+  ganhouCongelamento: boolean
 }
 
 const perfilInicial: Perfil = { nome: '', avatar: null, criadoEm: Date.now() }
@@ -155,49 +160,58 @@ function creditarMinutos(
   return { ...mapa, [dia]: Math.round(somados * 10) / 10 }
 }
 
-/** Regras de conquista — cada uma é uma função pura sobre o estado. */
-const REGRAS: Record<string, (e: Estado) => boolean> = {
-  'primeira-aula': (e) => Object.values(e.estados).some((s) => s.aulaConcluida),
-  'primeira-sessao': (e) => e.sessoes.length >= 1,
-  'sequencia-3': (e) => e.sequencia.atual >= 3,
-  'sequencia-7': (e) => e.sequencia.atual >= 7,
-  'sequencia-30': (e) => e.sequencia.atual >= 30,
-  'erro-superado-10': (e) =>
-    e.respostas.filter((r) => r.acertou && r.tentativa > 1).length >= 10,
-  'revisao-em-dia': (e) => {
-    const agora = Date.now()
-    const comHistorico = Object.values(e.estados).filter((s) => s.n > 0)
-    return (
-      comHistorico.length >= 5 && comHistorico.every((s) => s.revisarEm > agora && !s.errosAbertos)
-    )
-  },
-  'macrotema-completo': (e) =>
-    MACROTEMAS.some((m) => {
+/**
+ * Recorte do estado que a gamificação precisa ver.
+ *
+ * As regras de conquista moravam aqui, lendo o `Estado` inteiro. Foram para
+ * `engine/gamification.ts` atrás deste contrato: lá são testáveis sem montar
+ * um store, e a assinatura passa a dizer de que a gamificação realmente
+ * depende. O store ficou só com a tradução.
+ */
+export function snapshotGamificacao(e: Estado): SnapshotGamificacao {
+  const agora = Date.now()
+  const conceitos = Object.values(e.estados)
+  const comHistorico = conceitos.filter((c) => c.n > 0)
+  const ultima = e.sessoes.at(-1)
+
+  return {
+    sessoes: e.sessoes.length,
+    sequenciaAtual: e.sequencia.atual,
+    sequenciaRecorde: e.sequencia.recorde,
+    congelamentos: e.sequencia.congelamentos,
+    aulasConcluidas: conceitos.filter((c) => c.aulaConcluida).length,
+    macrotemasCompletos: MACROTEMAS.filter((m) => {
       const cs = m.microtemas.flatMap((mt) => mt.conceitos)
       return cs.length > 0 && cs.every((c) => e.estados[c.id]?.aulaConcluida)
-    }),
-  'dominado-5': (e) =>
-    Object.values(e.estados).filter((s) => dominioEfetivo(s, Date.now()) >= 0.9).length >= 5,
-  'simulado-aprovado': (e) => e.simulados.some((s) => s.aprovado && s.modo === 'completo'),
-  'meta-7': (e) =>
-    Object.entries(e.minutosPorDia).filter(([, min]) => min >= e.metas.minutosDia).length >= 7,
-  'sem-pressa': (e) => {
-    const ultima = e.sessoes.at(-1)
-    if (!ultima || ultima.questoes < 5) return false
-    return e.respostas
-      .filter((r) => r.data >= ultima.inicio && r.data <= ultima.fim)
-      .every((r) => r.tempoMs >= 3000)
-  },
+    }).length,
+    conceitosDominados: conceitos.filter((c) => dominioEfetivo(c, agora) >= 0.9).length,
+    errosSuperados: e.respostas.filter((r) => r.acertou && r.tentativa > 1).length,
+    // Cinco conceitos é o mínimo para "em dia" significar alguma coisa.
+    revisaoEmDia:
+      comHistorico.length >= 5 &&
+      comHistorico.every((c) => c.revisarEm > agora && !c.errosAbertos),
+    simuladoAprovado: e.simulados.some((r) => r.aprovado && r.modo === 'completo'),
+    diasComMetaCumprida: Object.values(e.minutosPorDia).filter((min) => min >= e.metas.minutosDia)
+      .length,
+    ultimaSessaoSemPressa: Boolean(
+      ultima &&
+        ultima.questoes >= 5 &&
+        e.respostas
+          .filter((r) => r.data >= ultima.inicio && r.data <= ultima.fim)
+          .every((r) => r.tempoMs >= 3000),
+    ),
+    dominioPorMacrotema: Object.fromEntries(
+      MACROTEMAS.map((m) => [m.id, dominioMacrotema(m.id, e.estados, agora)]),
+    ),
+    dificeisAcertadas: e.respostas.filter((r) => r.acertou && r.dificuldade === 'dificil').length,
+    etapasConcluidas: progressoDaTrilha(
+      montarTrilha({ estados: e.estados, respostas: e.respostas, agora }),
+    ).concluidas,
+  }
 }
 
-function avaliarConquistas(estado: Estado): Conquista[] {
-  const novas: Conquista[] = []
-  for (const conquista of CONQUISTAS) {
-    if (estado.conquistas.includes(conquista.id)) continue
-    if (REGRAS[conquista.id]?.(estado)) novas.push(conquista)
-  }
-  return novas
-}
+const avaliarConquistas = (estado: Estado): Conquista[] =>
+  avaliarNoMotor(snapshotGamificacao(estado), estado.conquistas)
 
 function garantirEstado(
   estados: Record<string, EstadoConceito>,
@@ -287,6 +301,7 @@ export const useStore = create<Estado & Acoes>()(
             deltaDominio: 0,
             novasConquistas: [],
             sequenciaAtualizada: false,
+            ganhouCongelamento: false,
           }
         }
 
@@ -371,6 +386,7 @@ export const useStore = create<Estado & Acoes>()(
           deltaDominio: deltaM,
           novasConquistas: novas,
           sequenciaAtualizada: s.sequencia.ultimoDia !== hoje,
+          ganhouCongelamento: seq.ganhouCongelamento,
         }
       },
 

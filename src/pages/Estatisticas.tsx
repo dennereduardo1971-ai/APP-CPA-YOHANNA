@@ -92,7 +92,7 @@ export default function Estatisticas() {
       <div>
         <Cabecalho titulo="Estatísticas" />
         <Vazio
-          icone="◔"
+          icone="estatistica"
           titulo="Sem dados ainda"
           descricao="As estatísticas aparecem depois das primeiras questões respondidas."
           acao={<ButtonLink to="/rapido">Fazer uma sessão</ButtonLink>}

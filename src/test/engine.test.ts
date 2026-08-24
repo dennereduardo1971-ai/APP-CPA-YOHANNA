@@ -10,10 +10,20 @@ import {
   TEXTO_DOMINIO,
   tomDominio,
 } from '@/lib/engine/mastery'
+import { MACROTEMAS } from '@/lib/content'
+import { ICONES } from '@/components/ui/Icone'
 import {
   atualizarSequencia,
+  avaliarConquistas,
+  CONQUISTAS,
+  cruzouMarco,
+  desbloqueios,
+  LIMIAR_GUARDIAO,
+  type SnapshotGamificacao,
   diaLocal,
+  MAX_CONGELAMENTOS,
   nivelPorXP,
+  proximoMarco,
   xpPorResposta,
 } from '@/lib/engine/gamification'
 import { escolherQuestao, pontuarConceito } from '@/lib/engine/scheduler'
@@ -251,10 +261,22 @@ describe('sequência de estudos', () => {
   })
 
   it('usa congelamento quando falta exatamente um dia', () => {
-    const r = atualizarSequencia(6, 6, '2026-08-16', 2, '2026-08-18')
+    // Dia 4 -> 5 não cruza marco: aqui só se vê o gasto.
+    const r = atualizarSequencia(4, 6, '2026-08-16', 2, '2026-08-18')
     expect(r.usouCongelamento).toBe(true)
     expect(r.congelamentos).toBe(1)
+    expect(r.atual).toBe(5)
+  })
+
+  it('resgatar e cruzar um marco na mesma virada devolve UM, não dois', () => {
+    // Gasta uma rede para sobreviver e chega a 7, que é marco. Sai com o mesmo
+    // saldo — o resgate custou, o marco pagou. Não é farm: cada marco só é
+    // cruzado uma vez.
+    const r = atualizarSequencia(6, 6, '2026-08-16', 2, '2026-08-18')
     expect(r.atual).toBe(7)
+    expect(r.usouCongelamento).toBe(true)
+    expect(r.ganhouCongelamento).toBe(true)
+    expect(r.congelamentos).toBe(2)
   })
 
   it('quebra quando falta mais de um dia e não há congelamento', () => {
@@ -347,6 +369,174 @@ describe('tom de desempenho', () => {
   it('todo tom tem classe de texto declarada', () => {
     for (const t of ['jade', 'warn', 'danger'] as const) {
       expect(TEXTO_DOMINIO[t]).toBeTruthy()
+    }
+  })
+})
+
+describe('congelamentos progressivos', () => {
+  it('cada marco de sequência rende um congelamento', () => {
+    const r = atualizarSequencia(6, 6, '2026-08-17', 0, '2026-08-18')
+    expect(r.atual).toBe(7)
+    expect(r.ganhouCongelamento).toBe(true)
+    expect(r.congelamentos).toBe(1)
+  })
+
+  it('dia comum não rende nada', () => {
+    const r = atualizarSequencia(3, 3, '2026-08-17', 1, '2026-08-18')
+    expect(r.ganhouCongelamento).toBe(false)
+    expect(r.congelamentos).toBe(1)
+  })
+
+  it('respeita o teto — não acumula rede infinita', () => {
+    const r = atualizarSequencia(13, 13, '2026-08-17', MAX_CONGELAMENTOS, '2026-08-18')
+    expect(r.atual).toBe(14)
+    expect(r.ganhouCongelamento).toBe(false)
+    expect(r.congelamentos).toBe(MAX_CONGELAMENTOS)
+  })
+
+  it('um marco só é cruzado uma vez', () => {
+    expect(cruzouMarco(6, 7)).toBe(true)
+    expect(cruzouMarco(7, 8)).toBe(false)
+    expect(cruzouMarco(8, 9)).toBe(false)
+  })
+
+  it('os marcos sobem e o próximo é sempre maior que o recorde', () => {
+    for (const recorde of [0, 3, 7, 13, 29, 59]) {
+      const p = proximoMarco(recorde)
+      expect(p, `recorde ${recorde}`).not.toBeNull()
+      expect(p!).toBeGreaterThan(recorde)
+    }
+    expect(proximoMarco(1000)).toBeNull()
+  })
+})
+
+const SNAP_ZERO: SnapshotGamificacao = {
+  sessoes: 0,
+  sequenciaAtual: 0,
+  sequenciaRecorde: 0,
+  congelamentos: 0,
+  aulasConcluidas: 0,
+  macrotemasCompletos: 0,
+  conceitosDominados: 0,
+  errosSuperados: 0,
+  revisaoEmDia: false,
+  simuladoAprovado: false,
+  diasComMetaCumprida: 0,
+  ultimaSessaoSemPressa: false,
+  dominioPorMacrotema: {},
+  dificeisAcertadas: 0,
+  etapasConcluidas: 0,
+}
+
+describe('conquistas', () => {
+  it('não concede nada num estado zerado', () => {
+    expect(avaliarConquistas(SNAP_ZERO, [])).toEqual([])
+  })
+
+  it('nunca concede duas vezes a mesma', () => {
+    const snap = { ...SNAP_ZERO, aulasConcluidas: 1 }
+    expect(avaliarConquistas(snap, []).map((c) => c.id)).toContain('primeira-aula')
+    expect(avaliarConquistas(snap, ['primeira-aula']).map((c) => c.id)).not.toContain(
+      'primeira-aula',
+    )
+  })
+
+  it('toda conquista tem uma regra — nenhuma fica inalcançável', () => {
+    // Snapshot generoso: satisfaz todos os limiares de uma vez.
+    const tudo: SnapshotGamificacao = {
+      sessoes: 99,
+      sequenciaAtual: 99,
+      sequenciaRecorde: 99,
+      congelamentos: 3,
+      aulasConcluidas: 99,
+      macrotemasCompletos: 99,
+      conceitosDominados: 99,
+      errosSuperados: 99,
+      revisaoEmDia: true,
+      simuladoAprovado: true,
+      diasComMetaCumprida: 99,
+      ultimaSessaoSemPressa: true,
+      dominioPorMacrotema: Object.fromEntries(MACROTEMAS.map((m) => [m.id, 1])),
+      dificeisAcertadas: 99,
+      etapasConcluidas: 99,
+    }
+    const obtidas = avaliarConquistas(tudo, []).map((c) => c.id)
+    for (const c of CONQUISTAS) {
+      expect(obtidas, `${c.id} não é alcançável por nenhuma regra`).toContain(c.id)
+    }
+  })
+
+  it('há um selo para cada macrotema, e nenhum sem guardião', () => {
+    const selos = CONQUISTAS.filter((c) => c.incentiva === 'guardioes')
+    // Um por macrotema, mais o de reunir todos.
+    expect(selos).toHaveLength(MACROTEMAS.length + 1)
+    for (const m of MACROTEMAS) {
+      expect(selos.map((c) => c.id)).toContain(`guardiao-${m.id}`)
+    }
+  })
+
+  it('o selo do guardião exige domínio no módulo certo', () => {
+    const [primeiro, segundo] = MACROTEMAS
+    if (!segundo) return
+    const snap = {
+      ...SNAP_ZERO,
+      dominioPorMacrotema: { [primeiro.id]: LIMIAR_GUARDIAO },
+    }
+    const ids = avaliarConquistas(snap, []).map((c) => c.id)
+    expect(ids).toContain(`guardiao-${primeiro.id}`)
+    expect(ids).not.toContain(`guardiao-${segundo.id}`)
+    expect(ids).not.toContain('quatro-dragoes')
+  })
+
+  it('"os quatro dragões" só sai com todos os módulos dominados', () => {
+    const snap = {
+      ...SNAP_ZERO,
+      dominioPorMacrotema: Object.fromEntries(MACROTEMAS.map((m) => [m.id, LIMIAR_GUARDIAO])),
+    }
+    expect(avaliarConquistas(snap, []).map((c) => c.id)).toContain('quatro-dragoes')
+  })
+
+  it('todo ícone de conquista existe no conjunto autoral — nada de glifo Unicode', () => {
+    for (const c of CONQUISTAS) {
+      expect(Object.keys(ICONES), `${c.id} usa ícone inexistente: ${c.icone}`).toContain(c.icone)
+    }
+  })
+
+  it('os IDs de conquista são únicos', () => {
+    const ids = CONQUISTAS.map((c) => c.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+})
+
+describe('desbloqueios', () => {
+  it('são recompensa, não trava: todo item diz o que falta enquanto fechado', () => {
+    for (const d of desbloqueios(SNAP_ZERO)) {
+      expect(d.desbloqueio.requisito.length, d.desbloqueio.id).toBeGreaterThan(10)
+      expect(d.progresso).toBeGreaterThanOrEqual(0)
+      expect(d.progresso).toBeLessThanOrEqual(1)
+    }
+  })
+
+  it('há um desafio por macrotema, fechado sem domínio e aberto com ele', () => {
+    const fechados = desbloqueios(SNAP_ZERO).filter((d) => d.desbloqueio.id.startsWith('desafio-'))
+    expect(fechados).toHaveLength(MACROTEMAS.length)
+    expect(fechados.every((d) => !d.liberado)).toBe(true)
+
+    const abertos = desbloqueios({
+      ...SNAP_ZERO,
+      dominioPorMacrotema: Object.fromEntries(MACROTEMAS.map((m) => [m.id, 1])),
+    }).filter((d) => d.desbloqueio.id.startsWith('desafio-'))
+    expect(abertos.every((d) => d.liberado)).toBe(true)
+  })
+
+  it('todo desbloqueio liberado leva a algum lugar', () => {
+    const todos = desbloqueios({
+      ...SNAP_ZERO,
+      congelamentos: 2,
+      dominioPorMacrotema: Object.fromEntries(MACROTEMAS.map((m) => [m.id, 1])),
+    })
+    for (const d of todos.filter((x) => x.liberado)) {
+      expect(d.desbloqueio.destino, d.desbloqueio.id).toBeTruthy()
     }
   })
 })

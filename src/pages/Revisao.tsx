@@ -72,7 +72,7 @@ export default function Revisao() {
 
       {nada ? (
         <Vazio
-          icone="✓"
+          icone="check"
           titulo="Revisão em dia"
           descricao="Nenhum erro em aberto e nenhuma revisão vencida. Continue praticando para alimentar a fila."
           acao={<ButtonLink to="/rapido">Fazer uma sessão</ButtonLink>}
