@@ -50,20 +50,67 @@ mercado", não "do mercado".
 
 ---
 
-## 3. O que o PDF **não** contém — permanece não verificado
+## 3. O que o PDF **não** contém — pesquisa complementar
 
-O Programa Detalhado é um documento **de conteúdo**. Ele não traz:
+O Programa Detalhado é um documento **de conteúdo**. Ele não traz número de
+questões, duração, nota de corte nem formatos de questão. Esses dados vivem no
+**Edital dos Exames de Certificação Profissional Anbima**.
 
-- número de questões da prova;
-- duração do exame;
-- nota de corte / percentual mínimo de aprovação;
-- proporção por formato de questão (múltipla escolha × árvore de decisão).
+### 3.1 Fontes oficiais identificadas — **inacessíveis neste ambiente**
 
-Portanto, `totalQuestoes: 50`, `duracaoMin: 150`, `notaCorte: 0.7` e o array
-`formatos` **continuam sem fonte** e o blueprint permanece `verificado: false`.
-Esses dados vivem no documento de *Regras e Procedimentos* / edital da
-certificação, que não foi fornecido. Nada será preenchido por dedução (regra 4
-do `CLAUDE.md`).
+| Documento | URL | Status |
+|---|---|---|
+| Edital dos Exames de Certificação Profissional Anbima — **versão 1.4, 28/05/2026** | `anbima.com.br/data/files/98/96/A6/10/9C24C910CF6A83C9F82BA2A8/Edital-dos-Exames-de-Certificacao-Profissional-Anbima.pdf` | ⛔ domínio bloqueado |
+| Notícia oficial "Definidas as estruturas das provas para as novas certificações CPA, C-Pro R e C-Pro I" | `anbima.com.br/pt_br/noticias/definidas-as-estruturas-das-provas-...htm` | ⛔ domínio bloqueado |
+| Página oficial da certificação — ANBIMA Edu | `anbimaedu.com.br/certificacao/cpa` | ⛔ domínio bloqueado |
+
+`anbima.com.br` e `anbimaedu.com.br` são recusados pela política de egresso da
+rede desta sessão (403 no CONNECT). **Nenhum documento oficial pôde ser lido.**
+
+### 3.2 Dados levantados em fontes secundárias
+
+Obtidos por busca, em veículos que atribuem os números ao edital oficial.
+**Não substituem a fonte primária.**
+
+| Dado | Valor | Concordância entre fontes | Já no `blueprint.ts`? |
+|---|---|---|---|
+| Total de questões | **50** | 4 de 4 fontes | ✅ `50` — confere |
+| Duração | **2h30 = 150 min** | 4 de 4 fontes | ✅ `150` — confere |
+| Nota de corte | **70% (35 de 50)** | 3 de 4 fontes ⚠️ | ✅ `0.7` — confere |
+| Formato | **40 múltipla escolha contextualizada + 10 árvore de decisão** | 3 de 3 fontes | ❌ campo `formatos` vazio |
+| Grau de dificuldade | **25% fácil · 50% média · 25% difícil** | 2 de 2 fontes | ❌ não existe no blueprint |
+| Atualização | **anual obrigatória** (substitui recertificação trienal/quinquenal) | 2 de 2 fontes | ❌ não existe no blueprint |
+| Extinção de CPA-10, CPA-20 e CEA | **26/01/2026** | 2 de 2 fontes | — |
+
+### 3.3 ⚠️ Conflito não resolvido — nota de corte
+
+Uma das buscas retornou "**32** acertos" para a CPA, contra "**35** acertos"
+nas outras três. O número 32 corresponde exatamente ao mínimo da **C-Pro R**
+(32 de 45 = 71%), certificação diferente — provável contaminação entre as três
+certificações novas, que têm estruturas parecidas:
+
+| Certificação | Questões | Duração | Mínimo citado |
+|---|---:|---|---:|
+| **CPA** | 50 | 2h30 | 35 (70%) |
+| C-Pro R | 45 | 2h30 | 32 (71%) |
+| C-Pro I | 40 | 2h30 | — |
+
+A leitura de 35/50 é a majoritária e é coerente com os 0,7 já gravados no
+blueprint, mas **o conflito só se resolve com o edital oficial**.
+
+### 3.4 Conclusão
+
+Pela regra 4 do `CLAUDE.md` — *"se um dado oficial não pôde ser verificado,
+marcar `verificado: false`"* — fontes secundárias **não autorizam**
+`verificado: true`. Situação do blueprint:
+
+- `pesos` → **`pesoVerificado: true`** ✅ (Programa Detalhado oficial, em mãos)
+- `totalQuestoes`, `duracaoMin`, `notaCorte`, `formatos` → **`verificado: false`**,
+  agora com valores corroborados e a fonte pendente registrada.
+
+**Para fechar:** basta o PDF do *Edital dos Exames de Certificação Profissional
+Anbima* (versão 1.4 ou posterior). Com ele, o blueprint inteiro passa a
+verificado e o `AvisoVerificacao` desaparece da interface.
 
 ---
 

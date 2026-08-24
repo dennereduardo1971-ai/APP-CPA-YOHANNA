@@ -170,7 +170,29 @@ utilizável a cada etapa**, em vez de deixar todo o conteúdo para o fim.
 
 ---
 
-## 8. Aviso sobre o volume
+## 8. Pendências de verificação — o que falta para fechar a Fase 3
+
+A Fase 3 está **concluída como relatório**. O que segue em aberto são os dados de
+*estrutura da prova*, que dependem de documento oficial não obtido.
+
+| # | Pendência | Situação | Como fecha |
+|---|---|---|---|
+| 1 | `totalQuestoes`, `duracaoMin`, `notaCorte`, `formatos` | Valores corroborados em fontes secundárias (50 · 150 min · 70% · 40 MC + 10 árvore de decisão), mas sem fonte primária | **Edital dos Exames de Certificação Profissional Anbima** (v1.4, 28/05/2026) |
+| 2 | Conflito na nota de corte: 35 × 32 acertos | 3 fontes dizem 35; 1 diz 32 (provável número da C-Pro R) | Mesmo edital |
+| 3 | Distribuição oficial de dificuldade (25/50/25) | Duas fontes concordam; dado novo, não existe no blueprint | Mesmo edital |
+| 4 | Alíquotas tributárias do conteúdo | Mudam por legislação; nunca foram verificadas | Legislação vigente / Receita Federal |
+
+**Bloqueio de ambiente:** `anbima.com.br` e `anbimaedu.com.br` são recusados pela
+política de egresso desta sessão (403 no CONNECT). Detalhes e URLs exatas em
+`AUDITORIA-CONTEUDO.md` §3.
+
+Nada disso bloqueia a **Fase 4**: os pesos (20/40/30/10) já estão verificados pelo
+Programa Detalhado, e os demais campos permanecem `verificado: false` — que é
+exatamente o comportamento previsto pela regra 4 do `CLAUDE.md`.
+
+---
+
+## 9. Aviso sobre o volume
 
 74 conceitos × 9 blocos × 3 níveis de profundidade + ~657 questões autorais é um
 volume de autoria que **não cabe em uma sessão**. O plano prevê entrega faseada,
