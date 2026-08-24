@@ -50,67 +50,84 @@ mercado", não "do mercado".
 
 ---
 
-## 3. O que o PDF **não** contém — pesquisa complementar
+## 3. Estrutura da prova — **VERIFICADA** no Edital oficial
 
-O Programa Detalhado é um documento **de conteúdo**. Ele não traz número de
-questões, duração, nota de corte nem formatos de questão. Esses dados vivem no
-**Edital dos Exames de Certificação Profissional Anbima**.
+O Programa Detalhado é um documento *de conteúdo* e não traz estrutura de prova.
+Esses dados foram conferidos no **Edital dos Exames de Certificação Profissional
+Anbima — versão 1.4, de 28/05/2026**, fornecido pelo usuário.
 
-### 3.1 Fontes oficiais identificadas — **inacessíveis neste ambiente**
+### 3.1 Dados oficiais da CPA
 
-| Documento | URL | Status |
-|---|---|---|
-| Edital dos Exames de Certificação Profissional Anbima — **versão 1.4, 28/05/2026** | `anbima.com.br/data/files/98/96/A6/10/9C24C910CF6A83C9F82BA2A8/Edital-dos-Exames-de-Certificacao-Profissional-Anbima.pdf` | ⛔ domínio bloqueado |
-| Notícia oficial "Definidas as estruturas das provas para as novas certificações CPA, C-Pro R e C-Pro I" | `anbima.com.br/pt_br/noticias/definidas-as-estruturas-das-provas-...htm` | ⛔ domínio bloqueado |
-| Página oficial da certificação — ANBIMA Edu | `anbimaedu.com.br/certificacao/cpa` | ⛔ domínio bloqueado |
+Edital, seção **3.2 — Informações sobre os exames**, transcrição literal da linha
+da CPA:
 
-`anbima.com.br` e `anbimaedu.com.br` são recusados pela política de egresso da
-rede desta sessão (403 no CONNECT). **Nenhum documento oficial pôde ser lido.**
+| Certificação | Duração da prova | Nº de questões | Mínimo de acertos para aprovação | Taxa de inscrição |
+|---|---|---:|---:|---:|
+| **CPA** | **2h30** | **50** | **35** | R$ 225 |
 
-### 3.2 Dados levantados em fontes secundárias
+35 em 50 = **0,70 exatos**. Confirma o `notaCorte: 0.7` que já estava no
+blueprint.
 
-Obtidos por busca, em veículos que atribuem os números ao edital oficial.
-**Não substituem a fonte primária.**
+**Formatos** (seções 4.3 e 13.4):
 
-| Dado | Valor | Concordância entre fontes | Já no `blueprint.ts`? |
+> "Os exames vigentes compreenderão a aplicação de prova objetiva de caráter
+> obrigatório e eliminatório, composta por questões de múltipla escolha (CPA,
+> C-Pro I e C-Pro R, CFG, CGA e CGE), **árvore de diálogo** (CPA, C-Pro I e
+> C-Pro R) e **cases** (CPA, C-Pro I e C-Pro R), somente na língua portuguesa."
+
+São **três** formatos para a CPA, com quatro alternativas e apenas uma correta.
+
+**Recursos disponíveis durante a prova** (seções 13.10 e 13.11):
+
+> "Serão disponibilizadas fórmulas no sistema de provas para utilização durante o
+> exame." · "Não será permitido utilizar calculadora própria, pois a Anbima
+> oferece no sistema de provas uma calculadora e uma planilha eletrônica."
+
+Consequência pedagógica direta: **o estudante não precisa decorar fórmula —
+precisa saber escolher e aplicar**. Isso muda como o microtema 1.3 (matemática
+financeira) deve ser escrito.
+
+**Atualização** (seção 17.4): anual, mediante estudo das microcertificações no
+ANBIMA Edu e pagamento de taxa. Perder o prazo obriga a refazer o exame.
+
+### 3.2 Correções às fontes secundárias pesquisadas
+
+A pesquisa anterior em fontes secundárias acertou os números principais e errou
+em três pontos, agora corrigidos pelo documento oficial:
+
+| Item | Fonte secundária | **Edital oficial** | Veredito |
 |---|---|---|---|
-| Total de questões | **50** | 4 de 4 fontes | ✅ `50` — confere |
-| Duração | **2h30 = 150 min** | 4 de 4 fontes | ✅ `150` — confere |
-| Nota de corte | **70% (35 de 50)** | 3 de 4 fontes ⚠️ | ✅ `0.7` — confere |
-| Formato | **40 múltipla escolha contextualizada + 10 árvore de decisão** | 3 de 3 fontes | ❌ campo `formatos` vazio |
-| Grau de dificuldade | **25% fácil · 50% média · 25% difícil** | 2 de 2 fontes | ❌ não existe no blueprint |
-| Atualização | **anual obrigatória** (substitui recertificação trienal/quinquenal) | 2 de 2 fontes | ❌ não existe no blueprint |
-| Extinção de CPA-10, CPA-20 e CEA | **26/01/2026** | 2 de 2 fontes | — |
+| Total de questões | 50 | **50** | ✅ confirmado |
+| Duração | 2h30 | **2h30** | ✅ confirmado |
+| Nota de corte | 70% (35) — com 1 fonte dizendo 32 | **35 de 50** | ✅ confirmado; **o 32 era da C-Pro R**, como se suspeitava |
+| Nome do formato | "árvore de decisão" | **"árvore de diálogo"** | ❌ corrigido |
+| Nº de formatos | 2 (40 MC + 10 árvore) | **3** — múltipla escolha, árvore de diálogo e cases | ❌ corrigido |
+| Rateio por formato | 40 + 10 | **não consta no edital** | ⚠️ não verificável |
+| Dificuldade 25/50/25 | duas fontes concordam | **não consta no edital** | ⚠️ não verificável |
 
-### 3.3 ⚠️ Conflito não resolvido — nota de corte
+O rateio "40 + 10" além de não constar no edital **ignora o formato *cases***, que
+o edital lista explicitamente para a CPA. Não foi gravado no blueprint.
 
-Uma das buscas retornou "**32** acertos" para a CPA, contra "**35** acertos"
-nas outras três. O número 32 corresponde exatamente ao mínimo da **C-Pro R**
-(32 de 45 = 71%), certificação diferente — provável contaminação entre as três
-certificações novas, que têm estruturas parecidas:
+### 3.3 Divergência de nomenclatura entre os dois documentos oficiais
 
-| Certificação | Questões | Duração | Mínimo citado |
-|---|---:|---|---:|
-| **CPA** | 50 | 2h30 | 35 (70%) |
-| C-Pro R | 45 | 2h30 | 32 (71%) |
-| C-Pro I | 40 | 2h30 | — |
+| Documento | Como nomeia a certificação |
+|---|---|
+| Programa Detalhado v1.2 | "CPA (**Certificado** Profissional Anbima)" |
+| Edital v1.4, seção 2.1 | "CPA (**Certificação** Profissional Anbima **de Distribuição**)" |
 
-A leitura de 35/50 é a majoritária e é coerente com os 0,7 já gravados no
-blueprint, mas **o conflito só se resolve com o edital oficial**.
+Adotado **"CPA — Certificado Profissional Anbima"**, do Programa Detalhado, por
+ser a expansão que corresponde à sigla. Divergência registrada, não resolvida
+pela ANBIMA.
 
-### 3.4 Conclusão
+### 3.4 Situação do blueprint
 
-Pela regra 4 do `CLAUDE.md` — *"se um dado oficial não pôde ser verificado,
-marcar `verificado: false`"* — fontes secundárias **não autorizam**
-`verificado: true`. Situação do blueprint:
+Todos os campos passam a ter fonte oficial. **`verificado: true`** e
+**`pesoVerificado: true`** nos quatro macrotemas — o `AvisoVerificacao` deixa de
+aparecer na interface.
 
-- `pesos` → **`pesoVerificado: true`** ✅ (Programa Detalhado oficial, em mãos)
-- `totalQuestoes`, `duracaoMin`, `notaCorte`, `formatos` → **`verificado: false`**,
-  agora com valores corroborados e a fonte pendente registrada.
-
-**Para fechar:** basta o PDF do *Edital dos Exames de Certificação Profissional
-Anbima* (versão 1.4 ou posterior). Com ele, o blueprint inteiro passa a
-verificado e o `AvisoVerificacao` desaparece da interface.
+O que continua sem declarar, por ausência de fonte: rateio de questões por
+formato e distribuição por grau de dificuldade. O campo `quantidade` de
+`formatos` tornou-se opcional para não afirmar número que a ANBIMA não publica.
 
 ---
 

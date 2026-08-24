@@ -22,10 +22,15 @@ export interface ExamBlueprint {
   duracaoMin: number
   /** Percentual mínimo de acerto para aprovação (0–1). */
   notaCorte: number
-  formatos: { tipo: QuestionKind; quantidade: number }[]
   /**
-   * `true` somente quando os dados foram conferidos contra o Programa
-   * Detalhado oficial. Enquanto `false`, a interface exibe aviso.
+   * Formatos de questão da prova. A ANBIMA nomeia os formatos no edital, mas
+   * NÃO publica quantas questões cabem a cada um — por isso `quantidade` é
+   * opcional e fica ausente enquanto não houver fonte.
+   */
+  formatos: { tipo: QuestionKind; quantidade?: number }[]
+  /**
+   * `true` somente quando os dados foram conferidos contra documento oficial
+   * da ANBIMA. Enquanto `false`, a interface exibe aviso.
    */
   verificado: boolean
   fonte: string

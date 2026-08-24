@@ -4,10 +4,10 @@ import type { Macrotema } from '../types'
 export const M4: Macrotema = {
   id: 'm4',
   codigo: 'INOV',
-  nome: 'Inovação e desenvolvimento do mercado',
+  nome: 'Inovação e desenvolvimento de mercado',
   resumo: 'Open Finance, Pix, ativos digitais e finanças sustentáveis. O bloco novo da CPA.',
-  peso: null,
-  pesoVerificado: false,
+  peso: 0.1,
+  pesoVerificado: true,
   ordem: 4,
   microtemas: [
     {

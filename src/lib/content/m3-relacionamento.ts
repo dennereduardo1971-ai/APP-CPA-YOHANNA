@@ -4,10 +4,10 @@ import type { Macrotema } from '../types'
 export const M3: Macrotema = {
   id: 'm3',
   codigo: 'REL',
-  nome: 'Relacionamento com o cliente',
+  nome: 'Relacionamento com o cliente (prospecção, atendimento e suporte)',
   resumo: 'Perfil, adequação, conduta e conflito de interesses. O bloco mais aplicado da prova.',
-  peso: null,
-  pesoVerificado: false,
+  peso: 0.3,
+  pesoVerificado: true,
   ordem: 3,
   microtemas: [
     {

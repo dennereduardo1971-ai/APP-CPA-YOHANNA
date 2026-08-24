@@ -10,8 +10,8 @@ export const M1: Macrotema = {
   codigo: 'SFN',
   nome: 'Sistema Financeiro Nacional',
   resumo: 'Quem cria a regra, quem fiscaliza e quem opera. A base para entender todo o resto.',
-  peso: null,
-  pesoVerificado: false,
+  peso: 0.2,
+  pesoVerificado: true,
   ordem: 1,
   microtemas: [
     {

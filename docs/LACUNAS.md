@@ -170,25 +170,30 @@ utilizável a cada etapa**, em vez de deixar todo o conteúdo para o fim.
 
 ---
 
-## 8. Pendências de verificação — o que falta para fechar a Fase 3
+## 8. Pendências de verificação — **fechadas**
 
-A Fase 3 está **concluída como relatório**. O que segue em aberto são os dados de
-*estrutura da prova*, que dependem de documento oficial não obtido.
+O *Edital dos Exames de Certificação Profissional Anbima* v1.4 (28/05/2026) foi
+obtido e conferido. Situação atual:
 
-| # | Pendência | Situação | Como fecha |
-|---|---|---|---|
-| 1 | `totalQuestoes`, `duracaoMin`, `notaCorte`, `formatos` | Valores corroborados em fontes secundárias (50 · 150 min · 70% · 40 MC + 10 árvore de decisão), mas sem fonte primária | **Edital dos Exames de Certificação Profissional Anbima** (v1.4, 28/05/2026) |
-| 2 | Conflito na nota de corte: 35 × 32 acertos | 3 fontes dizem 35; 1 diz 32 (provável número da C-Pro R) | Mesmo edital |
-| 3 | Distribuição oficial de dificuldade (25/50/25) | Duas fontes concordam; dado novo, não existe no blueprint | Mesmo edital |
-| 4 | Alíquotas tributárias do conteúdo | Mudam por legislação; nunca foram verificadas | Legislação vigente / Receita Federal |
+| # | Pendência | Situação |
+|---|---|---|
+| 1 | `totalQuestoes`, `duracaoMin`, `notaCorte` | ✅ **verificados** — 50 · 2h30 · 35 acertos (70%), edital §3.2 |
+| 2 | Conflito 35 × 32 acertos | ✅ **resolvido** — 35 é da CPA; 32 era da C-Pro R, como se suspeitava |
+| 3 | `formatos` | ✅ **verificados por nome** — múltipla escolha, árvore de diálogo e cases (§4.3 e §13.4). O rateio entre eles **não é publicado** pela ANBIMA e não foi declarado |
+| 4 | Distribuição de dificuldade 25/50/25 | ⚠️ **não consta em documento oficial** — permanece fora do blueprint |
+| 5 | Pesos por macrotema | ✅ **verificados** — 20/40/30/10, Programa Detalhado |
+| 6 | Alíquotas tributárias do conteúdo | ⏳ aberta — mudam por legislação |
 
-**Bloqueio de ambiente:** `anbima.com.br` e `anbimaedu.com.br` são recusados pela
-política de egresso desta sessão (403 no CONNECT). Detalhes e URLs exatas em
-`AUDITORIA-CONTEUDO.md` §3.
+**Achado que altera a pedagogia:** o edital (§13.10 e §13.11) garante
+**calculadora, planilha eletrônica e formulário de fórmulas** dentro do sistema
+de provas. O microtema 1.3 (matemática financeira) deve ensinar **escolha e
+aplicação** de fórmula, não memorização — e as questões de `calculo` do banco
+devem refletir isso.
 
-Nada disso bloqueia a **Fase 4**: os pesos (20/40/30/10) já estão verificados pelo
-Programa Detalhado, e os demais campos permanecem `verificado: false` — que é
-exatamente o comportamento previsto pela regra 4 do `CLAUDE.md`.
+**Achado que altera o banco de questões:** o formato oficial é **árvore de
+diálogo**, não "árvore de decisão", e **cases** é um terceiro formato próprio.
+O rótulo já foi corrigido em `questions/index.ts`; o banco tem hoje 1 questão de
+cada, contra as ~35 previstas na seção 5.
 
 ---
 

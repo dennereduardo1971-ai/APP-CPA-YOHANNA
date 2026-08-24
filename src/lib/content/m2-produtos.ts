@@ -14,7 +14,7 @@ export const M2: Macrotema = {
   nome: 'Produtos do mercado financeiro',
   resumo: 'Renda fixa, renda variável, fundos e previdência. O coração da prova.',
   peso: 0.4,
-  pesoVerificado: false,
+  pesoVerificado: true,
   ordem: 2,
   microtemas: [
     {

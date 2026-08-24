@@ -166,9 +166,15 @@ describe('integridade do banco de questões', () => {
 })
 
 describe('blueprint da prova', () => {
-  it('os formatos declarados somam o total de questões', () => {
-    const soma = BLUEPRINT.formatos.reduce((s, f) => s + f.quantidade, 0)
-    expect(soma).toBe(BLUEPRINT.totalQuestoes)
+  it('declara ao menos um formato de questão', () => {
+    expect(BLUEPRINT.formatos.length).toBeGreaterThan(0)
+  })
+
+  it('se todo formato traz quantidade, elas somam o total de questões', () => {
+    const qtds = BLUEPRINT.formatos.map((f) => f.quantidade)
+    if (qtds.every((q): q is number => q !== undefined)) {
+      expect(qtds.reduce((s, q) => s + q, 0)).toBe(BLUEPRINT.totalQuestoes)
+    }
   })
 
   it('a nota de corte é um percentual válido', () => {

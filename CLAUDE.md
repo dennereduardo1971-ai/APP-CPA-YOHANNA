@@ -77,9 +77,12 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 
 ## Pendências externas
 
-- [ ] Conferir pesos por módulo, nº de questões e nota de corte no Programa
-      Detalhado oficial vigente e atualizar `blueprint.ts` +
-      `pesoVerificado`.
+- [x] ~~Conferir pesos por módulo, nº de questões e nota de corte~~ — feito.
+      Programa Detalhado v1.2 (04/06/2025) e Edital dos Exames v1.4
+      (28/05/2026). Ver `docs/AUDITORIA-CONTEUDO.md`.
+- [ ] Rateio de questões por formato e distribuição por grau de dificuldade:
+      a ANBIMA **não publica** esses dados. Manter fora do `blueprint.ts`
+      enquanto não houver fonte.
 - [ ] Conferir alíquotas tributárias citadas no conteúdo (mudam por
       legislação).
 - [ ] Gerar ícones definitivos e keystore de assinatura do APK.
@@ -100,11 +103,11 @@ _Atualizado em 2026-08-24._
 | Páginas | 21 |
 | Componentes | 10 |
 | Arquivos de teste | 2 |
-| Linhas em `src/` | 10.448 |
+| Linhas em `src/` | 10.474 |
 
-**Blueprint vigente:** CPA — Certificação Profissional ANBIMA · versão 2026.1 ·
+**Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte
-0.7 · verificado: **false**
+0.7 · verificado: **true**
 
 **Rotas registradas (22):**
 `/onboarding` · `/` · `/trilha` · `/conteudo/:conceitoId` · `/resumos` · `/mapas` · `/mapas/:conceitoId` · `/questoes` · `/rapido` · `/simulados` · `/simulado/:modo` · `/resultado/:simuladoId` · `/revisao` · `/metas` · `/conquistas` · `/estatisticas` · `/progresso` · `/perfil` · `/config` · `/vespera` · `/baixar` · `*`

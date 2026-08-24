@@ -7,33 +7,48 @@ import type { ExamBlueprint } from './types'
  * mudança de programa: pesos, contagens, nota de corte e formatos são lidos
  * daqui pelo motor de desempenho, pelo gerador de simulado e pela interface.
  *
- * FONTES (agosto/2026): a ANBIMA reformulou as certificações em 2026,
- * descontinuando CPA-10, CPA-20 e CEA em favor da trilha CPA → C-Pro R →
- * C-Pro I. A nova CPA tem 50 questões (40 de múltipla escolha contextualizada
- * + 10 de árvore de decisão), 2h30 de duração e 70% de aprovação, dividida em
- * quatro blocos.
+ * FONTES OFICIAIS (ambas conferidas):
  *
- * ATENÇÃO: os PDFs oficiais da ANBIMA não puderam ser baixados neste
- * ambiente (bloqueio de rede). Os pesos por módulo marcados com
- * `pesoVerificado: false` em `content/index.ts` PRECISAM ser conferidos
- * contra o Programa Detalhado vigente antes de uso real. O app exibe aviso
- * enquanto `verificado` for `false`.
+ * 1. Programa Detalhado da CPA — versão 1.2, revisada em 04/06/2025, vigente
+ *    a partir de 01/01/2026. Define os 4 macrotemas e suas proporções
+ *    (20% / 40% / 30% / 10%).
+ * 2. Edital dos Exames de Certificação Profissional Anbima — versão 1.4, de
+ *    28/05/2026, seções 3.2 e 13.5. Define, para a CPA: 50 questões, 2h30 de
+ *    duração e mínimo de 35 acertos para aprovação (= 70%).
+ *
+ * O que a ANBIMA NÃO publica, e por isso não está declarado aqui:
+ *
+ * - quantas questões cabem a cada formato (o edital nomeia os três formatos,
+ *   mas não os quantifica);
+ * - a distribuição por grau de dificuldade.
+ *
+ * A prova disponibiliza calculadora, planilha eletrônica e um formulário de
+ * fórmulas no próprio sistema (edital, itens 13.10 e 13.11) — o estudante não
+ * precisa decorar fórmula, precisa saber aplicá-la.
  */
 export const BLUEPRINT: ExamBlueprint = {
   id: 'cpa',
-  nome: 'CPA — Certificação Profissional ANBIMA',
+  nome: 'CPA — Certificado Profissional Anbima',
   orgao: 'ANBIMA',
-  versao: '2026.1',
+  versao: '1.2',
   vigenteDesde: '2026-01-01',
   totalQuestoes: 50,
   duracaoMin: 150,
+  /** 35 acertos em 50 questões (edital v1.4, seção 3.2). */
   notaCorte: 0.7,
+  /**
+   * Os três formatos nomeados no edital (seções 4.3 e 13.4) para a CPA.
+   * Sem `quantidade`: a ANBIMA não divulga o rateio entre eles.
+   */
   formatos: [
-    { tipo: 'multipla_escolha', quantidade: 40 },
-    { tipo: 'arvore_decisao', quantidade: 10 },
+    { tipo: 'multipla_escolha' },
+    { tipo: 'arvore_decisao' },
+    { tipo: 'case' },
   ],
-  verificado: false,
-  fonte: 'anbima.com.br — Programa Detalhado da CPA (conferir edital vigente)',
+  verificado: true,
+  fonte:
+    'ANBIMA — Programa Detalhado da CPA v1.2 (04/06/2025) e Edital dos Exames ' +
+    'de Certificação Profissional Anbima v1.4 (28/05/2026), seções 3.2 e 13.4.',
 }
 
 /** Configuração dos modos de simulado, derivada do blueprint. */
