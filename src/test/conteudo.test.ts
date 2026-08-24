@@ -11,6 +11,13 @@ import {
 } from '@/lib/content'
 import { QUESTOES, questoesDoConceito } from '@/lib/questions'
 import { BLUEPRINT } from '@/lib/blueprint'
+import {
+  GUARDIAO_DESAFIOS,
+  GUIA_PRINCIPAL,
+  MASCOTE,
+  PERSONAGENS,
+  guardiaoDoMacrotema,
+} from '@/lib/personagens'
 import type { MapaMentalNode } from '@/lib/types'
 
 function todosNos(no: MapaMentalNode, saida: MapaMentalNode[] = []) {
@@ -304,6 +311,56 @@ describe('lição em nove blocos e três níveis', () => {
     for (const c of CONCEITOS) {
       expect(c.versao ?? 0, c.id).toBeGreaterThanOrEqual(1)
       expect(c.atualizadoEm, c.id).toMatch(/^\d{4}-\d{2}-\d{2}$/)
+    }
+  })
+})
+
+describe('identidade temática', () => {
+  it('todo macrotema tem um guardião alocado', () => {
+    for (const m of MACROTEMAS) {
+      expect(guardiaoDoMacrotema(m.id), `${m.id} sem guardião`).toBeDefined()
+    }
+  })
+
+  it('cada guardião cuida de um único macrotema', () => {
+    const guardados = PERSONAGENS.filter((p) => p.macrotemaId).map((p) => p.macrotemaId)
+    expect(new Set(guardados).size).toBe(guardados.length)
+  })
+
+  it('todo macrotemaId de personagem existe de fato', () => {
+    const ids = new Set(MACROTEMAS.map((m) => m.id))
+    for (const p of PERSONAGENS.filter((x) => x.macrotemaId)) {
+      expect(ids.has(p.macrotemaId!), `${p.id} -> ${p.macrotemaId}`).toBe(true)
+    }
+  })
+
+  it('os IDs de personagem são únicos', () => {
+    const ids = PERSONAGENS.map((p) => p.id)
+    expect(new Set(ids).size).toBe(ids.length)
+  })
+
+  it('todo personagem declara papel, fala de guia e ícone', () => {
+    for (const p of PERSONAGENS) {
+      expect(p.papel.length, p.id).toBeGreaterThan(5)
+      expect(p.guia.length, p.id).toBeGreaterThan(20)
+      expect(p.icone.length, p.id).toBeGreaterThan(0)
+    }
+  })
+
+  it('a fala de guia cabe em uma linha de acompanhamento', () => {
+    for (const p of PERSONAGENS) expect(p.guia.length, p.id).toBeLessThan(140)
+  })
+
+  it('os papéis exigidos pela especificação estão preenchidos', () => {
+    expect(GUIA_PRINCIPAL.id).toBe('yona')
+    expect(MASCOTE.id).toBe('ao')
+    expect(GUARDIAO_DESAFIOS.id).toBe('hak')
+  })
+
+  it('nenhum personagem carrega cor própria — a regra 7 admite só o verde-água', () => {
+    for (const p of PERSONAGENS) {
+      expect(Object.keys(p)).not.toContain('cor')
+      expect(JSON.stringify(p)).not.toMatch(/#[0-9a-f]{3,6}\b/i)
     }
   })
 })

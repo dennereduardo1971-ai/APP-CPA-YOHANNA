@@ -11,6 +11,8 @@ import { errosAbertos, filaDeRevisao } from '@/lib/engine/scheduler'
 import { nivelDominio, ROTULO_NIVEL } from '@/lib/engine/mastery'
 import { tituloDoNivel } from '@/lib/engine/gamification'
 import { getConceito, MACROTEMAS } from '@/lib/content'
+import { MarcaPersonagem, FaixaPersonagem } from '@/components/domain/Personagem'
+import { GUIA_PRINCIPAL } from '@/lib/personagens'
 
 function saudacao(hora: number) {
   if (hora < 5) return 'Boa madrugada'
@@ -46,11 +48,14 @@ export default function Home() {
 
   return (
     <div>
-      <header className="mb-6">
-        <p className="text-sm text-muted">{saudacao(new Date().getHours())},</p>
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-          {estado.perfil.nome || 'Estudante'}
-        </h1>
+      <header className="mb-6 flex items-center gap-3">
+        <MarcaPersonagem personagem={GUIA_PRINCIPAL} tamanho={44} />
+        <div className="min-w-0">
+          <p className="text-sm text-muted">{saudacao(new Date().getHours())},</p>
+          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
+            {estado.perfil.nome || 'Estudante'}
+          </h1>
+        </div>
       </header>
 
       {diasProva !== null && diasProva >= 0 && diasProva <= 2 && (
@@ -112,6 +117,9 @@ export default function Home() {
       <ButtonLink to="/rapido" tamanho="lg" bloco className="mb-6">
         {estado.respostas.length ? 'Continuar estudando' : 'Começar a estudar'}
       </ButtonLink>
+
+      {/* A fala de guia só no primeiro acesso — depois vira ruído diário. */}
+      {primeiroAcesso && <FaixaPersonagem personagem={GUIA_PRINCIPAL} className="mb-6" />}
 
       {/* Recomendação */}
       <Secao titulo="Recomendação de estudo">

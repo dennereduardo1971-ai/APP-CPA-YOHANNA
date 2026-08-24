@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Cabecalho } from '@/components/layout/AppShell'
+import { FaixaPersonagem } from '@/components/domain/Personagem'
+import { GUARDIAO_DESAFIOS } from '@/lib/personagens'
 import { Card, Secao } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Pill } from '@/components/ui/Badge'
@@ -39,6 +41,8 @@ export default function Simulados() {
         titulo="Simulados"
         descricao={`Estrutura oficial: ${BLUEPRINT.totalQuestoes} questões, ${BLUEPRINT.duracaoMin} min, ${Math.round(BLUEPRINT.notaCorte * 100)}% para aprovação.`}
       />
+
+      <FaixaPersonagem personagem={GUARDIAO_DESAFIOS} className="mb-6" />
 
       {!BLUEPRINT.verificado && (
         <div className="mb-6">

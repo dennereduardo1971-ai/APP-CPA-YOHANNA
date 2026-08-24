@@ -42,7 +42,13 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    `explicacao`; `niveis` guarda só o 1 e o 3. Validado em
    `src/test/conteudo.test.ts`.
 7. **Uma cor de destaque só: verde-água (`aqua`).** `warn` e `danger` são
-   semânticos e não contam como acento. Não introduzir novas cores.
+   semânticos e não contam como acento. Não introduzir novas cores — nem para
+   diferenciar personagem: a identidade vem da FORMA do ícone.
+9. **A temática vive em `src/lib/personagens.ts`.** Nome, papel ou fala de
+   personagem não entram em componente. Arte é opcional
+   (`public/personagens/<id>.webp`); sem arquivo, o app desenha o ícone.
+10. **Ícones são SVG autoral** em `src/components/ui/Icone.tsx`. Nada de glifo
+   Unicode na navegação — no Android vira caixinha.
 8. **Persistência passa sempre pelo store** (`src/lib/store.ts`). Não
    escrever em `localStorage` direto de dentro de componente.
 
@@ -110,9 +116,9 @@ _Atualizado em 2026-08-24._
 | Conceitos (aulas) | 14 |
 | Questões no banco | 43 |
 | Páginas | 21 |
-| Componentes | 11 |
+| Componentes | 13 |
 | Arquivos de teste | 2 |
-| Linhas em `src/` | 11.178 |
+| Linhas em `src/` | 11.540 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

@@ -4,6 +4,8 @@ import { Card } from '@/components/ui/Card'
 import { Barra } from '@/components/ui/Progress'
 import { Pill } from '@/components/ui/Badge'
 import { AvisoVerificacao } from '@/components/ui/Empty'
+import { MarcaPersonagem } from '@/components/domain/Personagem'
+import { guardiaoDoMacrotema } from '@/lib/personagens'
 import {
   COBERTURA_PENDENTE,
   MACROTEMAS,
@@ -68,6 +70,7 @@ export default function Trilha() {
       <ol className="flex flex-col gap-4">
         {MACROTEMAS.map((macro, indiceMacro) => {
           const conceitos = macro.microtemas.flatMap((mt) => mt.conceitos)
+          const guardiao = guardiaoDoMacrotema(macro.id)
           const concluidas = conceitos.filter((c) => estados[c.id]?.aulaConcluida).length
           const dominio = dominioMacrotema(macro.id, estados, agora)
           const totalQuestoes = questoesDoMacrotema(macro.id).length
@@ -98,7 +101,7 @@ export default function Trilha() {
                           : 'border-line text-muted'
                     }`}
                   >
-                    {macro.codigo === 'SFN' ? '1' : macro.codigo === 'PROD' ? '2' : macro.codigo === 'REL' ? '3' : '4'}
+                    {macro.ordem}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
@@ -114,6 +117,15 @@ export default function Trilha() {
                       )}
                     </div>
                     <p className="mt-1 text-sm text-muted">{macro.resumo}</p>
+                    {guardiao && (
+                      <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted">
+                        <MarcaPersonagem personagem={guardiao} tamanho={18} />
+                        <span className="truncate">
+                          <span className="font-semibold text-ink-2">{guardiao.nome}</span> ·{' '}
+                          {guardiao.guia}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
 

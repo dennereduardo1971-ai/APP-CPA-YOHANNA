@@ -228,10 +228,9 @@ export default function Config() {
         </Card>
       </Secao>
 
+      {/* O aviso de não-afiliação agora é global, no rodapé do AppShell. */}
       <p className="mt-8 text-center text-xs leading-relaxed text-muted">
         Preparatório CPA · conteúdo e questões autorais.
-        <br />
-        Material de estudo independente, sem vínculo com a ANBIMA.
       </p>
     </div>
   )

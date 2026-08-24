@@ -3,43 +3,41 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { useStore } from '@/lib/store'
 import { useNivel } from '@/lib/store'
 import { tituloDoNivel } from '@/lib/engine/gamification'
+import { Icone, type IconeNome } from '@/components/ui/Icone'
 
 interface ItemNav {
   para: string
   rotulo: string
-  icone: string
+  icone: IconeNome
   /** Aparece na barra inferior do celular. */
   mobile?: boolean
 }
 
 export const NAVEGACAO: ItemNav[] = [
-  { para: '/', rotulo: 'Início', icone: '⌂', mobile: true },
-  { para: '/trilha', rotulo: 'Trilha', icone: '⛿', mobile: true },
-  { para: '/rapido', rotulo: 'Estudo rápido', icone: '⚡', mobile: true },
-  { para: '/revisao', rotulo: 'Revisão', icone: '↺', mobile: true },
-  { para: '/questoes', rotulo: 'Questões', icone: '?' },
-  { para: '/simulados', rotulo: 'Simulados', icone: '⏱' },
-  { para: '/resumos', rotulo: 'Resumos', icone: '☰' },
-  { para: '/mapas', rotulo: 'Mapas mentais', icone: '⌗' },
-  { para: '/progresso', rotulo: 'Progresso', icone: '▤' },
-  { para: '/estatisticas', rotulo: 'Estatísticas', icone: '◔' },
-  { para: '/metas', rotulo: 'Metas', icone: '◎' },
-  { para: '/conquistas', rotulo: 'Conquistas', icone: '★' },
-  { para: '/perfil', rotulo: 'Perfil', icone: '◉', mobile: true },
-  { para: '/config', rotulo: 'Configurações', icone: '⚙' },
+  { para: '/', rotulo: 'Início', icone: 'inicio', mobile: true },
+  { para: '/trilha', rotulo: 'Trilha', icone: 'trilha', mobile: true },
+  { para: '/rapido', rotulo: 'Estudo rápido', icone: 'raio', mobile: true },
+  { para: '/revisao', rotulo: 'Revisão', icone: 'revisao', mobile: true },
+  { para: '/questoes', rotulo: 'Questões', icone: 'questao' },
+  { para: '/simulados', rotulo: 'Simulados', icone: 'cronometro' },
+  { para: '/resumos', rotulo: 'Resumos', icone: 'resumo' },
+  { para: '/mapas', rotulo: 'Mapas mentais', icone: 'mapa' },
+  { para: '/progresso', rotulo: 'Progresso', icone: 'progresso' },
+  { para: '/estatisticas', rotulo: 'Estatísticas', icone: 'estatistica' },
+  { para: '/metas', rotulo: 'Metas', icone: 'meta' },
+  { para: '/conquistas', rotulo: 'Conquistas', icone: 'troféu' },
+  { para: '/perfil', rotulo: 'Perfil', icone: 'perfil', mobile: true },
+  { para: '/config', rotulo: 'Configurações', icone: 'config' },
 ]
 
 const MOBILE = NAVEGACAO.filter((i) => i.mobile)
 
-function IconeNav({ children, ativo }: { children: string; ativo: boolean }) {
+function IconeNav({ nome, ativo }: { nome: IconeNome; ativo: boolean }) {
   return (
     <span
-      aria-hidden
-      className={`grid h-6 w-6 place-items-center text-[15px] leading-none ${
-        ativo ? 'text-aqua' : 'text-muted'
-      }`}
+      className={`grid h-6 w-6 place-items-center ${ativo ? 'text-aqua' : 'text-muted'}`}
     >
-      {children}
+      <Icone nome={nome} tamanho={20} />
     </span>
   )
 }
@@ -75,7 +73,7 @@ function BarraLateral() {
               >
                 {({ isActive }) => (
                   <>
-                    <IconeNav ativo={isActive}>{item.icone}</IconeNav>
+                    <IconeNav nome={item.icone} ativo={isActive} />
                     {item.rotulo}
                   </>
                 )}
@@ -119,7 +117,7 @@ function BarraInferior() {
             >
               {({ isActive }) => (
                 <>
-                  <IconeNav ativo={isActive}>{item.icone}</IconeNav>
+                  <IconeNav nome={item.icone} ativo={isActive} />
                   {item.rotulo}
                 </>
               )}
@@ -146,10 +144,27 @@ export function AppShell({ children }: { children: ReactNode }) {
           }`}
         >
           {children}
+          {!imersivo && <RodapeLegal />}
         </main>
       </div>
       {!imersivo && <BarraInferior />}
     </div>
+  )
+}
+
+/**
+ * Aviso de não-afiliação — item 20 da especificação, exigido em todas as
+ * páginas. Fica fora das sessões imersivas para não competir com a questão
+ * na tela; ali a navegação também some.
+ */
+function RodapeLegal() {
+  return (
+    <footer className="mt-12 border-t border-line pt-4">
+      <p className="text-[11px] leading-relaxed text-muted">
+        Plataforma independente de preparação para certificações. Não afiliada, patrocinada ou
+        endossada pela ANBIMA.
+      </p>
+    </footer>
   )
 }
 
