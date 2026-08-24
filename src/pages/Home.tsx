@@ -8,7 +8,7 @@ import { Vazio } from '@/components/ui/Empty'
 import { useStore, progressoDoDia, proximosConceitos, diasParaProva, useNivel } from '@/lib/store'
 import { agregar, progressoGeral, ranking } from '@/lib/engine/stats'
 import { errosAbertos, filaDeRevisao } from '@/lib/engine/scheduler'
-import { nivelDominio, ROTULO_NIVEL } from '@/lib/engine/mastery'
+import { nivelDominio, ROTULO_NIVEL, tomDominio } from '@/lib/engine/mastery'
 import { tituloDoNivel } from '@/lib/engine/gamification'
 import { getConceito, MACROTEMAS } from '@/lib/content'
 import { MarcaPersonagem, FaixaPersonagem } from '@/components/domain/Personagem'
@@ -48,13 +48,11 @@ export default function Home() {
 
   return (
     <div>
-      <header className="mb-6 flex items-center gap-3">
-        <MarcaPersonagem personagem={GUIA_PRINCIPAL} tamanho={44} />
+      <header className="mb-6 flex items-center gap-3.5">
+        <MarcaPersonagem personagem={GUIA_PRINCIPAL} tamanho={52} />
         <div className="min-w-0">
           <p className="text-sm text-muted">{saudacao(new Date().getHours())},</p>
-          <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-            {estado.perfil.nome || 'Estudante'}
-          </h1>
+          <h1 className="display text-2xl sm:text-3xl">{estado.perfil.nome || 'Estudante'}</h1>
         </div>
       </header>
 
@@ -78,14 +76,14 @@ export default function Home() {
       {/* Bloco principal: progresso, sequência e meta */}
       <div className="mb-6 grid gap-3 sm:grid-cols-[auto_1fr]">
         <Card className="flex items-center justify-center sm:px-8">
-          <Anel valor={geral} sublegenda="domínio geral" />
+          <Anel valor={geral} tom={tomDominio(geral)} sublegenda="domínio geral" />
         </Card>
 
         <div className="grid gap-3 sm:grid-rows-2">
           <Card>
             <CardTitulo>Sequência</CardTitulo>
             <div className="flex items-end gap-2">
-              <span className="tnum text-3xl font-extrabold text-aqua">{estado.sequencia.atual}</span>
+              <span className="tnum text-3xl font-extrabold text-aurora">{estado.sequencia.atual}</span>
               <span className="pb-1 text-sm text-muted">
                 {estado.sequencia.atual === 1 ? 'dia seguido' : 'dias seguidos'}
               </span>
@@ -109,7 +107,7 @@ export default function Home() {
               </span>
             </div>
             <Barra valor={Math.max(dia.progressoMinutos, dia.progressoQuestoes)} className="mt-2" />
-            {dia.cumprida && <p className="mt-2 text-xs font-semibold text-aqua">Meta cumprida hoje</p>}
+            {dia.cumprida && <p className="mt-2 text-xs font-semibold text-jade">Meta cumprida hoje</p>}
           </Card>
         </div>
       </div>
@@ -127,7 +125,7 @@ export default function Home() {
           <Card to="/rapido">
             <div className="flex items-start justify-between gap-3">
               <div className="min-w-0">
-                <Pill tom={recomendacao.dominio < 0.4 ? 'danger' : recomendacao.dominio < 0.6 ? 'warn' : 'aqua'}>
+                <Pill tom={tomDominio(recomendacao.dominio)}>
                   {ROTULO_NIVEL[nivelDominio(recomendacao.dominio)]}
                 </Pill>
                 <p className="mt-2 font-semibold">{recomendacao.nome}</p>
@@ -158,7 +156,7 @@ export default function Home() {
         titulo="Revisão pendente"
         acao={
           revisoes.length + erros.length > 0 ? (
-            <Link to="/revisao" className="text-sm font-semibold text-aqua">
+            <Link to="/revisao" className="text-sm font-semibold text-aurora">
               Ver tudo
             </Link>
           ) : undefined
@@ -215,7 +213,7 @@ export default function Home() {
           <Card>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
-                <p className="tnum text-2xl font-extrabold text-aqua">
+                <p className="tnum text-2xl font-extrabold text-jade">
                   {Math.round(desempenho.taxaAcerto * 100)}%
                 </p>
                 <p className="mt-0.5 text-[11px] uppercase tracking-wider text-muted">acerto</p>
@@ -233,7 +231,7 @@ export default function Home() {
             </div>
             <Link
               to="/estatisticas"
-              className="mt-4 block text-center text-sm font-semibold text-aqua"
+              className="mt-4 block text-center text-sm font-semibold text-aurora"
             >
               Ver estatísticas completas
             </Link>
@@ -245,14 +243,14 @@ export default function Home() {
       <Secao
         titulo="Próximos conteúdos"
         acao={
-          <Link to="/trilha" className="text-sm font-semibold text-aqua">
+          <Link to="/trilha" className="text-sm font-semibold text-aurora">
             Ver trilha
           </Link>
         }
       >
         {proximos.length === 0 ? (
           <Card>
-            <p className="font-semibold text-aqua">Todas as aulas concluídas</p>
+            <p className="font-semibold text-jade">Todas as aulas concluídas</p>
             <p className="mt-1 text-sm text-muted">
               Agora é manter a revisão em dia e treinar com simulados.
             </p>

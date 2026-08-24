@@ -24,8 +24,8 @@ export default function Resumos() {
           aria-pressed={filtro === null}
           className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
             filtro === null
-              ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-              : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+              ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+              : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
           }`}
         >
           Todos
@@ -38,8 +38,8 @@ export default function Resumos() {
             aria-pressed={filtro === m.id}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               filtro === m.id
-                ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
             }`}
           >
             {m.codigo}
@@ -64,10 +64,10 @@ export default function Resumos() {
                   <p className="font-bold">{c.titulo}</p>
                   <p className="mt-1.5 text-[15px] leading-relaxed text-ink-2">{c.resumo30s}</p>
                   <div className="mt-3 flex gap-4 text-sm font-semibold">
-                    <Link to={`/conteudo/${c.id}`} className="text-aqua">
+                    <Link to={`/conteudo/${c.id}`} className="text-aurora">
                       Aula completa
                     </Link>
-                    <Link to={`/mapas/${c.id}`} className="text-aqua">
+                    <Link to={`/mapas/${c.id}`} className="text-aurora">
                       Mapa mental
                     </Link>
                   </div>

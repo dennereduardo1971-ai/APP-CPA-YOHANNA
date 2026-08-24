@@ -16,6 +16,7 @@ npm run build       # build de produção -> dist/
 npm run typecheck   # tsc --noEmit (rodar SEMPRE antes de commitar)
 npm run test        # vitest (motor de aprendizagem)
 npm run docs        # regenera a seção "Estado atual" deste arquivo
+npm run icons       # regenera os PNGs do app a partir de public/icon.svg
 npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
 ```
 
@@ -41,14 +42,28 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    três níveis de profundidade — o nível 2 ("Aprenda") é a própria
    `explicacao`; `niveis` guarda só o 1 e o 3. Validado em
    `src/test/conteudo.test.ts`.
-7. **Uma cor de destaque só: verde-água (`aqua`).** `warn` e `danger` são
-   semânticos e não contam como acento. Não introduzir novas cores — nem para
-   diferenciar personagem: a identidade vem da FORMA do ícone.
+7. **Paleta "Alvorada", fechada em três camadas.** Um acento de marca
+   (`aurora`, o carmesim do amanhecer) mais quatro cores de identidade de
+   módulo — os dragões: `hakuryuu`, `seiryuu`, `ryokuryuu`, `ouryuu`. Os
+   semânticos são apelidos dessas mesmas cores, não cores novas: `jade`
+   (acerto) é o verde do Ryokuryuu e `warn` é o ouro. **Cor de dragão só
+   aparece para dizer de que módulo algo é** — nunca como decoração. Não
+   introduzir cor fora dessa lista; o cabeçalho de `src/styles/index.css`
+   documenta a estrutura.
+   - **Acerto nunca usa o acento.** Num app de questões, "certo" em carmesim ao
+     lado de "errado" em vermelho é indistinguível. Acerto é `jade`.
+   - **Cor de desempenho sai de `tomDominio()`** (`engine/mastery.ts`). Barra,
+     anel e rótulo têm de vir da mesma função, senão 74% aparece com rótulo
+     verde sobre barra âmbar.
 9. **A temática vive em `src/lib/personagens.ts`.** Nome, papel ou fala de
    personagem não entram em componente. Arte é opcional
    (`public/personagens/<id>.webp`); sem arquivo, o app desenha o ícone.
-10. **Ícones são SVG autoral** em `src/components/ui/Icone.tsx`. Nada de glifo
-   Unicode na navegação — no Android vira caixinha.
+10. **Todo desenho é SVG autoral.** Ícones em `src/components/ui/Icone.tsx`,
+   retratos de personagem em `src/components/domain/Retrato.tsx` e ornamento
+   (céu da alvorada, selo de tinta, traço de pincel, escamas) em
+   `src/components/ui/Ornamento.tsx`. Nada de glifo Unicode na navegação — no
+   Android vira caixinha — e nada de asset externo: o APK roda sem rede.
+   Desenhar com forma cheia, não traço fino: a marca aparece a partir de 18 px.
 8. **Persistência passa sempre pelo store** (`src/lib/store.ts`). Não
    escrever em `localStorage` direto de dentro de componente.
 
@@ -84,7 +99,7 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 | 3 | Camada de repositório isolada no store | Permite plugar sync Supabase depois sem tocar em UI |
 | 4 | Elo-IRT + revisão espaçada simples e explicável | Funciona com poucos dados; o usuário consegue entender por que uma questão apareceu |
 | 5 | "Explique de outro jeito" com textos pré-autorados | Garante explicação correta e funciona offline; hook de IA fica opcional |
-| 6 | Dark mode único, acento verde-água | Definido pelo cliente |
+| 6 | Dark mode único, paleta "Alvorada": acento carmesim + as 4 cores dos dragões | Definido pelo cliente. Revisto em 24/08/2026, quando o cliente pediu fidelidade à estética da temática — substitui o acento verde-água anterior |
 | 7 | APK gerado por GitHub Actions, não localmente | Build Android exige SDK que não existe no ambiente de dev |
 
 ## Pendências externas
@@ -100,7 +115,11 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
       ler o texto das leis: `planalto.gov.br` está bloqueado neste ambiente.
 - [ ] Res. CMN 5.295/2026 (novas regras de captação com garantia do FGC,
       vigente desde 01/06/2026): incorporar ao conceito `c-fgc`.
-- [ ] Gerar ícones definitivos e keystore de assinatura do APK.
+- [ ] Keystore de assinatura do APK. (Os ícones já saem de `public/icon.svg`
+      via `npm run icons`.)
+- [ ] Arte dos personagens é opcional e **não** está no repositório: o app
+      desenha os retratos em SVG. Para usar arte própria, ver
+      `public/personagens/LEIA-ME.md`.
 
 <!-- AUTO:INICIO -->
 <!-- Gerado por scripts/update-claude-md.mjs — não editar à mão. -->
@@ -116,9 +135,9 @@ _Atualizado em 2026-08-24._
 | Conceitos (aulas) | 14 |
 | Questões no banco | 43 |
 | Páginas | 21 |
-| Componentes | 13 |
+| Componentes | 15 |
 | Arquivos de teste | 2 |
-| Linhas em `src/` | 11.540 |
+| Linhas em `src/` | 12.055 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

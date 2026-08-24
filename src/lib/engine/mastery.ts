@@ -154,6 +154,22 @@ export const ROTULO_NIVEL: Record<NivelDominio, string> = {
   dominado: 'Dominado',
 }
 
+/** Tom de desempenho, para barra, anel e rótulo saírem sempre iguais. */
+export type TomDominio = 'jade' | 'warn' | 'danger'
+
+/**
+ * Rótulo e cor têm de vir da mesma função. Quando cada tela decidia a própria,
+ * 74% aparecia com rótulo verde sobre barra âmbar.
+ */
+export const tomDominio = (valor: number): TomDominio =>
+  valor >= 0.75 ? 'jade' : valor >= 0.4 ? 'warn' : 'danger'
+
+export const TEXTO_DOMINIO: Record<TomDominio, string> = {
+  jade: 'text-jade',
+  warn: 'text-warn',
+  danger: 'text-danger',
+}
+
 /** Dificuldade sugerida para manter a chance de acerto perto de 80%. */
 export function dificuldadeAlvo(theta: number): Dificuldade {
   // b tal que P(acerto) = 0,8  =>  b = theta - ln(4)

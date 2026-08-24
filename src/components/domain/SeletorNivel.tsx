@@ -44,8 +44,8 @@ export function SeletorNivel({ niveis }: { niveis: NiveisExplicacao }) {
               onClick={() => setNivel(ativo ? null : n)}
               className={`rounded-xl border px-3 py-2 text-left transition-colors ${
                 ativo
-                  ? 'border-aqua bg-aqua/10 text-ink'
-                  : 'border-line bg-elevated text-ink-2 hover:border-aqua/40 hover:text-ink'
+                  ? 'border-aurora bg-aurora/10 text-ink'
+                  : 'border-line bg-elevated text-ink-2 hover:border-aurora/40 hover:text-ink'
               }`}
             >
               <span className="block text-[13px] font-semibold">

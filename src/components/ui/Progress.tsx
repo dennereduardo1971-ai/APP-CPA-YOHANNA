@@ -2,12 +2,12 @@ interface BarraProps {
   valor: number
   className?: string
   altura?: string
-  tom?: 'aqua' | 'warn' | 'danger'
+  tom?: 'aurora' | 'jade' | 'warn' | 'danger'
 }
 
-export function Barra({ valor, className = '', altura = 'h-2', tom = 'aqua' }: BarraProps) {
+export function Barra({ valor, className = '', altura = 'h-2', tom = 'aurora' }: BarraProps) {
   const pct = Math.max(0, Math.min(1, valor)) * 100
-  const cores = { aqua: 'bg-aqua', warn: 'bg-warn', danger: 'bg-danger' }
+  const cores = { aurora: 'bg-aurora', jade: 'bg-jade', warn: 'bg-warn', danger: 'bg-danger' }
   return (
     <div
       className={`w-full overflow-hidden rounded-full bg-elevated ${altura} ${className}`}
@@ -30,7 +30,7 @@ interface AnelProps {
   espessura?: number
   rotulo?: string
   sublegenda?: string
-  tom?: 'aqua' | 'warn' | 'danger'
+  tom?: 'aurora' | 'jade' | 'warn' | 'danger'
 }
 
 export function Anel({
@@ -39,12 +39,17 @@ export function Anel({
   espessura = 8,
   rotulo,
   sublegenda,
-  tom = 'aqua',
+  tom = 'aurora',
 }: AnelProps) {
   const pct = Math.max(0, Math.min(1, valor))
   const r = (tamanho - espessura) / 2
   const c = 2 * Math.PI * r
-  const cores = { aqua: 'rgb(var(--aqua))', warn: 'rgb(var(--warn))', danger: 'rgb(var(--danger))' }
+  const cores = {
+    aurora: 'rgb(var(--aurora))',
+    jade: 'rgb(var(--jade))',
+    warn: 'rgb(var(--warn))',
+    danger: 'rgb(var(--danger))',
+  }
 
   return (
     <div className="relative inline-flex items-center justify-center" style={{ width: tamanho, height: tamanho }}>
@@ -86,7 +91,7 @@ export function PassosSessao({ total, atual }: { total: number; atual: number })
         <span
           key={i}
           className={`h-1.5 flex-1 rounded-full transition-colors ${
-            i < atual ? 'bg-aqua' : i === atual ? 'bg-aqua/50' : 'bg-elevated'
+            i < atual ? 'bg-aurora' : i === atual ? 'bg-aurora/50' : 'bg-elevated'
           }`}
         />
       ))}

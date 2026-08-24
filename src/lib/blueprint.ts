@@ -88,6 +88,6 @@ export const FAIXAS_DOMINIO = [
   { id: 'inicial', min: 0, max: 0.399, rotulo: 'Inicial', cor: 'muted' },
   { id: 'desenvolvimento', min: 0.4, max: 0.599, rotulo: 'Em desenvolvimento', cor: 'warn' },
   { id: 'intermediario', min: 0.6, max: 0.749, rotulo: 'Intermediário', cor: 'warn' },
-  { id: 'bom', min: 0.75, max: 0.899, rotulo: 'Bom', cor: 'aqua' },
-  { id: 'dominado', min: 0.9, max: 1, rotulo: 'Dominado', cor: 'aqua' },
+  { id: 'bom', min: 0.75, max: 0.899, rotulo: 'Bom', cor: 'jade' },
+  { id: 'dominado', min: 0.9, max: 1, rotulo: 'Dominado', cor: 'jade' },
 ] as const

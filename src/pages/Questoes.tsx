@@ -36,8 +36,8 @@ function Chip({
       aria-pressed={ativo}
       className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
         ativo
-          ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-          : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+          ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+          : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
       }`}
     >
       {children}
@@ -177,7 +177,7 @@ export default function Questoes() {
             type="checkbox"
             checked={evitarRespondidas}
             onChange={(e) => setEvitarRespondidas(e.target.checked)}
-            className="h-4 w-4 accent-[rgb(var(--aqua))]"
+            className="h-4 w-4 accent-[rgb(var(--aurora))]"
           />
           Evitar questões que já respondi
         </label>

@@ -18,6 +18,8 @@ import {
   PERSONAGENS,
   guardiaoDoMacrotema,
 } from '@/lib/personagens'
+import type { CorDragao } from '@/lib/personagens'
+import { readFileSync } from 'node:fs'
 import type { MapaMentalNode } from '@/lib/types'
 
 function todosNos(no: MapaMentalNode, saida: MapaMentalNode[] = []) {
@@ -315,6 +317,8 @@ describe('lição em nove blocos e três níveis', () => {
   })
 })
 
+const DRAGOES: CorDragao[] = ['hakuryuu', 'seiryuu', 'ryokuryuu', 'ouryuu']
+
 describe('identidade temática', () => {
   it('todo macrotema tem um guardião alocado', () => {
     for (const m of MACROTEMAS) {
@@ -357,10 +361,44 @@ describe('identidade temática', () => {
     expect(GUARDIAO_DESAFIOS.id).toBe('hak')
   })
 
-  it('nenhum personagem carrega cor própria — a regra 7 admite só o verde-água', () => {
+  it('todo personagem tem retrato autoral — o app desenha mesmo sem arquivo de arte', () => {
     for (const p of PERSONAGENS) {
-      expect(Object.keys(p)).not.toContain('cor')
-      expect(JSON.stringify(p)).not.toMatch(/#[0-9a-f]{3,6}\b/i)
+      expect(p.retrato, p.id).toBeTruthy()
+      expect(p.avatar, `${p.id}: arte externa não pode ser requisito`).toBeUndefined()
+    }
+  })
+
+  it('cada guardião de módulo tem a cor de um dragão, e elas não se repetem', () => {
+    const guardioes = PERSONAGENS.filter((p) => p.macrotemaId)
+    const cores = guardioes.map((p) => p.cor)
+    expect(new Set(cores).size, 'dois guardiões com a mesma cor').toBe(cores.length)
+    for (const p of guardioes) {
+      expect(DRAGOES, `${p.id} não usa cor de dragão`).toContain(p.cor)
+    }
+  })
+
+  it('personagem sem módulo herda o acento da marca — cor não é decoração', () => {
+    for (const p of PERSONAGENS.filter((x) => !x.macrotemaId)) {
+      expect(p.cor, `${p.id} não guarda módulo e não pode ter cor própria`).toBe('aurora')
+    }
+  })
+
+  it('a temática não fixa cor em hexadecimal — tudo vive nos tokens do tema', () => {
+    for (const p of PERSONAGENS) {
+      expect(JSON.stringify(p), p.id).not.toMatch(/#[0-9a-f]{3,6}\b/i)
+    }
+  })
+
+  it('toda cor de identidade tem token no CSS e classe no Tailwind', () => {
+    // Lidos como texto: `?raw` num .css volta vazio, porque o plugin de CSS
+    // do Vite intercepta o import antes.
+    const css = readFileSync('src/styles/index.css', 'utf8')
+    const config = readFileSync('tailwind.config.js', 'utf8')
+    for (const cor of ['aurora', ...DRAGOES]) {
+      expect(css, `--${cor} não declarado em index.css`).toContain(`--${cor}:`)
+      expect(config, `${cor} não mapeado no tailwind.config.js`).toContain(
+        `${cor}: 'rgb(var(--${cor})`,
+      )
     }
   })
 })

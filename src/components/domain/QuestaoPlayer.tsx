@@ -138,7 +138,7 @@ export function QuestaoPlayer({
             onClick={onAlternarFavorito}
             aria-pressed={favorita}
             aria-label={favorita ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-            className={`ml-auto text-lg transition-colors ${favorita ? 'text-aqua' : 'text-muted hover:text-ink'}`}
+            className={`ml-auto text-lg transition-colors ${favorita ? 'text-aurora' : 'text-muted hover:text-ink'}`}
           >
             {favorita ? '★' : '☆'}
           </button>
@@ -146,7 +146,7 @@ export function QuestaoPlayer({
       </div>
 
       {porQue && !modoProva && (
-        <p className="mb-4 flex items-center gap-2 text-xs text-aqua">
+        <p className="mb-4 flex items-center gap-2 text-xs text-aurora">
           <span aria-hidden>◆</span>
           {porQue}
         </p>
@@ -166,11 +166,11 @@ export function QuestaoPlayer({
           const revelaCerta = respondida && !modoProva && alt.correta
           const revelaErrada = respondida && !modoProva && escolhida && !alt.correta
 
-          let estilo = 'border-line bg-surface hover:border-aqua/40'
-          if (!respondida && escolhida) estilo = 'border-aqua bg-aqua/10'
-          if (revelaCerta) estilo = 'border-aqua bg-aqua/15'
+          let estilo = 'border-line bg-surface hover:border-aurora/40'
+          if (!respondida && escolhida) estilo = 'border-aurora bg-aurora/10'
+          if (revelaCerta) estilo = 'border-jade bg-jade/15'
           if (revelaErrada) estilo = 'border-danger bg-danger-soft'
-          if (respondida && modoProva && escolhida) estilo = 'border-aqua bg-aqua/10'
+          if (respondida && modoProva && escolhida) estilo = 'border-aurora bg-aurora/10'
 
           return (
             <li key={alt.id}>
@@ -184,11 +184,11 @@ export function QuestaoPlayer({
                   aria-hidden
                   className={`mt-px grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs font-bold ${
                     revelaCerta
-                      ? 'border-aqua bg-aqua text-bg'
+                      ? 'border-jade bg-jade text-bg'
                       : revelaErrada
                         ? 'border-danger bg-danger text-bg'
                         : escolhida
-                          ? 'border-aqua text-aqua'
+                          ? 'border-aurora text-aurora'
                           : 'border-line text-muted'
                   }`}
                 >
@@ -200,7 +200,7 @@ export function QuestaoPlayer({
               {respondida && !modoProva && (escolhida || alt.correta) && (
                 <p
                   className={`mt-1.5 pl-9 pr-2 text-[13px] leading-relaxed ${
-                    alt.correta ? 'text-aqua' : 'text-muted'
+                    alt.correta ? 'text-jade' : 'text-muted'
                   }`}
                 >
                   {alt.justificativa}
@@ -227,10 +227,10 @@ export function QuestaoPlayer({
         <div className="mt-6 animate-fade-up">
           <div
             className={`rounded-2xl border p-4 ${
-              acertou ? 'border-aqua/40 bg-aqua/10' : 'border-danger/40 bg-danger-soft'
+              acertou ? 'border-jade/40 bg-jade/10' : 'border-danger/40 bg-danger-soft'
             }`}
           >
-            <p className={`mb-2 font-bold ${acertou ? 'text-aqua' : 'text-danger'}`}>
+            <p className={`mb-2 font-bold ${acertou ? 'text-jade' : 'text-danger'}`}>
               {acertou ? 'Correto' : 'Não foi dessa vez'}
             </p>
             <p className="text-[15px] leading-relaxed text-ink-2">{questao.explicacao}</p>
@@ -249,7 +249,7 @@ export function QuestaoPlayer({
                     key={m}
                     type="button"
                     onClick={() => setMotivo(m)}
-                    className="rounded-lg border border-line bg-surface px-3 py-2 text-[13px] text-ink-2 transition-colors hover:border-aqua/50 hover:text-ink"
+                    className="rounded-lg border border-line bg-surface px-3 py-2 text-[13px] text-ink-2 transition-colors hover:border-aurora/50 hover:text-ink"
                   >
                     {ROTULO_MOTIVO[m]}
                   </button>
@@ -270,7 +270,7 @@ export function QuestaoPlayer({
                 <button
                   type="button"
                   onClick={() => setMostrarReexplicacao(true)}
-                  className="text-sm font-semibold text-aqua underline-offset-4 hover:underline"
+                  className="text-sm font-semibold text-aurora underline-offset-4 hover:underline"
                 >
                   Não entendi — explique de outro jeito
                 </button>

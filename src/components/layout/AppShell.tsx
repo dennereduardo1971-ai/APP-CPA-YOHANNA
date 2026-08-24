@@ -4,6 +4,7 @@ import { useStore } from '@/lib/store'
 import { useNivel } from '@/lib/store'
 import { tituloDoNivel } from '@/lib/engine/gamification'
 import { Icone, type IconeNome } from '@/components/ui/Icone'
+import { CeuAlvorada, DivisorPincel } from '@/components/ui/Ornamento'
 
 interface ItemNav {
   para: string
@@ -35,7 +36,7 @@ const MOBILE = NAVEGACAO.filter((i) => i.mobile)
 function IconeNav({ nome, ativo }: { nome: IconeNome; ativo: boolean }) {
   return (
     <span
-      className={`grid h-6 w-6 place-items-center ${ativo ? 'text-aqua' : 'text-muted'}`}
+      className={`grid h-6 w-6 place-items-center ${ativo ? 'text-aurora' : 'text-muted'}`}
     >
       <Icone nome={nome} tamanho={20} />
     </span>
@@ -49,11 +50,12 @@ function BarraLateral() {
 
   return (
     <aside className="sticky top-0 hidden h-screen w-60 shrink-0 flex-col border-r border-line bg-surface/50 lg:flex">
-      <div className="px-5 py-6">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-aqua">
+      <div className="relative px-5 py-6">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-aurora/80">
           Preparatório
         </p>
-        <p className="text-xl font-extrabold tracking-tight">CPA</p>
+        <p className="texto-alvorada display text-2xl leading-tight">CPA</p>
+        <DivisorPincel className="mt-2 opacity-70" />
       </div>
 
       <nav className="flex-1 overflow-y-auto px-3 pb-4">
@@ -66,7 +68,7 @@ function BarraLateral() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                     isActive
-                      ? 'bg-aqua/10 font-semibold text-aqua'
+                      ? 'bg-aurora/10 font-semibold text-aurora'
                       : 'text-ink-2 hover:bg-elevated hover:text-ink'
                   }`
                 }
@@ -89,7 +91,7 @@ function BarraLateral() {
           Nível {nivel.nivel} · {tituloDoNivel(nivel.nivel)}
         </p>
         <div className="mt-2 flex items-center gap-1.5 text-xs text-muted">
-          <span aria-hidden className="text-aqua">
+          <span aria-hidden className="text-aurora">
             ≡
           </span>
           <span className="tnum">{sequencia}</span>{' '}
@@ -111,7 +113,7 @@ function BarraInferior() {
               end={item.para === '/'}
               className={({ isActive }) =>
                 `flex flex-col items-center gap-0.5 rounded-lg py-1.5 text-[10px] font-medium transition-colors ${
-                  isActive ? 'text-aqua' : 'text-muted'
+                  isActive ? 'text-aurora' : 'text-muted'
                 }`
               }
             >
@@ -137,7 +139,8 @@ export function AppShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-screen">
       {!imersivo && <BarraLateral />}
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="relative flex min-w-0 flex-1 flex-col">
+        {!imersivo && <CeuAlvorada />}
         <main
           className={`safe-top mx-auto w-full max-w-3xl flex-1 px-4 pb-28 pt-4 sm:px-6 lg:max-w-4xl lg:pb-10 ${
             imersivo ? 'max-w-2xl' : ''
@@ -180,7 +183,7 @@ export function Cabecalho({
   return (
     <header className="mb-6 flex items-start justify-between gap-4">
       <div className="min-w-0">
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{titulo}</h1>
+        <h1 className="display text-2xl sm:text-3xl">{titulo}</h1>
         {descricao && <p className="mt-1 text-sm text-muted">{descricao}</p>}
       </div>
       {acao}

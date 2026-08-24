@@ -55,7 +55,7 @@ export function Secao({
     <section className="mb-8">
       <div className="mb-3 flex items-end justify-between gap-3">
         <div>
-          <h2 className="text-lg font-bold">{titulo}</h2>
+          <h2 className="display text-lg">{titulo}</h2>
           {descricao && <p className="mt-0.5 text-sm text-muted">{descricao}</p>}
         </div>
         {acao}

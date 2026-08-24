@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { Dificuldade, Etiqueta } from '@/lib/types'
 
 const ETIQUETAS: Record<Etiqueta, { rotulo: string; classe: string }> = {
-  ESSENCIAL: { rotulo: 'Essencial', classe: 'bg-aqua/15 text-aqua border-aqua/30' },
+  ESSENCIAL: { rotulo: 'Essencial', classe: 'bg-aurora/15 text-aurora border-aurora/30' },
   ATENCAO: { rotulo: 'Atenção', classe: 'bg-warn-soft text-warn border-warn/30' },
   DECORAR: { rotulo: 'Decorar', classe: 'bg-elevated text-ink-2 border-line' },
   ENTENDER: { rotulo: 'Entender', classe: 'bg-elevated text-ink-2 border-line' },
@@ -21,7 +21,7 @@ export function EtiquetaBadge({ etiqueta }: { etiqueta: Etiqueta }) {
 }
 
 const DIFICULDADES: Record<Dificuldade, { rotulo: string; classe: string }> = {
-  facil: { rotulo: 'Fácil', classe: 'text-aqua' },
+  facil: { rotulo: 'Fácil', classe: 'text-jade' },
   media: { rotulo: 'Média', classe: 'text-warn' },
   dificil: { rotulo: 'Difícil', classe: 'text-danger' },
 }
@@ -43,11 +43,12 @@ export function Pill({
   tom = 'neutro',
 }: {
   children: ReactNode
-  tom?: 'neutro' | 'aqua' | 'warn' | 'danger'
+  tom?: 'neutro' | 'aurora' | 'jade' | 'warn' | 'danger'
 }) {
   const tons = {
     neutro: 'bg-elevated text-ink-2 border-line',
-    aqua: 'bg-aqua/15 text-aqua border-aqua/30',
+    aurora: 'bg-aurora/15 text-aurora border-aurora/30',
+    jade: 'bg-jade/15 text-jade border-jade/30',
     warn: 'bg-warn-soft text-warn border-warn/30',
     danger: 'bg-danger-soft text-danger border-danger/30',
   }

@@ -1,5 +1,6 @@
 import { Cabecalho } from '@/components/layout/AppShell'
 import { Card, Secao } from '@/components/ui/Card'
+import { SeloConquista } from '@/components/ui/Ornamento'
 import { Barra } from '@/components/ui/Progress'
 import { CONQUISTAS, nivelPorXP, tituloDoNivel, XP } from '@/lib/engine/gamification'
 import { useStore } from '@/lib/store'
@@ -57,7 +58,7 @@ export default function Conquistas() {
             ].map(([rotulo, pontos]) => (
               <li key={rotulo as string} className="flex items-baseline justify-between gap-3">
                 <span className="text-ink-2">{rotulo}</span>
-                <span className="tnum shrink-0 font-semibold text-aqua">+{pontos}</span>
+                <span className="tnum shrink-0 font-semibold text-aurora">+{pontos}</span>
               </li>
             ))}
           </ul>
@@ -80,18 +81,15 @@ export default function Conquistas() {
                   <li key={c.id}>
                     <div
                       className={`card p-4 transition-colors ${
-                        obtida ? 'border-aqua/40 bg-aqua/10' : 'opacity-60'
+                        obtida ? 'border-aurora/40 bg-aurora/10' : 'opacity-60'
                       }`}
                     >
                       <div className="flex items-start gap-3">
-                        <span
-                          aria-hidden
-                          className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border text-sm ${
-                            obtida ? 'border-aqua bg-aqua text-bg' : 'border-line text-muted'
-                          }`}
-                        >
-                          {c.icone}
-                        </span>
+                        <SeloConquista tamanho={40} obtido={obtida}>
+                          <span aria-hidden className="text-sm">
+                            {c.icone}
+                          </span>
+                        </SeloConquista>
                         <div className="min-w-0">
                           <p className="font-semibold">{c.nome}</p>
                           <p className="mt-0.5 text-sm text-muted">{c.descricao}</p>

@@ -46,7 +46,7 @@ export default function Mapas() {
               onClick={() => alternarFavorito('mapas', conceito.id)}
               aria-pressed={favorito}
               aria-label={favorito ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-              className={`text-xl ${favorito ? 'text-aqua' : 'text-muted hover:text-ink'}`}
+              className={`text-xl ${favorito ? 'text-aurora' : 'text-muted hover:text-ink'}`}
             >
               {favorito ? '★' : '☆'}
             </button>
@@ -60,7 +60,7 @@ export default function Mapas() {
             aria-pressed={!modoRevisao}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               !modoRevisao
-                ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
+                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
                 : 'border-line bg-surface text-ink-2'
             }`}
           >
@@ -72,7 +72,7 @@ export default function Mapas() {
             aria-pressed={modoRevisao}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               modoRevisao
-                ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
+                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
                 : 'border-line bg-surface text-ink-2'
             }`}
           >
@@ -108,7 +108,7 @@ export default function Mapas() {
 
       {favoritos.length > 0 && (
         <section className="mb-8">
-          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-aqua">
+          <h2 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
             Favoritos
           </h2>
           <ul className="flex flex-col gap-2.5">

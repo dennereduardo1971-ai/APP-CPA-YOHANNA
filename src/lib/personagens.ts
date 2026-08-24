@@ -1,4 +1,5 @@
 import type { IconeNome } from '@/components/ui/Icone'
+import type { RetratoNome } from '@/components/domain/Retrato'
 
 /**
  * Identidade temática da plataforma — DADO, não código.
@@ -8,15 +9,21 @@ import type { IconeNome } from '@/components/ui/Icone'
  *
  * Três decisões que valem registro:
  *
- * 1. **Sem cor por personagem.** Os dragões têm cores no material de origem,
- *    mas a regra 7 do CLAUDE.md admite um único acento (verde-água). A
- *    identidade visual vem da FORMA do ícone, nunca de cor nova.
- * 2. **Sem arte embutida.** `avatar` é um slot opcional apontando para
- *    `public/personagens/<id>.webp`. Enquanto não houver arquivo, o app
- *    desenha o ícone geométrico — e continua funcionando offline.
+ * 1. **Uma cor por guardião, e só para os guardiões.** A regra 7 do CLAUDE.md
+ *    admite um acento de marca (`aurora`) mais quatro cores de identidade de
+ *    módulo — as dos quatro dragões. Elas nunca decoram: só aparecem para
+ *    dizer de que módulo aquilo é. Personagem sem módulo herda `aurora`.
+ * 2. **Arte externa é opcional.** O app desenha o retrato em SVG (ver
+ *    `components/domain/Retrato.tsx`) e funciona offline. `avatar` é um slot
+ *    para `public/personagens/<id>.webp`; quando o arquivo existe, ele
+ *    substitui o desenho.
  * 3. **Falas autorais.** Os textos de guia foram escritos para o contexto de
  *    estudo; não reproduzem diálogo da obra original.
  */
+
+/** Cores de identidade — o acento da marca mais os quatro dragões. */
+export type CorDragao = 'aurora' | 'hakuryuu' | 'seiryuu' | 'ryokuryuu' | 'ouryuu'
+
 export interface Personagem {
   id: string
   nome: string
@@ -25,6 +32,10 @@ export interface Personagem {
   /** Fala curta de acompanhamento, exibida na área que o personagem guia. */
   guia: string
   icone: IconeNome
+  /** Retrato autoral em SVG — sempre existe, mesmo sem arquivo de arte. */
+  retrato: RetratoNome
+  /** Identidade de cor. Só os guardiões de módulo têm cor própria. */
+  cor: CorDragao
   /** Arte própria, se houver: `/personagens/<id>.webp`. */
   avatar?: string
   /** Macrotema guardado — só para os guardiões de módulo. */
@@ -34,6 +45,8 @@ export interface Personagem {
 export const PERSONAGENS: Personagem[] = [
   {
     id: 'yona',
+    retrato: 'yona',
+    cor: 'aurora',
     nome: 'Yona',
     papel: 'Guia da jornada',
     guia: 'Você não precisa saber tudo hoje. Precisa saber um pouco mais do que ontem.',
@@ -41,6 +54,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     id: 'ao',
+    retrato: 'ao',
+    cor: 'aurora',
     nome: 'Ao',
     papel: 'Companhia de estudo',
     guia: 'Sessão curta, feita todo dia, vence maratona feita uma vez por mês.',
@@ -48,6 +63,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     id: 'kija',
+    retrato: 'kija',
+    cor: 'hakuryuu',
     nome: 'Kija',
     papel: 'Guardião do módulo 1',
     guia: 'Comece pela estrutura. Quem entende quem manda no sistema entende todo o resto.',
@@ -56,6 +73,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     id: 'shinah',
+    retrato: 'shinah',
+    cor: 'seiryuu',
     nome: 'Shin-Ah',
     papel: 'Guardião do módulo 2',
     guia: 'Aqui está o maior peso da prova. Enxergue a diferença entre os produtos antes de decorar nomes.',
@@ -64,6 +83,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     id: 'jaeha',
+    retrato: 'jaeha',
+    cor: 'ryokuryuu',
     nome: 'Jae-Ha',
     papel: 'Guardião do módulo 3',
     guia: 'Este módulo é sobre pessoas. A resposta certa costuma ser a que protege o cliente.',
@@ -72,6 +93,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     id: 'zeno',
+    retrato: 'zeno',
+    cor: 'ouryuu',
     nome: 'Zeno',
     papel: 'Guardião do módulo 4',
     guia: 'O módulo mais novo e o mais leve. Vale pontos fáceis para quem não deixa por último.',
@@ -80,6 +103,8 @@ export const PERSONAGENS: Personagem[] = [
   },
   {
     id: 'hak',
+    retrato: 'hak',
+    cor: 'aurora',
     nome: 'Son Hak',
     papel: 'Guardião dos desafios',
     guia: 'Simulado não é prova. É onde errar sai barato — então erre aqui.',
