@@ -4,11 +4,27 @@ import { Card } from '@/components/ui/Card'
 import { Barra } from '@/components/ui/Progress'
 import { Pill } from '@/components/ui/Badge'
 import { AvisoVerificacao } from '@/components/ui/Empty'
-import { MACROTEMAS, PESOS_PENDENTES, pesosEfetivos } from '@/lib/content'
+import { MarcaPersonagem, TOM_PERSONAGEM } from '@/components/domain/Personagem'
+import { guardiaoDoMacrotema } from '@/lib/personagens'
+import {
+  COBERTURA_PENDENTE,
+  MACROTEMAS,
+  MICROTEMAS,
+  PESOS_PENDENTES,
+  coberturaGeral,
+  microtemasSemConteudo,
+  pesosEfetivos,
+} from '@/lib/content'
 import { questoesDoMacrotema } from '@/lib/questions'
 import { useStore } from '@/lib/store'
 import { dominioMacrotema } from '@/lib/engine/stats'
-import { dominioEfetivo, nivelDominio, ROTULO_NIVEL } from '@/lib/engine/mastery'
+import {
+  dominioEfetivo,
+  nivelDominio,
+  ROTULO_NIVEL,
+  TEXTO_DOMINIO,
+  tomDominio,
+} from '@/lib/engine/mastery'
 
 /** Domínio médio de um microtema — usado para liberar pré-requisitos. */
 function dominioMicrotema(
@@ -46,9 +62,22 @@ export default function Trilha() {
         </div>
       )}
 
+      {COBERTURA_PENDENTE && (
+        <div className="mb-6">
+          <AvisoVerificacao>
+            Cobertura do programa oficial: {Math.round(coberturaGeral() * 100)}% dos microtemas já
+            têm aula ({MICROTEMAS.length - microtemasSemConteudo().length} de {MICROTEMAS.length}).
+            Os tópicos marcados como “conteúdo em produção” fazem parte do Programa Detalhado da
+            ANBIMA e ainda não têm material — estude por outra fonte até que estejam prontos.
+          </AvisoVerificacao>
+        </div>
+      )}
+
       <ol className="flex flex-col gap-4">
         {MACROTEMAS.map((macro, indiceMacro) => {
           const conceitos = macro.microtemas.flatMap((mt) => mt.conceitos)
+          const guardiao = guardiaoDoMacrotema(macro.id)
+          const tom = TOM_PERSONAGEM[guardiao?.cor ?? 'aurora']
           const concluidas = conceitos.filter((c) => estados[c.id]?.aulaConcluida).length
           const dominio = dominioMacrotema(macro.id, estados, agora)
           const totalQuestoes = questoesDoMacrotema(macro.id).length
@@ -72,20 +101,25 @@ export default function Trilha() {
                   <span
                     aria-hidden
                     className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border text-sm font-extrabold ${
+                      /*
+                       * A cor identifica o MÓDULO (o dragão que o guarda); o
+                       * preenchimento é que marca o domínio alcançado. Assim a
+                       * cor nunca vira decoração nem duplica a barra abaixo.
+                       */
                       dominio >= 0.75
-                        ? 'border-aqua bg-aqua text-bg'
+                        ? `${tom.solido} text-bg`
                         : dominio > 0
-                          ? 'border-aqua/50 text-aqua'
+                          ? `${tom.borda} ${tom.texto}`
                           : 'border-line text-muted'
                     }`}
                   >
-                    {macro.codigo === 'SFN' ? '1' : macro.codigo === 'PROD' ? '2' : macro.codigo === 'REL' ? '3' : '4'}
+                    {macro.ordem}
                   </span>
                   <div className="min-w-0 flex-1">
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="font-bold">{macro.nome}</h2>
                       {macro.peso != null && (
-                        <Pill tom={macro.peso >= 0.3 ? 'aqua' : 'neutro'}>
+                        <Pill tom={macro.peso >= 0.3 ? 'aurora' : 'neutro'}>
                           {Math.round(macro.peso * 100)}% da prova
                           {!macro.pesoVerificado && ' ?'}
                         </Pill>
@@ -95,18 +129,27 @@ export default function Trilha() {
                       )}
                     </div>
                     <p className="mt-1 text-sm text-muted">{macro.resumo}</p>
+                    {guardiao && (
+                      <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted">
+                        <MarcaPersonagem personagem={guardiao} tamanho={18} />
+                        <span className="truncate">
+                          <span className={`font-semibold ${tom.texto}`}>{guardiao.nome}</span> ·{' '}
+                          {guardiao.guia}
+                        </span>
+                      </p>
+                    )}
                   </div>
                 </div>
 
                 <div className="mb-3 flex items-baseline justify-between text-sm">
-                  <span className="font-semibold text-aqua">
+                  <span className={`font-semibold ${TEXTO_DOMINIO[tomDominio(dominio)]}`}>
                     {ROTULO_NIVEL[nivelDominio(dominio)]}
                   </span>
                   <span className="tnum text-muted">{Math.round(dominio * 100)}% de domínio</span>
                 </div>
                 <Barra
                   valor={dominio}
-                  tom={dominio >= 0.75 ? 'aqua' : dominio >= 0.4 ? 'warn' : 'danger'}
+                  tom={tomDominio(dominio)}
                 />
 
                 <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
@@ -127,38 +170,54 @@ export default function Trilha() {
                     })
                     const dominioMicro = dominioMicrotema(micro.conceitos, estados, agora)
                     const feitas = micro.conceitos.filter((c) => estados[c.id]?.aulaConcluida).length
+                    const semConteudo = micro.conceitos.length === 0
 
                     return (
                       <li key={micro.id}>
                         <div
                           className={`rounded-xl border p-3 transition-colors ${
-                            preOk ? 'border-line bg-elevated/50' : 'border-line/50 bg-surface opacity-70'
+                            semConteudo
+                              ? 'border-dashed border-line/70 bg-surface'
+                              : preOk
+                                ? 'border-line bg-elevated/50'
+                                : 'border-line/50 bg-surface opacity-70'
                           }`}
                         >
                           <div className="flex items-center justify-between gap-3">
                             <div className="min-w-0">
                               <p className="truncate text-sm font-semibold">
+                                <span className="tnum mr-1.5 text-xs font-normal text-muted">
+                                  {micro.codigo}
+                                </span>
                                 {micro.nome}
-                                {!preOk && (
+                                {!preOk && !semConteudo && (
                                   <span aria-label="bloqueado" className="ml-2 text-xs text-muted">
                                     bloqueado
                                   </span>
                                 )}
                               </p>
-                              <p className="tnum mt-0.5 text-xs text-muted">
-                                {feitas}/{micro.conceitos.length} aulas ·{' '}
-                                {Math.round(dominioMicro * 100)}% domínio
-                              </p>
+                              {semConteudo ? (
+                                <p className="mt-0.5 text-xs text-muted">
+                                  Conteúdo em produção — item do programa oficial ainda sem aula.
+                                </p>
+                              ) : (
+                                <p className="tnum mt-0.5 text-xs text-muted">
+                                  {feitas}/{micro.conceitos.length} aulas ·{' '}
+                                  {Math.round(dominioMicro * 100)}% domínio
+                                </p>
+                              )}
                             </div>
-                            <div className="w-20 shrink-0">
-                              <Barra valor={dominioMicro} altura="h-1.5" />
-                            </div>
+                            {!semConteudo && (
+                              <div className="w-20 shrink-0">
+                                <Barra valor={dominioMicro} tom={tomDominio(dominioMicro)} altura="h-1.5" />
+                              </div>
+                            )}
                           </div>
 
-                          {!preOk && (
+                          {!preOk && !semConteudo && (
                             <p className="mt-2 text-xs text-muted">
                               Libera ao atingir 60% no tópico anterior — ou{' '}
-                              <Link to="/questoes" className="font-semibold text-aqua">
+                              <Link to="/questoes" className="font-semibold text-aurora">
                                 teste direto
                               </Link>{' '}
                               para destravar.
@@ -178,7 +237,7 @@ export default function Trilha() {
                                     <span
                                       aria-hidden
                                       className={`grid h-4 w-4 shrink-0 place-items-center rounded-full border text-[9px] ${
-                                        feita ? 'border-aqua bg-aqua text-bg' : 'border-line text-transparent'
+                                        feita ? 'border-jade bg-jade text-bg' : 'border-line text-transparent'
                                       }`}
                                     >
                                       ✓

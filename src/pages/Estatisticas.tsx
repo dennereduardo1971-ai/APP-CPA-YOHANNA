@@ -50,11 +50,11 @@ function GraficoEvolucao({ dados }: { dados: { dia: string; taxa: number; total:
           strokeWidth="1"
           strokeDasharray="3 4"
         />
-        <polygon points={area} fill="rgb(var(--aqua))" opacity="0.12" />
+        <polygon points={area} fill="rgb(var(--aurora))" opacity="0.12" />
         <polyline
           points={pontos}
           fill="none"
-          stroke="rgb(var(--aqua))"
+          stroke="rgb(var(--aurora))"
           strokeWidth="2"
           strokeLinejoin="round"
           strokeLinecap="round"
@@ -64,7 +64,7 @@ function GraficoEvolucao({ dados }: { dados: { dia: string; taxa: number; total:
           cx={(dados.length - 1) * passo}
           cy={altura - dados[dados.length - 1].taxa * altura}
           r="3.5"
-          fill="rgb(var(--aqua))"
+          fill="rgb(var(--aurora))"
         />
       </svg>
       <div className="mt-1 flex justify-between text-[11px] text-muted">
@@ -111,7 +111,7 @@ export default function Estatisticas() {
       <Card className="mb-6">
         <div className="grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
           <div>
-            <p className="tnum text-2xl font-extrabold text-aqua">
+            <p className="tnum text-2xl font-extrabold text-aurora">
               {Math.round(geral.taxaAcerto * 100)}%
             </p>
             <p className="text-[11px] uppercase tracking-wider text-muted">taxa de acerto</p>
@@ -149,7 +149,7 @@ export default function Estatisticas() {
           ) : (
             <>
               <div className="flex items-baseline justify-between gap-3">
-                <p className="tnum text-3xl font-extrabold text-aqua">
+                <p className="tnum text-3xl font-extrabold text-aurora">
                   {Math.round(pront.valor * 100)}%
                 </p>
                 <span className="tnum text-sm text-muted">
@@ -159,7 +159,7 @@ export default function Estatisticas() {
               <Barra
                 valor={pront.valor}
                 className="mt-3"
-                tom={pront.valor >= BLUEPRINT.notaCorte ? 'aqua' : 'warn'}
+                tom={pront.valor >= BLUEPRINT.notaCorte ? 'aurora' : 'warn'}
               />
               <p className="mt-3 text-xs leading-relaxed text-muted">
                 Domínio ponderado pelos pesos dos macrotemas, com desconto de esquecimento.
@@ -191,7 +191,7 @@ export default function Estatisticas() {
                 </div>
                 <Barra
                   valor={dados.taxaAcerto}
-                  tom={dados.taxaAcerto >= 0.7 ? 'aqua' : dados.taxaAcerto >= 0.5 ? 'warn' : 'danger'}
+                  tom={dados.taxaAcerto >= 0.7 ? 'jade' : dados.taxaAcerto >= 0.5 ? 'warn' : 'danger'}
                 />
               </li>
             )
@@ -214,7 +214,7 @@ export default function Estatisticas() {
                 </div>
                 <Barra
                   valor={dados.taxaAcerto}
-                  tom={dados.taxaAcerto >= 0.7 ? 'aqua' : dados.taxaAcerto >= 0.5 ? 'warn' : 'danger'}
+                  tom={dados.taxaAcerto >= 0.7 ? 'jade' : dados.taxaAcerto >= 0.5 ? 'warn' : 'danger'}
                 />
               </li>
             )

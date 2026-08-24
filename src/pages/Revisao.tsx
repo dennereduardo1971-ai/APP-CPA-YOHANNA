@@ -79,8 +79,8 @@ export default function Revisao() {
         />
       ) : (
         <>
-          <Card className="mb-6 border-aqua/40 bg-aqua/10">
-            <p className="font-bold text-aqua">Revise seus erros</p>
+          <Card className="mb-6 border-aurora/40 bg-aurora/10">
+            <p className="font-bold text-aurora">Revise seus erros</p>
             <p className="mt-1 text-sm text-ink-2">
               {passos.length} {passos.length === 1 ? 'questão montada' : 'questões montadas'} a
               partir do que você errou e do que está esfriando.

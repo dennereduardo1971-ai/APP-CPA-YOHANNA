@@ -49,7 +49,7 @@ export default function Resultado() {
         <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-muted">
           {SIMULADO_PRESETS[resultado.modo].rotulo}
         </p>
-        <h1 className="mt-1 text-3xl font-extrabold tracking-tight">
+        <h1 className="display mt-1 text-3xl">
           {resultado.aprovado ? 'Você atingiu a nota de corte' : 'Ainda não atingiu a nota de corte'}
         </h1>
 
@@ -58,7 +58,7 @@ export default function Resultado() {
             valor={resultado.percentual}
             tamanho={140}
             espessura={11}
-            tom={resultado.aprovado ? 'aqua' : 'danger'}
+            tom={resultado.aprovado ? 'jade' : 'danger'}
             sublegenda={`corte ${Math.round(BLUEPRINT.notaCorte * 100)}%`}
           />
         </div>
@@ -67,7 +67,7 @@ export default function Resultado() {
       <Card className="mb-6">
         <div className="grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
           <div>
-            <p className="tnum text-2xl font-extrabold text-aqua">{resultado.acertos}</p>
+            <p className="tnum text-2xl font-extrabold text-jade">{resultado.acertos}</p>
             <p className="text-[11px] uppercase tracking-wider text-muted">acertos</p>
           </div>
           <div>
@@ -99,7 +99,7 @@ export default function Resultado() {
                     {dados.acertos}/{dados.total} · {Math.round(taxa * 100)}%
                   </span>
                 </div>
-                <Barra valor={taxa} tom={taxa >= 0.7 ? 'aqua' : taxa >= 0.5 ? 'warn' : 'danger'} />
+                <Barra valor={taxa} tom={taxa >= 0.7 ? 'jade' : taxa >= 0.5 ? 'warn' : 'danger'} />
               </li>
             )
           })}
@@ -120,7 +120,7 @@ export default function Resultado() {
                     {dados.acertos}/{dados.total} · {Math.round(taxa * 100)}%
                   </span>
                 </div>
-                <Barra valor={taxa} tom={taxa >= 0.7 ? 'aqua' : taxa >= 0.5 ? 'warn' : 'danger'} />
+                <Barra valor={taxa} tom={taxa >= 0.7 ? 'jade' : taxa >= 0.5 ? 'warn' : 'danger'} />
               </li>
             )
           })}
@@ -153,7 +153,7 @@ export default function Resultado() {
       )}
 
       <Secao titulo="Recomendação de revisão">
-        <Card className="border-aqua/40 bg-aqua/10">
+        <Card className="border-aurora/40 bg-aurora/10">
           <p className="text-[15px] leading-relaxed text-ink-2">
             {resultado.aprovado
               ? 'Bom resultado. Mantenha a revisão espaçada em dia para não perder o que já consolidou, e ataque os temas que ficaram abaixo de 70%.'
@@ -179,7 +179,7 @@ export default function Resultado() {
                       aria-hidden
                       className={`tnum mt-px grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs font-bold ${
                         r.acertou
-                          ? 'border-aqua bg-aqua/15 text-aqua'
+                          ? 'border-aurora bg-aurora/15 text-aurora'
                           : 'border-danger bg-danger-soft text-danger'
                       }`}
                     >
@@ -190,14 +190,14 @@ export default function Resultado() {
                   <div className="mt-3 border-t border-line pt-3 text-[14px] leading-relaxed">
                     <p className="mb-2">
                       <span className="text-muted">Sua resposta: </span>
-                      <span className={r.acertou ? 'text-aqua' : 'text-danger'}>
+                      <span className={r.acertou ? 'text-jade' : 'text-danger'}>
                         {escolhida?.texto ?? 'em branco'}
                       </span>
                     </p>
                     <p className="text-ink-2">{questao.explicacao}</p>
                     <Link
                       to={`/conteudo/${questao.conceitoId}`}
-                      className="mt-2 inline-block text-sm font-semibold text-aqua"
+                      className="mt-2 inline-block text-sm font-semibold text-aurora"
                     >
                       Rever a aula
                     </Link>

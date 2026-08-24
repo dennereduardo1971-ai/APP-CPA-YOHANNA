@@ -8,16 +8,17 @@ import type { Macrotema } from '../types'
 export const M1: Macrotema = {
   id: 'm1',
   codigo: 'SFN',
-  nome: 'Sistema Financeiro Nacional',
+  nome: 'Estrutura e dinâmica do sistema financeiro nacional',
   resumo: 'Quem cria a regra, quem fiscaliza e quem opera. A base para entender todo o resto.',
-  peso: null,
-  pesoVerificado: false,
+  peso: 0.2,
+  pesoVerificado: true,
   ordem: 1,
   microtemas: [
     {
       id: 'm1.1',
       macrotemaId: 'm1',
-      nome: 'Órgãos normativos e supervisores',
+      codigo: '1.1',
+      nome: 'Sistema financeiro nacional',
       ordem: 1,
       preRequisitos: [],
       conceitos: [
@@ -32,6 +33,8 @@ export const M1: Macrotema = {
           explicacao: {
             oQueE:
               'O órgão máximo do Sistema Financeiro Nacional. É normativo: existe para criar diretrizes, não para executá-las.',
+            porQueImporta:
+              'Quase toda questão de SFN começa perguntando "quem faz o quê". Se você troca normatizar por fiscalizar, erra a questão inteira — e essa confusão é o erro número um do bloco.',
             paraQueServe:
               'Fixar as diretrizes das políticas monetária, creditícia e cambial do país — inclusive a meta de inflação.',
             comoFunciona: [
@@ -42,10 +45,18 @@ export const M1: Macrotema = {
             ],
             exemploSimples:
               'O CMN define que a meta de inflação do ano será de 3%. Ele não compra nem vende nada para chegar lá — quem executa é o Banco Central, via Copom, mexendo na taxa Selic.',
+            exemploAplicado:
+              'Um cliente pergunta por que a poupança rende o que rende. A regra de remuneração da poupança é fixada por resolução do CMN; o BACEN apenas fiscaliza se o banco a está aplicando corretamente. Quem quiser mudar a regra precisa mudar a norma do CMN, não reclamar com o banco.',
             lembrarNaProva: [
               'CMN = normatiza. BACEN/CVM/SUSEP/PREVIC = supervisionam.',
               'São 3 membros — e o Presidente do BC é um deles.',
               'Quem define a meta de inflação é o CMN; quem persegue a meta é o BACEN.',
+            ],
+            revisaoRapida: [
+              'CMN: órgão máximo, e só normativo.',
+              'Três membros: Fazenda (preside), Planejamento e BACEN.',
+              'Define a meta de inflação; o Copom define a Selic para persegui-la.',
+              'Não fiscaliza ninguém e não executa nada.',
             ],
           },
           exemplos: [
@@ -130,6 +141,14 @@ export const M1: Macrotema = {
             iniciante:
               'No Brasil existe um grupo pequeno (3 pessoas) que decide as regras gerais sobre dinheiro, crédito e câmbio. Esse grupo é o CMN. Ele só decide — quem coloca em prática e fiscaliza são o Banco Central e a CVM.',
           },
+          niveis: {
+            entenda:
+              'O CMN é quem escreve as regras do sistema financeiro. Ele não fiscaliza e não executa — só decide qual é a regra.',
+            aprofunde:
+              'O CMN foi criado pela Lei 4.595/1964, a mesma que desenhou o SFN. Suas decisões saem como Resoluções, publicadas pelo BACEN — o que gera a confusão comum de atribuir ao BACEN uma norma que é do CMN: o Banco Central publica, mas quem decidiu foi o Conselho. Repare que o CMN normatiza o mercado bancário e de capitais, mas não alcança seguros e previdência complementar aberta, que têm o CNSP como órgão normativo próprio, nem a previdência fechada, sob o CNPC. Essa divisão em três conselhos normativos é o que explica por que existem quatro supervisores diferentes.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 5,
         },
         {
@@ -143,6 +162,8 @@ export const M1: Macrotema = {
           explicacao: {
             oQueE:
               'Autarquia federal que executa as diretrizes do CMN e supervisiona as instituições financeiras.',
+            porQueImporta:
+              'O BACEN é o órgão que mais aparece na prova, e quase sempre em questões de efeito: sobe o compulsório, o que acontece com o crédito? A banca quer ver se você liga o instrumento ao resultado na economia.',
             paraQueServe:
               'Manter a inflação na meta, zelar pela estabilidade do sistema financeiro e garantir o funcionamento do sistema de pagamentos.',
             comoFunciona: [
@@ -154,11 +175,19 @@ export const M1: Macrotema = {
             ],
             exemploSimples:
               'A inflação sobe acima da meta. O Copom eleva a Selic. Crédito fica mais caro, consumo cai, a pressão sobre os preços diminui.',
+            exemploAplicado:
+              'A inflação vem acima da meta e o Copom eleva a Selic. Na agência, os CDBs pós-fixados passam a render mais, o crédito fica mais caro e o cliente que pensava em financiar um carro adia a compra. É a política monetária contracionista chegando ao balcão.',
             lembrarNaProva: [
               'BACEN executa; CMN normatiza.',
               'Copom define a Selic meta — não o CMN.',
               'Instrumentos: Selic, compulsório e open market. Redesconto é liquidez emergencial.',
               'Autonomia com mandato fixo (LC 179/2021).',
+            ],
+            revisaoRapida: [
+              'BACEN executa a política monetária; o CMN a normatiza.',
+              'Instrumentos: open market, redesconto e depósito compulsório.',
+              'Contracionista enxuga moeda e esfria a economia; expansionista faz o contrário.',
+              'Também autoriza, fiscaliza e liquida instituições financeiras.',
             ],
           },
           exemplos: [
@@ -240,6 +269,14 @@ export const M1: Macrotema = {
             iniciante:
               'O Banco Central cuida do dinheiro do país. Ele imprime as notas, olha se os bancos estão saudáveis e mexe na taxa de juros para os preços não subirem demais.',
           },
+          niveis: {
+            entenda:
+              'O Banco Central é o executor: ele coloca em prática as regras do CMN e controla quanto dinheiro circula na economia.',
+            aprofunde:
+              'Os três instrumentos clássicos agem por caminhos diferentes. O open market é o mais ágil: comprando ou vendendo títulos públicos, o BACEN ajusta a liquidez diariamente e mantém a taxa Selic efetiva colada na meta definida pelo Copom. O compulsório é o mais lento e o mais contundente, porque trava uma fração dos depósitos e reduz o multiplicador bancário. O redesconto é socorro de liquidez, não ferramenta de ajuste fino — o banco recorre a ele quando não fecha o caixa no dia. Desde a Lei Complementar 179/2021 o BACEN é autarquia de natureza especial, com autonomia e mandatos fixos para a diretoria, o que separa a decisão de juros do calendário político.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 7,
         },
         {
@@ -253,6 +290,8 @@ export const M1: Macrotema = {
           explicacao: {
             oQueE:
               'Três autarquias supervisoras, cada uma com um recorte próprio de mercado.',
+            porQueImporta:
+              'A prova adora montar listas misturando produto e supervisor. Saber que fundo é CVM, previdência aberta é SUSEP e fundo de pensão é PREVIC resolve uma família inteira de questões.',
             paraQueServe:
               'Fiscalizar, registrar e punir dentro do seu campo — protegendo o investidor e o segurado.',
             comoFunciona: [
@@ -263,10 +302,18 @@ export const M1: Macrotema = {
             ],
             exemploSimples:
               'Um cliente reclama de um fundo de investimento: o assunto é da CVM. Reclama do PGBL do banco: é SUSEP. Reclama do fundo de pensão da empresa onde trabalha: é PREVIC.',
+            exemploAplicado:
+              'Um cliente reclama que foi induzido a comprar um fundo inadequado ao perfil dele. A reclamação vai à CVM, que regula e fiscaliza fundos e a distribuição de valores mobiliários. Se a reclamação fosse sobre um VGBL, o endereço seria a SUSEP.',
             lembrarNaProva: [
               'Fundo de investimento = CVM. PGBL/VGBL = SUSEP. Fundo de pensão = PREVIC.',
               'CRI e CRA são valores mobiliários — logo, CVM.',
               'ABERTA = SUSEP. FECHADA = PREVIC.',
+            ],
+            revisaoRapida: [
+              'CVM: valores mobiliários, fundos, ações e debêntures.',
+              'SUSEP: seguros, capitalização e previdência aberta (PGBL e VGBL).',
+              'PREVIC: previdência fechada, os fundos de pensão.',
+              'Os três supervisionam; quem normatiza são CMN, CNSP e CNPC.',
             ],
           },
           exemplos: [
@@ -353,6 +400,14 @@ export const M1: Macrotema = {
             iniciante:
               'Cada tipo de produto financeiro tem um órgão que cuida dele. Investimento em bolsa e fundos: CVM. Seguro e previdência que você contrata no banco: SUSEP. Previdência que só existe dentro de uma empresa: PREVIC.',
           },
+          niveis: {
+            entenda:
+              'Cada tipo de produto tem seu fiscal: CVM cuida de investimentos do mercado de capitais, SUSEP de seguros e previdência aberta, PREVIC dos fundos de pensão.',
+            aprofunde:
+              'A lógica da divisão é a natureza jurídica do produto, não o balcão em que ele é vendido. Um mesmo gerente pode oferecer um fundo (CVM), um VGBL (SUSEP) e um CDB (BACEN) na mesma conversa. Note ainda que cada supervisor tem um normativo acima de si: CVM e BACEN respondem ao CMN, a SUSEP ao CNSP e a PREVIC ao CNPC. A CVM é autarquia em regime especial vinculada ao Ministério da Fazenda, com poder normativo próprio — as Resoluções CVM, como a 175 dos fundos e a 30 da classificação de investidores, são dela, não do CMN.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 6,
         },
       ],
@@ -360,121 +415,29 @@ export const M1: Macrotema = {
     {
       id: 'm1.2',
       macrotemaId: 'm1',
-      nome: 'Prevenção à lavagem de dinheiro',
+      codigo: '1.2',
+      nome: 'Política econômica',
       ordem: 2,
       preRequisitos: ['m1.1'],
-      conceitos: [
-        {
-          id: 'c-pld',
-          microtemaId: 'm1.2',
-          titulo: 'PLD/FT — as três etapas e o dever de comunicar',
-          objetivo: 'Reconhecer as etapas da lavagem e as obrigações do profissional.',
-          etiquetas: ['ESSENCIAL', 'DECORAR', 'ATENCAO'],
-          resumo30s:
-            'Lavagem tem três etapas: colocação, ocultação e integração. O profissional tem dever de conhecer o cliente (KYC), registrar operações e comunicar ao COAF — sem avisar o cliente.',
-          explicacao: {
-            oQueE:
-              'Lavagem de dinheiro é o processo de dar aparência lícita a recursos de origem criminosa.',
-            paraQueServe:
-              'A PLD/FT (prevenção à lavagem de dinheiro e ao financiamento do terrorismo) existe para impedir que o sistema financeiro seja usado como lavanderia.',
-            comoFunciona: [
-              'Etapa 1 — Colocação: o dinheiro entra no sistema financeiro. É o momento mais vulnerável e onde a fiscalização é mais eficaz.',
-              'Etapa 2 — Ocultação (ou estratificação): sucessivas movimentações para apagar o rastro da origem.',
-              'Etapa 3 — Integração: o recurso volta à economia formal com aparência legítima — imóveis, empresas, investimentos.',
-              'A instituição deve manter política de KYC (conheça seu cliente), cadastro atualizado e registro das operações.',
-              'Operações suspeitas ou acima dos limites definidos pela regulação devem ser comunicadas ao COAF.',
-              'A comunicação é feita SEM dar ciência ao cliente. Avisar o cliente caracteriza falha grave.',
-            ],
-            exemploSimples:
-              'Um cliente que sempre movimentou R$ 3 mil por mês começa a depositar R$ 40 mil semanais em espécie, sem justificativa compatível com a renda declarada. Isso é sinal de alerta e exige análise e, se confirmado o indício, comunicação ao COAF.',
-            lembrarNaProva: [
-              'A ordem é: Colocação → Ocultação → Integração.',
-              'A colocação é a fase mais vulnerável para o criminoso.',
-              'Comunicar ao COAF sem avisar o cliente.',
-              'Não comunicar quando devido gera responsabilização da instituição e do profissional.',
-            ],
-          },
-          exemplos: [
-            {
-              titulo: 'Sinais de alerta típicos',
-              corpo:
-                'Movimentação incompatível com a renda ou o patrimônio; fracionamento de valores para ficar abaixo de limites; resistência a fornecer documentos; operações sem fundamento econômico aparente; uso de terceiros sem relação clara com o cliente.',
-            },
-          ],
-          conceitoChave:
-            'Colocação, ocultação, integração. E o dever de comunicar existe mesmo sem certeza do crime: basta o indício.',
-          pontosChave: [
-            'Três etapas na ordem: colocação → ocultação → integração',
-            'KYC: conhecer o cliente e manter cadastro atualizado',
-            'Comunicação ao COAF, sem ciência do cliente',
-            'Registro e guarda das operações',
-            'Responsabilidade é da instituição e também do profissional',
-          ],
-          erroComum:
-            'Achar que só se comunica quando há prova do crime, ou que é preciso avisar o cliente. Nenhum dos dois é verdade: comunica-se o indício, e em sigilo.',
-          alertaProva:
-            'Questão clássica: "o gerente deve informar o cliente sobre a comunicação ao COAF?" — Não. Nunca.',
-          tabela: {
-            titulo: 'As três etapas',
-            colunas: ['Etapa', 'O que acontece', 'Exemplo'],
-            linhas: [
-              ['Colocação', 'Dinheiro entra no sistema', 'Depósitos em espécie fracionados'],
-              ['Ocultação', 'Apaga-se o rastro', 'Várias transferências entre contas e países'],
-              ['Integração', 'Volta como recurso "limpo"', 'Compra de imóvel ou empresa'],
-            ],
-          },
-          perguntaRapida: {
-            enunciado: 'Ao identificar indício de lavagem, o profissional deve:',
-            alternativas: [
-              'Encerrar a conta e avisar o cliente do motivo',
-              'Comunicar ao COAF sem dar ciência ao cliente',
-              'Aguardar decisão judicial antes de qualquer ação',
-              'Comunicar somente se o valor exceder R$ 1 milhão',
-            ],
-            correta: 1,
-            explicacao:
-              'A comunicação ao COAF é feita em sigilo, sem informar o cliente, e independe de decisão judicial ou de um piso tão alto.',
-          },
-          mapaMental: {
-            id: 'mm-pld',
-            rotulo: 'PLD/FT',
-            revisao: true,
-            filhos: [
-              {
-                id: 'mm-pld-etapas',
-                rotulo: 'Etapas',
-                revisao: true,
-                filhos: [
-                  { id: 'mm-pld-1', rotulo: '1. Colocação', detalhe: 'Fase mais vulnerável', revisao: true },
-                  { id: 'mm-pld-2', rotulo: '2. Ocultação', revisao: true },
-                  { id: 'mm-pld-3', rotulo: '3. Integração', revisao: true },
-                ],
-              },
-              {
-                id: 'mm-pld-dev',
-                rotulo: 'Deveres',
-                revisao: true,
-                filhos: [
-                  { id: 'mm-pld-4', rotulo: 'KYC' },
-                  { id: 'mm-pld-5', rotulo: 'Registro de operações' },
-                  { id: 'mm-pld-6', rotulo: 'Comunicar ao COAF', detalhe: 'Sem avisar o cliente', revisao: true },
-                ],
-              },
-            ],
-          },
-          reexplicacoes: {
-            simples:
-              'Lavar dinheiro é fazer dinheiro sujo parecer limpo. Isso acontece em três passos: colocar no banco, embaralhar e trazer de volta como se fosse legítimo.',
-            exemplo:
-              'Um traficante deposita dinheiro vivo em várias contas (colocação), transfere entre elas e para o exterior (ocultação) e compra um restaurante (integração). O restaurante agora "justifica" o dinheiro.',
-            analogia:
-              'É como lavar uma roupa manchada: molhar (colocação), bater e enxaguar várias vezes (ocultação), pendurar limpa no varal (integração).',
-            iniciante:
-              'Quando alguém ganha dinheiro com crime, precisa esconder de onde veio. O banco é obrigado a perceber isso e avisar as autoridades — em silêncio, sem contar ao cliente.',
-          },
-          minutosEstimados: 7,
-        },
-      ],
+      conceitos: [],
+    },
+    {
+      id: 'm1.3',
+      macrotemaId: 'm1',
+      codigo: '1.3',
+      nome: 'Operações do mercado financeiro',
+      ordem: 3,
+      preRequisitos: ['m1.2'],
+      conceitos: [],
+    },
+    {
+      id: 'm1.4',
+      macrotemaId: 'm1',
+      codigo: '1.4',
+      nome: 'Regulação e infraestrutura de mercado',
+      ordem: 4,
+      preRequisitos: ['m1.1'],
+      conceitos: [],
     },
   ],
 }

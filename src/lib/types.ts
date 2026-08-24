@@ -22,10 +22,15 @@ export interface ExamBlueprint {
   duracaoMin: number
   /** Percentual mínimo de acerto para aprovação (0–1). */
   notaCorte: number
-  formatos: { tipo: QuestionKind; quantidade: number }[]
   /**
-   * `true` somente quando os dados foram conferidos contra o Programa
-   * Detalhado oficial. Enquanto `false`, a interface exibe aviso.
+   * Formatos de questão da prova. A ANBIMA nomeia os formatos no edital, mas
+   * NÃO publica quantas questões cabem a cada um — por isso `quantidade` é
+   * opcional e fica ausente enquanto não houver fonte.
+   */
+  formatos: { tipo: QuestionKind; quantidade?: number }[]
+  /**
+   * `true` somente quando os dados foram conferidos contra documento oficial
+   * da ANBIMA. Enquanto `false`, a interface exibe aviso.
    */
   verificado: boolean
   fonte: string
@@ -52,6 +57,8 @@ export interface Macrotema {
 export interface Microtema {
   id: string
   macrotemaId: string
+  /** Código do item no Programa Detalhado oficial (ex.: "2.1"). */
+  codigo: string
   nome: string
   ordem: number
   /** Microtemas que precisam estar em nível >= 0.6 para liberar este. */
@@ -59,13 +66,53 @@ export interface Microtema {
   conceitos: Conceito[]
 }
 
-/** Explicação em 5 passos — regra de didática obrigatória. */
+/**
+ * Corpo da lição. Cobre os nove blocos obrigatórios da especificação:
+ *
+ * | # | Bloco                            | Campo                    |
+ * |---|----------------------------------|--------------------------|
+ * | 1 | O que é?                         | `oQueE`                  |
+ * | 2 | Por que isso importa?            | `porQueImporta`          |
+ * | 3 | Como funciona?                   | `comoFunciona`           |
+ * | 4 | Exemplo simples                  | `exemploSimples`         |
+ * | 5 | Exemplo aplicado ao mercado      | `exemploAplicado`        |
+ * | 6 | O que preciso lembrar?           | `lembrarNaProva`         |
+ * | 7 | Erro comum                       | `Conceito.erroComum`     |
+ * | 8 | Miniquestão                      | `Conceito.perguntaRapida`|
+ * | 9 | Revisão rápida                   | `revisaoRapida`          |
+ *
+ * Os três blocos novos são opcionais durante a migração dos conceitos
+ * legados e passam a obrigatórios quando todos estiverem preenchidos.
+ */
 export interface Explicacao {
   oQueE: string
+  /** Bloco 2 — por que o assunto importa na prática e na prova. */
+  porQueImporta?: string
   paraQueServe: string
   comoFunciona: string[]
   exemploSimples: string
+  /** Bloco 5 — o mesmo conceito numa situação real de mercado. */
+  exemploAplicado?: string
   lembrarNaProva: string[]
+  /** Bloco 9 — varredura final, uma linha por ideia. */
+  revisaoRapida?: string[]
+}
+
+/**
+ * Três níveis progressivos de profundidade (item 4 da especificação).
+ *
+ * O **nível 2 (Aprenda)** é a própria `Conceito.explicacao` — não se duplica
+ * texto. Aqui ficam só o degrau abaixo e o degrau acima:
+ *
+ * - `entenda`   — nível 1: uma ou duas frases, linguagem do dia a dia.
+ * - `aprofunde` — nível 3: detalhe técnico, exceções e conexões com outros
+ *                 conceitos, para quem quer ir além do exigido na prova.
+ *
+ * O usuário nunca é obrigado a ler os níveis 2 ou 3.
+ */
+export interface NiveisExplicacao {
+  entenda: string
+  aprofunde: string
 }
 
 export interface Conceito {
@@ -89,7 +136,13 @@ export interface Conceito {
   mapaMental: MapaMentalNode
   /** Reformulações pré-autoradas para "Explique de outro jeito". */
   reexplicacoes: Reexplicacoes
+  /** Níveis 1 e 3. O nível 2 é a própria `explicacao`. */
+  niveis?: NiveisExplicacao
   minutosEstimados: number
+  /** Versão do conteúdo — incrementada a cada revisão editorial. */
+  versao?: number
+  /** Data ISO da última revisão editorial. */
+  atualizadoEm?: string
 }
 
 export interface Exemplo {

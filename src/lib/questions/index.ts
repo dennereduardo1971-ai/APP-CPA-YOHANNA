@@ -42,7 +42,7 @@ export const ROTULO_TIPO: Record<QuestionKind, string> = {
   situacao_pratica: 'Situação prática',
   comparacao: 'Comparação',
   verdadeiro_falso: 'Verdadeiro ou falso',
-  arvore_decisao: 'Árvore de decisão',
+  arvore_decisao: 'Árvore de diálogo',
   case: 'Case',
 }
 

@@ -7,6 +7,8 @@ import {
   probabilidadeAcerto,
   registrarResposta,
   retencao,
+  TEXTO_DOMINIO,
+  tomDominio,
 } from '@/lib/engine/mastery'
 import {
   atualizarSequencia,
@@ -308,5 +310,43 @@ describe('estatísticas', () => {
     const p = prontidao([resposta(true)], {}, Date.now())
     expect(p.valor).toBeNull()
     expect(p.motivo).toBeTruthy()
+  })
+})
+
+describe('tom de desempenho', () => {
+  it('nunca fica mais otimista do que o nível de domínio', () => {
+    const ordemTom = { danger: 0, warn: 1, jade: 2 }
+    const ordemNivel = {
+      inicial: 0,
+      desenvolvimento: 1,
+      intermediario: 2,
+      bom: 3,
+      dominado: 4,
+    }
+    let anteriorTom = -1
+    let anteriorNivel = -1
+    for (let v = 0; v <= 1.0001; v += 0.01) {
+      const t = ordemTom[tomDominio(v)]
+      const n = ordemNivel[nivelDominio(v)]
+      // As duas escalas sobem juntas: nenhuma pode retroceder enquanto a outra avança.
+      expect(t, `tom retrocedeu em ${v.toFixed(2)}`).toBeGreaterThanOrEqual(anteriorTom)
+      expect(n, `nível retrocedeu em ${v.toFixed(2)}`).toBeGreaterThanOrEqual(anteriorNivel)
+      anteriorTom = t
+      anteriorNivel = n
+    }
+  })
+
+  it('verde só a partir de "Bom" — nunca pinta de verde quem está em desenvolvimento', () => {
+    for (let v = 0; v < 0.75; v += 0.01) {
+      expect(tomDominio(v), `${v.toFixed(2)} não pode ser jade`).not.toBe('jade')
+    }
+    expect(tomDominio(0.75)).toBe('jade')
+    expect(nivelDominio(0.75)).toBe('bom')
+  })
+
+  it('todo tom tem classe de texto declarada', () => {
+    for (const t of ['jade', 'warn', 'danger'] as const) {
+      expect(TEXTO_DOMINIO[t]).toBeTruthy()
+    }
   })
 })

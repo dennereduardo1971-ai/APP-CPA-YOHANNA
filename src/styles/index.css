@@ -2,25 +2,58 @@
 @tailwind components;
 @tailwind utilities;
 
+/*
+ * Paleta "Alvorada" — identidade visual inspirada na estética de Akatsuki no
+ * Yona. Toda cor é autoral: são valores escolhidos para dark mode acessível,
+ * não amostras extraídas de arte de terceiros.
+ *
+ * A estrutura tem três camadas, e é ela que a regra 7 do CLAUDE.md descreve:
+ *
+ *   1. NOITE      fundo violeta profundo — o céu antes do amanhecer.
+ *   2. AURORA     acento único da marca. Carmesim da alvorada.
+ *   3. DRAGÕES    quatro cores de identidade de módulo. Nunca decoram: só
+ *                 aparecem para dizer "este é o módulo 1/2/3/4".
+ *
+ * Os semânticos (jade = acerto, warn = atenção, danger = erro) reaproveitam
+ * cores dessa mesma lista em vez de introduzir novas — por isso `--jade` e
+ * `--warn` são apelidos, não valores próprios.
+ *
+ * Por que acerto NÃO usa o acento: num app de questões, "certo" em carmesim
+ * ao lado de "errado" em vermelho é indistinguível. Acerto fica no verde do
+ * Ryokuryuu; o carmesim nunca aparece nessa comparação.
+ */
 :root {
-  /* Dark-first. Uma única cor de destaque: verde-água. */
-  --bg: 11 18 17;
-  --surface: 18 27 26;
-  --elevated: 24 36 34;
-  --line: 35 50 47;
+  /* ── 1. Noite de Kouka ─────────────────────────────────────────────── */
+  --bg: 14 12 22;
+  --surface: 23 20 35;
+  --elevated: 33 29 47;
+  --line: 49 43 68;
 
-  --ink: 232 241 239;
-  --ink-2: 183 199 196;
-  --muted: 126 145 141;
+  --ink: 240 236 246;
+  --ink-2: 195 188 209;
+  --muted: 139 131 157;
 
-  --aqua: 53 214 176;
-  --aqua-dim: 30 156 127;
-  --aqua-soft: 15 43 38;
+  /* ── 2. Aurora ─── acento da marca: navegação, links, ênfase, seleção ─ */
+  --aurora: 237 59 94;
+  --aurora-dim: 184 38 72;
+  --aurora-soft: 48 16 30;
 
-  --warn: 232 180 88;
-  --warn-soft: 42 33 20;
-  --danger: 240 119 106;
-  --danger-soft: 46 26 24;
+  /* Ouro do horizonte: segundo ponto do gradiente da alvorada. */
+  --ouro: 246 190 86;
+
+  /* ── 3. Os quatro dragões ─── identidade de módulo ─────────────────── */
+  --hakuryuu: 226 232 246;  /* branco — módulo 1 */
+  --seiryuu: 112 168 250;   /* azul   — módulo 2 */
+  --ryokuryuu: 62 208 158;  /* verde  — módulo 3 */
+  --ouryuu: var(--ouro);    /* ouro   — módulo 4 */
+
+  /* ── Semânticos ─── apelidos, para não criar cor nova ──────────────── */
+  --jade: var(--ryokuryuu);
+  --jade-soft: 13 44 36;
+  --warn: var(--ouro);
+  --warn-soft: 46 35 16;
+  --danger: 240 104 72;
+  --danger-soft: 48 24 18;
 
   color-scheme: dark;
 }
@@ -42,10 +75,10 @@
 
   h1, h2, h3, h4 { @apply font-bold tracking-tight; text-wrap: balance; }
 
-  ::selection { background: rgb(var(--aqua) / .28); }
+  ::selection { background: rgb(var(--aurora) / .3); }
 
   :focus-visible {
-    outline: 2px solid rgb(var(--aqua));
+    outline: 2px solid rgb(var(--aurora));
     outline-offset: 2px;
     border-radius: 6px;
   }
@@ -66,11 +99,29 @@
     @apply bg-surface border border-line rounded-2xl;
   }
   .card-hover {
-    @apply transition-colors hover:border-aqua/40 hover:bg-elevated;
+    @apply transition-colors hover:border-aurora/40 hover:bg-elevated;
   }
   .tnum { font-variant-numeric: tabular-nums; }
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { scrollbar-width: none; }
+
+  /*
+   * Títulos com peso de pincel. A fonte é melhoria progressiva: sem rede — o
+   * caso do APK — a pilha cai num serif do sistema, que continua contrastando
+   * com o sans do corpo. O efeito de hierarquia sobrevive à ausência do asset.
+   */
+  .display {
+    @apply font-display font-bold;
+    letter-spacing: -0.01em;
+  }
+
+  /* Texto sobre o gradiente da alvorada. */
+  .texto-alvorada {
+    background: linear-gradient(96deg, rgb(var(--aurora)), rgb(var(--ouro)));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -55,8 +55,8 @@ export function ExpliqueDeOutroJeito({
             aria-pressed={modo === b.modo}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               modo === b.modo
-                ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
             }`}
           >
             {b.rotulo}
@@ -69,13 +69,13 @@ export function ExpliqueDeOutroJeito({
       <div className="mt-4 flex flex-wrap gap-2">
         <Link
           to={`/conteudo/${conceito.id}`}
-          className="rounded-lg border border-line bg-surface px-3 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-aqua/40 hover:text-ink"
+          className="rounded-lg border border-line bg-surface px-3 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-aurora/40 hover:text-ink"
         >
           Rever a aula
         </Link>
         <Link
           to={`/mapas/${conceito.id}`}
-          className="rounded-lg border border-line bg-surface px-3 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-aqua/40 hover:text-ink"
+          className="rounded-lg border border-line bg-surface px-3 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-aurora/40 hover:text-ink"
         >
           Ver mapa mental
         </Link>

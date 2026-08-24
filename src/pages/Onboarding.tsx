@@ -32,7 +32,7 @@ export default function Onboarding() {
   return (
     <div className="mx-auto flex min-h-[80vh] max-w-md flex-col justify-center py-8">
       <div className="mb-8">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-aqua">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-aurora">
           Preparatório
         </p>
         <h1 className="mt-1 text-4xl font-extrabold tracking-tight">CPA</h1>
@@ -53,7 +53,7 @@ export default function Onboarding() {
             onChange={(e) => setNome(e.target.value)}
             placeholder="Seu nome"
             autoComplete="given-name"
-            className="mb-6 h-12 w-full rounded-xl border border-line bg-surface px-4 text-[15px] outline-none transition-colors focus:border-aqua"
+            className="mb-6 h-12 w-full rounded-xl border border-line bg-surface px-4 text-[15px] outline-none transition-colors focus:border-aurora"
           />
           <Button bloco tamanho="lg" onClick={() => setPasso(1)}>
             Continuar
@@ -76,8 +76,8 @@ export default function Onboarding() {
                 aria-pressed={minutos === v}
                 className={`rounded-xl border p-4 text-left transition-all ${
                   minutos === v
-                    ? 'border-aqua bg-aqua/10'
-                    : 'border-line bg-surface hover:border-aqua/40'
+                    ? 'border-aurora bg-aurora/10'
+                    : 'border-line bg-surface hover:border-aurora/40'
                 }`}
               >
                 <span className="tnum block text-xl font-bold">{v} min</span>
@@ -106,7 +106,7 @@ export default function Onboarding() {
             type="date"
             value={dataProva}
             onChange={(e) => setDataProva(e.target.value)}
-            className="mb-6 h-12 w-full rounded-xl border border-line bg-surface px-4 text-[15px] outline-none transition-colors focus:border-aqua"
+            className="mb-6 h-12 w-full rounded-xl border border-line bg-surface px-4 text-[15px] outline-none transition-colors focus:border-aurora"
           />
           <Button bloco tamanho="lg" onClick={finalizar}>
             Começar a estudar
@@ -126,7 +126,7 @@ export default function Onboarding() {
           <span
             key={i}
             className={`h-1.5 rounded-full transition-all ${
-              i === passo ? 'w-6 bg-aqua' : 'w-1.5 bg-elevated'
+              i === passo ? 'w-6 bg-aurora' : 'w-1.5 bg-elevated'
             }`}
           />
         ))}

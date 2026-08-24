@@ -57,7 +57,7 @@ export default function Metas() {
           <Barra valor={dia.progressoQuestoes} />
 
           {dia.cumprida && (
-            <p className="mt-4 text-sm font-semibold text-aqua">
+            <p className="mt-4 text-sm font-semibold text-aurora">
               Meta de hoje cumprida. Estudar além disso é bônus.
             </p>
           )}
@@ -72,7 +72,7 @@ export default function Metas() {
                 <div className="flex h-20 w-full items-end justify-center">
                   <div
                     className={`w-full max-w-8 rounded-t-md transition-all ${
-                      d.cumprida ? 'bg-aqua' : d.minutos > 0 ? 'bg-aqua/30' : 'bg-elevated'
+                      d.cumprida ? 'bg-jade' : d.minutos > 0 ? 'bg-jade/30' : 'bg-elevated'
                     }`}
                     style={{
                       height: `${Math.max(4, Math.min(100, (d.minutos / Math.max(1, estado.metas.minutosDia)) * 100))}%`,
@@ -103,8 +103,8 @@ export default function Metas() {
                 aria-pressed={estado.metas.minutosDia === v}
                 className={`tnum rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                   estado.metas.minutosDia === v
-                    ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                    : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                    ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                    : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                 }`}
               >
                 {v} min
@@ -122,8 +122,8 @@ export default function Metas() {
                 aria-pressed={estado.metas.questoesDia === v}
                 className={`tnum rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                   estado.metas.questoesDia === v
-                    ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                    : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                    ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                    : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                 }`}
               >
                 {v}
@@ -141,8 +141,8 @@ export default function Metas() {
                 aria-pressed={estado.metas.diasSemana === v}
                 className={`tnum rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                   estado.metas.diasSemana === v
-                    ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                    : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                    ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                    : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                 }`}
               >
                 {v}
@@ -158,7 +158,7 @@ export default function Metas() {
             type="date"
             value={estado.metas.dataProva ?? ''}
             onChange={(e) => salvar({ dataProva: e.target.value || null })}
-            className="h-11 w-full rounded-xl border border-line bg-elevated px-3.5 text-[15px] outline-none transition-colors focus:border-aqua"
+            className="h-11 w-full rounded-xl border border-line bg-elevated px-3.5 text-[15px] outline-none transition-colors focus:border-aurora"
           />
           {diasProva !== null && (
             <p className="mt-2 text-sm text-muted">
@@ -170,7 +170,7 @@ export default function Metas() {
             </p>
           )}
 
-          {salvou && <p className="mt-4 text-sm font-semibold text-aqua">Metas atualizadas.</p>}
+          {salvou && <p className="mt-4 text-sm font-semibold text-aurora">Metas atualizadas.</p>}
         </Card>
       </Secao>
     </div>

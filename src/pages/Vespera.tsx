@@ -254,7 +254,7 @@ export default function Vespera() {
         <>
           {erros.length === 0 ? (
             <Card>
-              <p className="font-semibold text-aqua">Nenhum erro em aberto</p>
+              <p className="font-semibold text-aurora">Nenhum erro em aberto</p>
               <p className="mt-1 text-sm text-muted">
                 Você não tem erros pendentes. Vá direto para o simulado final.
               </p>
@@ -292,8 +292,8 @@ export default function Vespera() {
       )}
 
       {etapa === 6 && (
-        <Card className="border-aqua/40 bg-aqua/10">
-          <p className="font-bold text-aqua">Simulado final</p>
+        <Card className="border-aurora/40 bg-aurora/10">
+          <p className="font-bold text-aurora">Simulado final</p>
           <p className="mt-1 text-[15px] leading-relaxed text-ink-2">
             Última medição. Faça em silêncio, cronometrado, sem consultar nada — a ideia é
             reproduzir a condição da prova, não conferir a resposta.

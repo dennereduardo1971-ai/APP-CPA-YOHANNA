@@ -101,7 +101,7 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
     const minutos = Math.round(passos.reduce((t, p) => t + p.minutos, 0))
     return (
       <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-aqua">Sessão</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-aurora">Sessão</p>
         <h1 className="mt-1 text-3xl font-extrabold tracking-tight">{titulo}</h1>
 
         {justificativa && (
@@ -111,7 +111,7 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
         <Card className="mt-6">
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
-              <p className="tnum text-2xl font-extrabold text-aqua">{minutos}</p>
+              <p className="tnum text-2xl font-extrabold text-aurora">{minutos}</p>
               <p className="text-[11px] uppercase tracking-wider text-muted">minutos</p>
             </div>
             <div>
@@ -151,7 +151,7 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
     const taxa = total ? acertos / total : 0
     return (
       <div className="mx-auto flex min-h-[70vh] max-w-md flex-col justify-center animate-fade-up">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-aqua">
+        <p className="text-[11px] font-semibold uppercase tracking-[0.16em] text-aurora">
           Sessão concluída
         </p>
         <h1 className="mt-1 text-3xl font-extrabold tracking-tight">
@@ -161,7 +161,7 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
         <Card className="mt-6">
           <div className="grid grid-cols-3 gap-3 text-center">
             <div>
-              <p className="tnum text-2xl font-extrabold text-aqua">
+              <p className="tnum text-2xl font-extrabold text-jade">
                 {total ? Math.round(taxa * 100) : 0}%
               </p>
               <p className="text-[11px] uppercase tracking-wider text-muted">acerto</p>
@@ -173,21 +173,21 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
               <p className="text-[11px] uppercase tracking-wider text-muted">questões</p>
             </div>
             <div>
-              <p className="tnum text-2xl font-extrabold text-aqua">+{xp}</p>
+              <p className="tnum text-2xl font-extrabold text-aurora">+{xp}</p>
               <p className="text-[11px] uppercase tracking-wider text-muted">XP</p>
             </div>
           </div>
         </Card>
 
         {conquistas.length > 0 && (
-          <Card className="mt-3 border-aqua/40 bg-aqua/10">
-            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.13em] text-aqua">
+          <Card className="mt-3 border-aurora/40 bg-aurora/10">
+            <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
               {conquistas.length === 1 ? 'Nova conquista' : 'Novas conquistas'}
             </p>
             <ul className="flex flex-col gap-1.5">
               {conquistas.map((c) => (
                 <li key={c.id} className="flex items-center gap-2 text-sm">
-                  <span aria-hidden className="text-aqua">
+                  <span aria-hidden className="text-aurora">
                     {c.icone}
                   </span>
                   <span className="font-semibold">{c.nome}</span>
@@ -237,8 +237,8 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
         </div>
         <h1 className="text-2xl font-extrabold tracking-tight">{conceito.titulo}</h1>
 
-        <div className="mt-4 rounded-2xl border border-aqua/30 bg-aqua/10 p-4">
-          <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.13em] text-aqua">
+        <div className="mt-4 rounded-2xl border border-aurora/30 bg-aurora/10 p-4">
+          <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
             Resumo de 30 segundos
           </p>
           <p className="text-[15px] leading-relaxed">{conceito.resumo30s}</p>
@@ -247,14 +247,14 @@ export function SessaoEstudo({ passos, origem, titulo, justificativa, aoSair = '
         <ul className="mt-5 flex flex-col gap-2">
           {conceito.explicacao.comoFunciona.slice(0, 4).map((linha, i) => (
             <li key={i} className="flex gap-2.5 text-[15px] leading-relaxed text-ink-2">
-              <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-aqua" />
+              <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-aurora" />
               {linha}
             </li>
           ))}
         </ul>
 
-        <div className="mt-5 rounded-2xl border-l-2 border-aqua bg-surface p-4">
-          <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.13em] text-aqua">
+        <div className="mt-5 rounded-2xl border-l-2 border-aurora bg-surface p-4">
+          <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
             Conceito-chave
           </p>
           <p className="text-[15px] font-semibold leading-relaxed">{conceito.conceitoChave}</p>

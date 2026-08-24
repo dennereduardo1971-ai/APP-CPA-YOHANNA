@@ -53,7 +53,7 @@ export function MapaMental({ raiz, modoRevisao = false }: Props) {
         <button
           type="button"
           onClick={() => setAbertos(tudoAberto ? coletarIds(arvore, 1) : new Set(todosIds))}
-          className="rounded-lg border border-line bg-surface px-3 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-aqua/40 hover:text-ink"
+          className="rounded-lg border border-line bg-surface px-3 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-aurora/40 hover:text-ink"
         >
           {tudoAberto ? 'Recolher tudo' : 'Expandir tudo'}
         </button>
@@ -61,7 +61,7 @@ export function MapaMental({ raiz, modoRevisao = false }: Props) {
           <button
             type="button"
             onClick={() => setDestaque(null)}
-            className="rounded-lg border border-aqua/40 bg-aqua/10 px-3 py-1.5 text-[13px] text-aqua"
+            className="rounded-lg border border-aurora/40 bg-aurora/10 px-3 py-1.5 text-[13px] text-aurora"
           >
             Limpar destaque
           </button>
@@ -99,7 +99,7 @@ function No({ no, nivel, abertos, alternar, destaque, setDestaque }: NoProps) {
   const emDestaque = destaque === no.id
 
   const estilos = [
-    'border-aqua/60 bg-aqua/12 text-ink font-bold',
+    'border-aurora/60 bg-aurora/12 text-ink font-bold',
     'border-line bg-elevated text-ink font-semibold',
     'border-line bg-surface text-ink-2',
   ]
@@ -120,7 +120,7 @@ function No({ no, nivel, abertos, alternar, destaque, setDestaque }: NoProps) {
             if (temFilhos) alternar(no.id)
           }}
           className={`flex items-center gap-2 rounded-xl border px-3 py-2 text-left text-sm transition-all ${estilo} ${
-            emDestaque ? 'ring-2 ring-aqua/50' : ''
+            emDestaque ? 'ring-2 ring-aurora/50' : ''
           } ${destaque && !emDestaque ? 'opacity-45' : ''}`}
         >
           {temFilhos && (
@@ -132,7 +132,7 @@ function No({ no, nivel, abertos, alternar, destaque, setDestaque }: NoProps) {
           {no.revisao && (
             <span
               aria-label="essencial para revisão"
-              className="ml-1 h-1.5 w-1.5 shrink-0 rounded-full bg-aqua"
+              className="ml-1 h-1.5 w-1.5 shrink-0 rounded-full bg-aurora"
             />
           )}
         </button>

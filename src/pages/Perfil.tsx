@@ -60,7 +60,7 @@ export default function Perfil() {
         <div className="flex items-start gap-4">
           <span
             aria-hidden
-            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-aqua/40 bg-aqua/10 text-2xl text-aqua"
+            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-aurora/40 bg-aurora/10 text-2xl text-aurora"
           >
             {estado.perfil.avatar ?? '◆'}
           </span>
@@ -70,7 +70,7 @@ export default function Perfil() {
                 <input
                   value={nome}
                   onChange={(e) => setNome(e.target.value)}
-                  className="h-10 min-w-0 flex-1 rounded-lg border border-line bg-elevated px-3 text-[15px] outline-none focus:border-aqua"
+                  className="h-10 min-w-0 flex-1 rounded-lg border border-line bg-elevated px-3 text-[15px] outline-none focus:border-aurora"
                 />
                 <Button
                   tamanho="sm"
@@ -116,8 +116,8 @@ export default function Perfil() {
               aria-label={`Escolher avatar ${a}`}
               className={`grid h-9 w-9 place-items-center rounded-xl border text-base transition-colors ${
                 estado.perfil.avatar === a
-                  ? 'border-aqua bg-aqua/15 text-aqua'
-                  : 'border-line bg-elevated text-muted hover:border-aqua/40'
+                  ? 'border-aurora bg-aurora/15 text-aurora'
+                  : 'border-line bg-elevated text-muted hover:border-aurora/40'
               }`}
             >
               {a}
@@ -130,7 +130,7 @@ export default function Perfil() {
         <Card>
           <div className="grid grid-cols-2 gap-4 text-center sm:grid-cols-4">
             <div>
-              <p className="tnum text-2xl font-extrabold text-aqua">{Math.round(dominio * 100)}%</p>
+              <p className="tnum text-2xl font-extrabold text-jade">{Math.round(dominio * 100)}%</p>
               <p className="text-[11px] uppercase tracking-wider text-muted">domínio</p>
             </div>
             <div>
@@ -163,8 +163,8 @@ export default function Perfil() {
             aria-pressed={aba === chave}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               aba === chave
-                ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
             }`}
           >
             {rotulo}
@@ -253,7 +253,7 @@ export default function Perfil() {
                           <p className="text-xs text-muted">{ROTULO_TIPO[q.tipo]}</p>
                           <p className="mt-1 text-sm font-medium">{q.enunciado}</p>
                           <div className="mt-2 flex gap-4 text-sm font-semibold">
-                            <Link to={`/conteudo/${q.conceitoId}`} className="text-aqua">
+                            <Link to={`/conteudo/${q.conceitoId}`} className="text-aurora">
                               Ver a aula
                             </Link>
                             <button

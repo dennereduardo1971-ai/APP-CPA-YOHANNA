@@ -6,6 +6,7 @@ import { EtiquetaBadge } from '@/components/ui/Badge'
 import { Vazio } from '@/components/ui/Empty'
 import { MapaMental } from '@/components/domain/MapaMental'
 import { ExpliqueDeOutroJeito } from '@/components/domain/ExpliqueDeOutroJeito'
+import { SeletorNivel } from '@/components/domain/SeletorNivel'
 import { CONCEITOS, getConceito, MACROTEMAS } from '@/lib/content'
 import { useStore } from '@/lib/store'
 
@@ -75,30 +76,40 @@ export default function Aula() {
             onClick={() => alternarFavorito('conceitos', conceito.id)}
             aria-pressed={favorita}
             aria-label={favorita ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-            className={`ml-auto text-lg ${favorita ? 'text-aqua' : 'text-muted hover:text-ink'}`}
+            className={`ml-auto text-lg ${favorita ? 'text-aurora' : 'text-muted hover:text-ink'}`}
           >
             {favorita ? '★' : '☆'}
           </button>
         </div>
-        <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{conceito.titulo}</h1>
+        <h1 className="display text-2xl sm:text-3xl">{conceito.titulo}</h1>
         <p className="mt-2 text-sm text-muted">{conceito.objetivo}</p>
         <p className="tnum mt-2 text-xs text-muted">
           {conceito.minutosEstimados} min de leitura
-          {concluida && <span className="ml-2 font-semibold text-aqua">· concluída</span>}
+          {concluida && <span className="ml-2 font-semibold text-jade">· concluída</span>}
         </p>
       </header>
 
       {/* Resumo de 30 segundos */}
-      <div className="mb-8 rounded-2xl border border-aqua/30 bg-aqua/10 p-4">
-        <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.13em] text-aqua">
+      <div className="mb-8 rounded-2xl border border-aurora/30 bg-aurora/10 p-4">
+        <p className="mb-1.5 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
           Resumo de 30 segundos
         </p>
         <p className="text-[15px] leading-relaxed">{conceito.resumo30s}</p>
       </div>
 
+      {conceito.niveis && <SeletorNivel niveis={conceito.niveis} />}
+
       <Bloco rotulo="O que é">
         <p className="text-[15px] leading-relaxed text-ink-2">{conceito.explicacao.oQueE}</p>
       </Bloco>
+
+      {conceito.explicacao.porQueImporta && (
+        <Bloco rotulo="Por que isso importa">
+          <p className="text-[15px] leading-relaxed text-ink-2">
+            {conceito.explicacao.porQueImporta}
+          </p>
+        </Bloco>
+      )}
 
       <Bloco rotulo="Para que serve">
         <p className="text-[15px] leading-relaxed text-ink-2">{conceito.explicacao.paraQueServe}</p>
@@ -108,7 +119,7 @@ export default function Aula() {
         <ul className="flex flex-col gap-2">
           {conceito.explicacao.comoFunciona.map((linha, i) => (
             <li key={i} className="flex gap-2.5 text-[15px] leading-relaxed text-ink-2">
-              <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-aqua" />
+              <span aria-hidden className="mt-2 h-1 w-1 shrink-0 rounded-full bg-aurora" />
               {linha}
             </li>
           ))}
@@ -122,6 +133,16 @@ export default function Aula() {
           </p>
         </Card>
       </Bloco>
+
+      {conceito.explicacao.exemploAplicado && (
+        <Bloco rotulo="Exemplo aplicado ao mercado">
+          <Card className="bg-elevated/60">
+            <p className="text-[15px] leading-relaxed text-ink-2">
+              {conceito.explicacao.exemploAplicado}
+            </p>
+          </Card>
+        </Bloco>
+      )}
 
       {conceito.exemplos.length > 0 && (
         <Bloco rotulo="Mais exemplos">
@@ -172,8 +193,8 @@ export default function Aula() {
       )}
 
       {/* Conceito-chave */}
-      <div className="mb-6 rounded-2xl border-l-2 border-aqua bg-surface p-4">
-        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.13em] text-aqua">
+      <div className="mb-6 rounded-2xl border-l-2 border-aurora bg-surface p-4">
+        <p className="mb-1 text-[11px] font-semibold uppercase tracking-[0.13em] text-aurora">
           Conceito-chave
         </p>
         <p className="text-[15px] font-semibold leading-relaxed">{conceito.conceitoChave}</p>
@@ -183,7 +204,7 @@ export default function Aula() {
         <ul className="flex flex-col gap-2">
           {conceito.explicacao.lembrarNaProva.map((linha, i) => (
             <li key={i} className="flex gap-2.5 text-[15px] leading-relaxed">
-              <span aria-hidden className="mt-0.5 shrink-0 font-bold text-aqua">
+              <span aria-hidden className="mt-0.5 shrink-0 font-bold text-aurora">
                 ✓
               </span>
               {linha}
@@ -210,6 +231,24 @@ export default function Aula() {
         </div>
       )}
 
+      {conceito.explicacao.revisaoRapida && (
+        <Bloco rotulo="Revisão rápida">
+          <ol className="flex flex-col gap-2">
+            {conceito.explicacao.revisaoRapida.map((linha, i) => (
+              <li key={i} className="flex gap-2.5 text-[15px] leading-relaxed text-ink-2">
+                <span
+                  aria-hidden
+                  className="tnum mt-0.5 shrink-0 text-[13px] font-semibold text-aurora"
+                >
+                  {i + 1}.
+                </span>
+                {linha}
+              </li>
+            ))}
+          </ol>
+        </Bloco>
+      )}
+
       <Bloco rotulo="Pontos-chave">
         <div className="flex flex-wrap gap-2">
           {conceito.pontosChave.map((p, i) => (
@@ -229,7 +268,7 @@ export default function Aula() {
           <MapaMental raiz={conceito.mapaMental} />
           <Link
             to={`/mapas/${conceito.id}`}
-            className="mt-4 inline-block text-sm font-semibold text-aqua"
+            className="mt-4 inline-block text-sm font-semibold text-aurora"
           >
             Abrir em tela cheia
           </Link>
@@ -246,8 +285,8 @@ export default function Aula() {
               const certa = conceito.perguntaRapida.correta === i
               const revelou = respostaRapida !== null
 
-              let estilo = 'border-line bg-elevated hover:border-aqua/40'
-              if (revelou && certa) estilo = 'border-aqua bg-aqua/15'
+              let estilo = 'border-line bg-elevated hover:border-aurora/40'
+              if (revelou && certa) estilo = 'border-jade bg-jade/15'
               else if (revelou && escolhida) estilo = 'border-danger bg-danger-soft'
 
               return (
@@ -267,7 +306,7 @@ export default function Aula() {
 
           {respostaRapida !== null && (
             <div className="mt-3 animate-fade-up">
-              <p className={`mb-1 text-sm font-bold ${acertouRapida ? 'text-aqua' : 'text-danger'}`}>
+              <p className={`mb-1 text-sm font-bold ${acertouRapida ? 'text-jade' : 'text-danger'}`}>
                 {acertouRapida ? 'Correto' : 'Quase lá'}
               </p>
               <p className="text-[14px] leading-relaxed text-ink-2">
@@ -284,7 +323,7 @@ export default function Aula() {
           <button
             type="button"
             onClick={() => setMostrarOutro(true)}
-            className="text-sm font-semibold text-aqua underline-offset-4 hover:underline"
+            className="text-sm font-semibold text-aurora underline-offset-4 hover:underline"
           >
             Não entendi — explique de outro jeito
           </button>

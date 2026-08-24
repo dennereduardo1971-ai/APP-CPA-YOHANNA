@@ -53,7 +53,7 @@ export default function Baixar() {
           </p>
 
           {instalado ? (
-            <p className="mt-4 text-sm font-semibold text-aqua">
+            <p className="mt-4 text-sm font-semibold text-aurora">
               Já está instalado neste dispositivo.
             </p>
           ) : promptInstalacao ? (
@@ -85,7 +85,7 @@ export default function Baixar() {
 
           <a
             href={APP.apkLatest}
-            className="mt-4 inline-flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-aqua px-6 text-base font-semibold text-bg shadow-glow transition-all hover:brightness-110 active:scale-[.985]"
+            className="mt-4 inline-flex h-14 w-full items-center justify-center gap-2 rounded-2xl bg-aurora px-6 text-base font-semibold text-bg shadow-glow transition-all hover:brightness-110 active:scale-[.985]"
           >
             Baixar APK
           </a>
@@ -94,7 +94,7 @@ export default function Baixar() {
             href={APP.releases}
             target="_blank"
             rel="noreferrer"
-            className="mt-3 block text-center text-sm font-semibold text-aqua"
+            className="mt-3 block text-center text-sm font-semibold text-aurora"
           >
             Ver todas as versões
           </a>

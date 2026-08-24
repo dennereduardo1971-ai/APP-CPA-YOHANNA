@@ -84,7 +84,7 @@ export default function Progresso() {
                 <Card>
                   <div className="flex items-center justify-between gap-3">
                     <p className="min-w-0 truncate font-semibold">{r.nome}</p>
-                    <Pill tom="aqua">{ROTULO_NIVEL[r.nivel]}</Pill>
+                    <Pill tom="aurora">{ROTULO_NIVEL[r.nivel]}</Pill>
                   </div>
                   <Barra valor={r.dominio} className="mt-3" />
                 </Card>
@@ -121,7 +121,7 @@ export default function Progresso() {
                           valor={valor}
                           altura="h-1.5"
                           className="mt-2"
-                          tom={valor >= 0.75 ? 'aqua' : valor >= 0.4 ? 'warn' : 'danger'}
+                          tom={valor >= 0.75 ? 'jade' : valor >= 0.4 ? 'warn' : 'danger'}
                         />
                         {estado?.n ? (
                           <p className="tnum mt-1.5 text-[11px] text-muted">

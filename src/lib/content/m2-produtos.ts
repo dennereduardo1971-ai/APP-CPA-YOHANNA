@@ -14,13 +14,14 @@ export const M2: Macrotema = {
   nome: 'Produtos do mercado financeiro',
   resumo: 'Renda fixa, renda variável, fundos e previdência. O coração da prova.',
   peso: 0.4,
-  pesoVerificado: false,
+  pesoVerificado: true,
   ordem: 2,
   microtemas: [
     {
       id: 'm2.1',
       macrotemaId: 'm2',
-      nome: 'Renda fixa',
+      codigo: '2.1',
+      nome: 'Produtos de investimentos',
       ordem: 1,
       preRequisitos: [],
       conceitos: [
@@ -35,6 +36,8 @@ export const M2: Macrotema = {
           explicacao: {
             oQueE:
               'Renda fixa é um empréstimo: você entrega dinheiro ao emissor e ele devolve com uma regra de remuneração combinada desde o início.',
+            porQueImporta:
+              'A escolha entre prefixado, pós-fixado e híbrido é a recomendação mais frequente no atendimento. E é onde mora a marcação a mercado, que assusta o cliente e cai na prova.',
             paraQueServe:
               'Dar previsibilidade. A regra é conhecida na aplicação, mesmo quando o valor exato só se conhece no resgate.',
             comoFunciona: [
@@ -46,11 +49,20 @@ export const M2: Macrotema = {
             ],
             exemploSimples:
               'Você compra um prefixado de 11% a.a. No mês seguinte, a Selic sobe e títulos novos pagam 13%. O seu, que paga 11%, vale menos para quem quiser comprar de você hoje. Se segurar até o vencimento, recebe os 11% combinados.',
+            exemploAplicado:
+              'O cliente quer aplicar a reserva de emergência e pergunta sobre um prefixado de 12% que o gerente ofereceu. Reserva de emergência precisa de liquidez e de valor estável: o indicado é o pós-fixado atrelado à Selic, porque o prefixado oscila se ele precisar sacar antes do vencimento.',
             lembrarNaProva: [
               'Juros sobem, preço do prefixado cai. Relação sempre inversa.',
               'Pós-fixado atrelado a CDI/Selic é o que menos oscila.',
               'Híbrido (IPCA+) protege o poder de compra; prefixado, não.',
               'A oscilação só se materializa em perda se houver venda antecipada.',
+            ],
+            revisaoRapida: [
+              'Prefixado: taxa conhecida na contratação.',
+              'Pós-fixado: acompanha um indexador (CDI, Selic).',
+              'Híbrido: índice de preços mais uma taxa real.',
+              'Juros sobem, preço do prefixado cai — relação sempre inversa.',
+              'Levando ao vencimento, você recebe a taxa contratada.',
             ],
           },
           exemplos: [
@@ -131,6 +143,14 @@ export const M2: Macrotema = {
             iniciante:
               'Renda fixa é emprestar dinheiro e receber de volta com juros. A diferença entre os tipos é só a fórmula do juro combinada no começo.',
           },
+          niveis: {
+            entenda:
+              'Renda fixa é emprestar dinheiro com a regra do juro combinada desde o início. O que muda entre os três tipos é só essa regra.',
+            aprofunde:
+              'A marcação a mercado é consequência direta do desconto de fluxo de caixa: o preço de um título é o valor presente dos pagamentos futuros, descontados pela taxa que o mercado exige hoje. Se a taxa exigida sobe, o denominador cresce e o preço cai. Quanto mais longo o título, mais sensível ele é — e essa sensibilidade tem nome, duration, que aparece no item 1.3 do programa. O pós-fixado quase não oscila porque sua taxa se reajusta junto com o mercado, e é por isso que ele é o instrumento de liquidez por excelência. No híbrido, só a parcela prefixada oscila; a correção pelo índice de preços é sempre incorporada ao principal.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 7,
         },
         {
@@ -144,6 +164,8 @@ export const M2: Macrotema = {
           explicacao: {
             oQueE:
               'O Fundo Garantidor de Créditos é uma entidade privada mantida pelas próprias instituições financeiras, que devolve o dinheiro do investidor quando o emissor quebra.',
+            porQueImporta:
+              'O FGC é o que permite recomendar um banco médio com segurança. Saber o limite e, principalmente, o que fica de fora, evita a recomendação errada e resolve uma das pegadinhas mais repetidas da prova.',
             paraQueServe:
               'Reduzir o risco de crédito de aplicações bancárias e evitar corrida bancária.',
             comoFunciona: [
@@ -155,11 +177,20 @@ export const M2: Macrotema = {
             ],
             exemploSimples:
               'Você tem R$ 200 mil em CDB e R$ 80 mil em LCI, ambos no mesmo banco. Total de R$ 280 mil. O FGC cobre R$ 250 mil; os R$ 30 mil restantes viram crédito na massa falida.',
+            exemploAplicado:
+              'O cliente tem R$ 400 mil e quer tudo no CDB de um banco médio que paga 120% do CDI. A recomendação correta é dividir: até R$ 250 mil naquele conglomerado e o restante em outro grupo financeiro, ou em título público, que não precisa de FGC porque o risco é soberano.',
             lembrarNaProva: [
               'R$ 250 mil por CPF por CONGLOMERADO — não por produto e não por banco isolado do mesmo grupo.',
               'Teto global R$ 1 milhão a cada 4 anos.',
               'CRI e CRA parecem primos da LCI/LCA, mas NÃO têm FGC.',
               'Título público não tem FGC — tem risco soberano, que é menor ainda.',
+            ],
+            revisaoRapida: [
+              'R$ 250 mil por CPF/CNPJ, por conglomerado — não por produto.',
+              'Teto global de R$ 1 milhão a cada 4 anos.',
+              'Cobre: depósitos, poupança, CDB, RDB, LCI, LCA, LC e LH.',
+              'Não cobre: fundos, debêntures, CRI, CRA nem títulos públicos.',
+              'CRI e CRA parecem primos da LCI/LCA, mas não têm FGC.',
             ],
           },
           exemplos: [
@@ -255,6 +286,14 @@ export const M2: Macrotema = {
             iniciante:
               'Se o banco onde você aplicou falir, existe um fundo que devolve o seu dinheiro até um limite de R$ 250 mil. Mas ele só cobre alguns tipos de aplicação — as feitas dentro de bancos.',
           },
+          niveis: {
+            entenda:
+              'O FGC é um seguro do sistema bancário: se o banco quebrar, ele devolve até R$ 250 mil por pessoa naquele grupo.',
+            aprofunde:
+              'O FGC é uma associação privada mantida pelas próprias instituições, que contribuem mensalmente sobre o saldo dos depósitos garantidos — não é dinheiro público. Por isso a cobertura depende da saúde do fundo, e o teto global de R$ 1 milhão a cada quatro anos existe para impedir que um mesmo investidor consuma a garantia repetidamente. Títulos públicos ficam de fora por um motivo conceitual, não por esquecimento: o emissor é o Tesouro Nacional, e não faria sentido um fundo privado garantir o risco soberano. Para as cooperativas de crédito o equivalente é o FGCCoop. Em 2026 a Resolução CMN 5.295 endureceu as regras de captação com garantia do FGC, criando um gatilho ligado à qualidade dos ativos do emissor — o limite de cobertura do investidor, porém, não mudou.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 8,
         },
         {
@@ -268,6 +307,8 @@ export const M2: Macrotema = {
           explicacao: {
             oQueE:
               'A tributação da renda fixa é feita por imposto de renda retido na fonte, com alíquota que cai conforme o prazo da aplicação.',
+            porQueImporta:
+              'Comparar dois produtos sem considerar o imposto leva à recomendação errada, e a banca constrói a questão exatamente assim: um produto tributado com taxa maior contra um isento com taxa menor.',
             paraQueServe:
               'Incentivar a poupança de longo prazo: quem deixa o dinheiro mais tempo paga menos imposto.',
             comoFunciona: [
@@ -279,12 +320,21 @@ export const M2: Macrotema = {
             ],
             exemploSimples:
               'Aplicou R$ 10.000 num CDB e resgatou após 2 anos com R$ 12.000. O rendimento foi R$ 2.000. Acima de 720 dias a alíquota é 15%, então o IR é R$ 300 e você recebe R$ 11.700.',
+            exemploAplicado:
+              'O cliente compara um CDB a 100% do CDI com uma LCI a 92% do CDI, ambos por dois anos. O CDB paga 15% de IR sobre o rendimento; a LCI é isenta para pessoa física. Depois do imposto, a LCI a 92% supera o CDB — a comparação só faz sentido no líquido.',
             lembrarNaProva: [
               'IR sobre o rendimento, não sobre o principal.',
               'Regressiva: mais prazo = menos imposto. Piso de 15%.',
               'Isentos para PF: LCI, LCA, CRI, CRA, poupança, debênture incentivada.',
               'Debênture comum NÃO é isenta. Só a incentivada.',
               'IOF morde só nos primeiros 30 dias.',
+            ],
+            revisaoRapida: [
+              'Tabela regressiva: 22,5% / 20% / 17,5% / 15% conforme o prazo.',
+              'O IR incide só sobre o rendimento, nunca sobre o principal.',
+              'Isentos para PF: LCI, LCA, CRI, CRA e debênture incentivada.',
+              'IOF regressivo só nos resgates com menos de 30 dias.',
+              'Compare sempre taxa líquida contra taxa líquida.',
             ],
           },
           exemplos: [
@@ -306,7 +356,7 @@ export const M2: Macrotema = {
           erroComum:
             'Comparar taxas brutas entre um produto isento e um tributado. É a comparação errada — e a que a banca usa para pegar o candidato.',
           alertaProva:
-            'ALÍQUOTAS E PRAZOS MUDAM POR LEGISLAÇÃO. A lógica regressiva é estável, mas confirme os percentuais vigentes no material oficial antes da prova.',
+            'Alíquotas conferidas em 24/08/2026: Lei 11.033/2004 (tabela regressiva e isenções) e Decreto 6.306/2007 (IOF). A MP 1.303/2025, que propunha alíquota única de 17,5% e 5% sobre os títulos isentos, NÃO virou lei. Ainda assim, alíquotas mudam por legislação — confirme antes da prova.',
           tabela: {
             titulo: 'Tabela regressiva de IR (renda fixa)',
             colunas: ['Prazo da aplicação', 'Alíquota'],
@@ -365,20 +415,19 @@ export const M2: Macrotema = {
             iniciante:
               'O imposto só pega o lucro, nunca o que você aplicou. E quanto mais tempo você deixar parado, menor a porcentagem cobrada.',
           },
+          niveis: {
+            entenda:
+              'Quanto mais tempo o dinheiro fica aplicado, menor a fatia de imposto sobre o lucro. E alguns títulos não pagam imposto nenhum para pessoa física.',
+            aprofunde:
+              'A lógica regressiva vem da Lei 11.033/2004 e existe para desestimular o giro de curto prazo, alongando o funding do sistema. O IOF do Decreto 6.306/2007 reforça a mesma intenção nos primeiros 30 dias, com uma tabela que começa em 96% do rendimento no primeiro dia e zera no trigésimo — e ele incide antes do IR, reduzindo a base de cálculo deste. A isenção de LCI, LCA, CRI e CRA não é um favor ao investidor: é um subsídio dirigido aos setores imobiliário e do agronegócio, que barateia o funding desses créditos. O mesmo raciocínio vale para as debêntures incentivadas da Lei 12.431/2011, voltadas a projetos de infraestrutura. Vale notar que a MP 1.303/2025, que propunha alíquota única de 17,5% e tributar os isentos em 5%, não foi convertida em lei.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 8,
         },
-      ],
-    },
-    {
-      id: 'm2.2',
-      macrotemaId: 'm2',
-      nome: 'Fundos de investimento',
-      ordem: 2,
-      preRequisitos: ['m2.1'],
-      conceitos: [
         {
           id: 'c-fundos',
-          microtemaId: 'm2.2',
+          microtemaId: 'm2.1',
           titulo: 'Fundos: cota, taxas e quem é quem',
           objetivo: 'Explicar como a cota se forma e distinguir taxa de administração de taxa de performance.',
           etiquetas: ['ESSENCIAL', 'ENTENDER'],
@@ -387,6 +436,8 @@ export const M2: Macrotema = {
           explicacao: {
             oQueE:
               'Um condomínio de investidores: o dinheiro de todos é somado e aplicado em conjunto por um gestor profissional.',
+            porQueImporta:
+              'Fundo é o produto com mais participantes e mais taxas, e a prova cobra justamente quem responde pelo quê e qual taxa incide quando. Confundir administrador com gestor é erro clássico.',
             paraQueServe:
               'Dar acesso a diversificação e gestão profissional com aportes pequenos.',
             comoFunciona: [
@@ -399,12 +450,21 @@ export const M2: Macrotema = {
             ],
             exemploSimples:
               'Fundo com patrimônio de R$ 1 milhão e 1.000 cotas: cada cota vale R$ 1.000. Se o patrimônio sobe para R$ 1,1 milhão sem novos aportes, a cota vai a R$ 1.100 — alta de 10%.',
+            exemploAplicado:
+              'O cliente reclama que o fundo rendeu 8% mas ele viu 8,4% no material de divulgação. A taxa de administração já está deduzida da cota divulgada — o que ele viu era o retorno bruto da carteira, e a diferença é exatamente a taxa provisionada dia a dia.',
             lembrarNaProva: [
               'Cota = PL ÷ nº de cotas.',
               'Taxa de administração já está descontada da cota divulgada.',
               'Taxa de performance: só acima do benchmark, com linha d\'água.',
               'Administrador responde perante a CVM; gestor toma a decisão de investimento.',
               'Fundo NÃO tem FGC.',
+            ],
+            revisaoRapida: [
+              'Cota = patrimônio líquido dividido pelo número de cotas.',
+              'A taxa de administração já está descontada da cota divulgada.',
+              'Performance: só acima do benchmark e com linha d’água.',
+              'Administrador responde perante a CVM; gestor decide onde investir.',
+              'Fundo não tem FGC.',
             ],
           },
           exemplos: [
@@ -489,20 +549,19 @@ export const M2: Macrotema = {
             iniciante:
               'Você entrega o dinheiro a um profissional que investe junto com o de outras pessoas. Em troca, recebe pedaços chamados cotas, e paga uma taxa por esse serviço.',
           },
+          niveis: {
+            entenda:
+              'Fundo é um condomínio de investidores. Você compra cotas desse condomínio, não os ativos que estão dentro dele.',
+            aprofunde:
+              'A Resolução CVM 175 reorganizou a indústria: o fundo passou a ser uma estrutura que se divide em classes de cotas, e cada classe pode ter subclasses com direitos e taxas próprios. Cada classe tem patrimônio segregado, de modo que o prejuízo de uma não contamina a outra — e a norma passou a admitir responsabilidade limitada do cotista, hipótese em que ele não responde por patrimônio líquido negativo além do que investiu. A remuneração também ficou mais detalhada: além da administração e da performance, existem taxa de ingresso, taxa de saída e taxa máxima de distribuição. A linha d’água continua sendo a trava que impede cobrar performance duas vezes sobre o mesmo ganho.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 8,
         },
-      ],
-    },
-    {
-      id: 'm2.3',
-      macrotemaId: 'm2',
-      nome: 'Renda variável e previdência',
-      ordem: 3,
-      preRequisitos: ['m2.1'],
-      conceitos: [
         {
           id: 'c-acoes',
-          microtemaId: 'm2.3',
+          microtemaId: 'm2.1',
           titulo: 'Ações: o que o acionista realmente compra',
           objetivo: 'Diferenciar ON e PN e reconhecer as formas de remuneração do acionista.',
           etiquetas: ['ESSENCIAL', 'ENTENDER'],
@@ -511,6 +570,8 @@ export const M2: Macrotema = {
           explicacao: {
             oQueE:
               'A menor fração do capital social de uma sociedade anônima. Quem compra vira sócio, não credor.',
+            porQueImporta:
+              'Ação é o produto que melhor separa renda fixa de renda variável na cabeça do cliente: emprestar versus ser sócio. E os eventos corporativos são fonte constante de questão.',
             paraQueServe:
               'Participar do resultado de uma empresa — e assumir o risco desse resultado.',
             comoFunciona: [
@@ -523,11 +584,19 @@ export const M2: Macrotema = {
             ],
             exemploSimples:
               'Você compra 100 ações a R$ 20. A empresa distribui R$ 1 por ação em dividendos e a ação sobe para R$ 23. Seu retorno é R$ 300 de valorização + R$ 100 de dividendo.',
+            exemploAplicado:
+              'O cliente recebe um crédito na conta chamado JCP e estranha o desconto de imposto, já que o vizinho disse que dividendo é isento. São coisas diferentes: dividendo é distribuição de lucro já tributado na empresa; JCP é despesa dedutível para a empresa e sofre retenção de 15% na fonte para o investidor.',
             lembrarNaProva: [
               'ON vota; PN tem preferência nos proventos.',
               'Ação não tem FGC e não tem garantia de retorno.',
               'JCP é despesa dedutível para a empresa; dividendo não é.',
               'Tag along mínimo legal para ON: 80%.',
+            ],
+            revisaoRapida: [
+              'Ação é participação societária, não empréstimo.',
+              'ON dá voto; PN dá preferência na distribuição.',
+              'Dividendo é isento para a PF; JCP tem 15% retido na fonte.',
+              'Mercado primário capitaliza a empresa; o secundário dá liquidez.',
             ],
           },
           exemplos: [
@@ -611,11 +680,29 @@ export const M2: Macrotema = {
             iniciante:
               'Ação é um pedaço de empresa vendido na bolsa. Quem compra ganha se a empresa valorizar e recebe parte dos lucros. Mas pode perder dinheiro, e ninguém devolve.',
           },
+          niveis: {
+            entenda:
+              'Comprar ação é virar sócio de uma empresa. Você ganha se ela valorizar e recebe parte do lucro, mas pode perder — ninguém devolve.',
+            aprofunde:
+              'A distinção entre ON e PN tem consequências práticas na governança. A PN abre mão do voto em troca de prioridade no recebimento, e a Lei 6.404/1976 limita a participação de preferenciais a 50% do capital nas companhias abertas registradas após 2001. É por isso que os segmentos especiais de listagem da B3 caminharam na direção oposta: o Novo Mercado só admite ações ordinárias, com tag along de 100%, exatamente para alinhar controlador e minoritário. Repare que grupamento e desdobramento não alteram o valor investido, apenas a quantidade e o preço unitário das ações — enquanto bonificação e subscrição mexem no capital. Essa diferença entre eventos que só reorganizam e eventos que alteram patrimônio é o corte que a banca costuma explorar.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 7,
         },
+      ],
+    },
+    {
+      id: 'm2.2',
+      macrotemaId: 'm2',
+      codigo: '2.2',
+      nome: 'Produtos de previdência complementar (PGBL e VGBL)',
+      ordem: 2,
+      preRequisitos: ['m2.1'],
+      conceitos: [
         {
           id: 'c-previdencia',
-          microtemaId: 'm2.3',
+          microtemaId: 'm2.2',
           titulo: 'PGBL x VGBL: escolher pelo imposto de renda',
           objetivo: 'Recomendar o plano correto a partir do modelo de declaração do cliente.',
           etiquetas: ['ESSENCIAL', 'DECORAR', 'PEGADINHA'],
@@ -624,23 +711,34 @@ export const M2: Macrotema = {
           explicacao: {
             oQueE:
               'Dois planos de previdência complementar aberta, supervisionados pela SUSEP. A diferença central é tributária.',
+            porQueImporta:
+              'É a recomendação em que errar custa dinheiro real ao cliente, e de forma difícil de desfazer. A prova cobra sempre pelo mesmo caminho: o modelo de declaração do cliente.',
             paraQueServe:
               'Acumular recursos para o longo prazo com um tratamento de imposto escolhido conforme o perfil fiscal do cliente.',
             comoFunciona: [
               'PGBL: permite deduzir as contribuições da base de cálculo do IR, limitado a 12% da renda bruta anual tributável. Exige declaração no modelo COMPLETO e contribuição ao INSS ou regime próprio.',
               'No resgate do PGBL, o IR incide sobre o VALOR TOTAL resgatado — principal mais rendimento.',
               'VGBL: não permite dedução. No resgate, o IR incide APENAS sobre o rendimento.',
-              'Em ambos, o titular escolhe o regime tributário: progressivo (tabela do IR, com ajuste na declaração) ou regressivo (alíquota cai com o tempo, chegando ao piso após 10 anos).',
+              'Em ambos, o titular escolhe o regime tributário: progressivo (tabela do IR, com ajuste na declaração) ou regressivo (Lei 11.053/2004: começa em 35% e cai até o piso de 10% acima de 10 anos).',
               'A escolha do regime regressivo costuma ser irreversível — atenção ao recomendar.',
             ],
             exemploSimples:
               'Cliente com renda tributável de R$ 200 mil/ano que declara no completo pode aportar até R$ 24 mil em PGBL e abater esse valor da base do IR naquele ano. Se ele fosse isento, o PGBL não traria vantagem alguma.',
+            exemploAplicado:
+              'Cliente autônomo, isento de imposto de renda, quer contratar previdência porque ouviu falar da dedução de 12%. Ele não tem base tributável para deduzir: o PGBL não traria benefício algum e ainda faria o IR incidir sobre o total no resgate. O produto adequado é o VGBL.',
             lembrarNaProva: [
               'PGBL → completo + contribui ao INSS → deduz até 12%.',
               'PGBL: IR no resgate sobre o TOTAL.',
               'VGBL → simplificado ou isento → sem dedução.',
               'VGBL: IR no resgate só sobre o RENDIMENTO.',
               'Regime regressivo tende a ser irreversível.',
+            ],
+            revisaoRapida: [
+              'PGBL: declaração completa e contribuição ao INSS, deduz até 12%.',
+              'PGBL: no resgate o IR pega o total resgatado.',
+              'VGBL: simplificada ou isento, sem dedução.',
+              'VGBL: no resgate o IR pega só o rendimento.',
+              'Ambos sob a SUSEP; o regime regressivo tende a ser irreversível.',
             ],
           },
           exemplos: [
@@ -730,9 +828,44 @@ export const M2: Macrotema = {
             iniciante:
               'São dois tipos de plano de aposentadoria. Um serve para quem paga bastante imposto de renda; o outro, para quem paga pouco ou nada. A pergunta que decide é como a pessoa faz a declaração.',
           },
+          niveis: {
+            entenda:
+              'PGBL serve para quem declara no completo e quer abater imposto agora. VGBL serve para quem não tem o que abater.',
+            aprofunde:
+              'O limite de 12% da Lei 9.532/1997 incide sobre a renda bruta anual tributável, não sobre a renda total — rendimentos isentos ou tributados exclusivamente na fonte não entram na base. A escolha entre regime progressivo e regressivo é independente da escolha entre PGBL e VGBL, e é onde o horizonte pesa: o regressivo da Lei 11.053/2004 parte de 35% e cai cinco pontos a cada dois anos até o piso de 10% acima de dez anos, o que o torna vantajoso para acumulação longa. O progressivo faz sentido para quem pretende resgatar cedo ou converter em renda mensal de valor baixo, já que permite ajuste na declaração. A portabilidade preserva o prazo já acumulado no regime regressivo, mas não permite trocar de PGBL para VGBL: só se porta entre planos da mesma modalidade.',
+          },
+          versao: 2,
+          atualizadoEm: '2026-08-24',
           minutosEstimados: 8,
         },
       ],
+    },
+    {
+      id: 'm2.3',
+      macrotemaId: 'm2',
+      codigo: '2.3',
+      nome: 'Produtos de financiamento',
+      ordem: 3,
+      preRequisitos: [],
+      conceitos: [],
+    },
+    {
+      id: 'm2.4',
+      macrotemaId: 'm2',
+      codigo: '2.4',
+      nome: 'Serviços bancários',
+      ordem: 4,
+      preRequisitos: [],
+      conceitos: [],
+    },
+    {
+      id: 'm2.5',
+      macrotemaId: 'm2',
+      codigo: '2.5',
+      nome: 'Seguros de vida e patrimoniais',
+      ordem: 5,
+      preRequisitos: [],
+      conceitos: [],
     },
   ],
 }

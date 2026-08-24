@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Cabecalho } from '@/components/layout/AppShell'
+import { FaixaPersonagem } from '@/components/domain/Personagem'
+import { GUARDIAO_DESAFIOS } from '@/lib/personagens'
 import { Card, Secao } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Pill } from '@/components/ui/Badge'
@@ -40,6 +42,8 @@ export default function Simulados() {
         descricao={`Estrutura oficial: ${BLUEPRINT.totalQuestoes} questões, ${BLUEPRINT.duracaoMin} min, ${Math.round(BLUEPRINT.notaCorte * 100)}% para aprovação.`}
       />
 
+      <FaixaPersonagem personagem={GUARDIAO_DESAFIOS} className="mb-6" />
+
       {!BLUEPRINT.verificado && (
         <div className="mb-6">
           <AvisoVerificacao>
@@ -60,7 +64,7 @@ export default function Simulados() {
               <li key={m}>
                 <Card
                   onClick={() => (precisaConfig ? setModo(selecionado ? null : m) : iniciar(m))}
-                  className={selecionado ? 'border-aqua' : ''}
+                  className={selecionado ? 'border-aurora' : ''}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <div className="min-w-0">
@@ -91,8 +95,8 @@ export default function Simulados() {
                   aria-pressed={quantidade === n}
                   className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                     quantidade === n
-                      ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                      : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                      ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                      : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                   }`}
                 >
                   {n}
@@ -118,8 +122,8 @@ export default function Simulados() {
                       aria-pressed={macros.includes(m.id)}
                       className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                         macros.includes(m.id)
-                          ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                          : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                          ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                          : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                       }`}
                     >
                       {m.nome}
@@ -145,8 +149,8 @@ export default function Simulados() {
                   aria-pressed={dificuldades.includes(d)}
                   className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                     dificuldades.includes(d)
-                      ? 'border-aqua bg-aqua/15 font-semibold text-aqua'
-                      : 'border-line bg-surface text-ink-2 hover:border-aqua/40'
+                      ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                      : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                   }`}
                 >
                   {ROTULO_DIFICULDADE[d]}
@@ -182,7 +186,7 @@ export default function Simulados() {
                     </div>
                     <span
                       className={`tnum shrink-0 text-xl font-extrabold ${
-                        s.aprovado ? 'text-aqua' : 'text-danger'
+                        s.aprovado ? 'text-jade' : 'text-danger'
                       }`}
                     >
                       {Math.round(s.percentual * 100)}%

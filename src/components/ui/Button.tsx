@@ -5,10 +5,12 @@ type Variante = 'primaria' | 'secundaria' | 'contorno' | 'fantasma' | 'perigo'
 type Tamanho = 'sm' | 'md' | 'lg'
 
 const VARIANTES: Record<Variante, string> = {
+  // O gradiente da alvorada só aparece na ação principal da tela: é o que
+  // separa "o que fazer agora" de todo o resto da interface.
   primaria:
-    'bg-aqua text-bg font-semibold hover:brightness-110 active:brightness-95 shadow-glow disabled:shadow-none',
-  secundaria: 'bg-elevated text-ink border border-line hover:border-aqua/50',
-  contorno: 'border border-aqua/60 text-aqua hover:bg-aqua/10',
+    'bg-alvorada text-bg font-bold hover:brightness-110 active:brightness-95 shadow-alvorada disabled:shadow-none',
+  secundaria: 'bg-elevated text-ink border border-line hover:border-aurora/50',
+  contorno: 'border border-aurora/60 text-aurora hover:bg-aurora/10',
   fantasma: 'text-ink-2 hover:text-ink hover:bg-elevated',
   perigo: 'border border-danger/50 text-danger hover:bg-danger/10',
 }

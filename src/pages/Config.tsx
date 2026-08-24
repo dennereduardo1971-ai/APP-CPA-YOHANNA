@@ -32,7 +32,7 @@ function Alternador({
         aria-label={rotulo}
         onClick={() => onChange(!ativo)}
         className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-          ativo ? 'bg-aqua' : 'bg-elevated'
+          ativo ? 'bg-aurora' : 'bg-elevated'
         }`}
       >
         <span
@@ -145,7 +145,7 @@ export default function Config() {
             />
           </div>
 
-          {mensagem && <p className="mt-3 text-sm font-semibold text-aqua">{mensagem}</p>}
+          {mensagem && <p className="mt-3 text-sm font-semibold text-aurora">{mensagem}</p>}
         </Card>
       </Secao>
 
@@ -228,10 +228,9 @@ export default function Config() {
         </Card>
       </Secao>
 
+      {/* O aviso de não-afiliação agora é global, no rodapé do AppShell. */}
       <p className="mt-8 text-center text-xs leading-relaxed text-muted">
         Preparatório CPA · conteúdo e questões autorais.
-        <br />
-        Material de estudo independente, sem vínculo com a ANBIMA.
       </p>
     </div>
   )

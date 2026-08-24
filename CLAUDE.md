@@ -16,6 +16,7 @@ npm run build       # build de produção -> dist/
 npm run typecheck   # tsc --noEmit (rodar SEMPRE antes de commitar)
 npm run test        # vitest (motor de aprendizagem)
 npm run docs        # regenera a seção "Estado atual" deste arquivo
+npm run icons       # regenera os PNGs do app a partir de public/icon.svg
 npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
 ```
 
@@ -27,16 +28,42 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    acontece em `src/lib/content/*` e `src/lib/questions/*`. Nunca embutir
    texto de aula em componente.
 3. **A estrutura da prova vive em `src/lib/blueprint.ts`.** Não espalhar
-   número de questões, duração ou nota de corte pelo código.
+   número de questões, duração ou nota de corte pelo código. Os 20 microtemas
+   oficiais são declarados em `src/lib/content/m*.ts` com o campo `codigo`
+   (ex.: `'2.1'`), que deve espelhar o Programa Detalhado.
 4. **Nada de inventar regra de prova.** Se um dado oficial não pôde ser
    verificado, marcar `verificado: false` / `pesoVerificado: false` — a
    interface exibe aviso sozinha.
 5. **Toda questão é autoral.** É proibido copiar questões de provas
    anteriores, cursos ou bancos de terceiros.
-6. **Explicação segue os 5 passos obrigatórios**: o que é / para que serve /
-   como funciona / exemplo simples / o que lembrar na prova.
-7. **Uma cor de destaque só: verde-água (`aqua`).** `warn` e `danger` são
-   semânticos e não contam como acento. Não introduzir novas cores.
+6. **Lição segue os 9 blocos obrigatórios**: o que é / por que importa /
+   como funciona / exemplo simples / exemplo aplicado ao mercado / o que
+   lembrar na prova / erro comum / miniquestão / revisão rápida. Além disso,
+   três níveis de profundidade — o nível 2 ("Aprenda") é a própria
+   `explicacao`; `niveis` guarda só o 1 e o 3. Validado em
+   `src/test/conteudo.test.ts`.
+7. **Paleta "Alvorada", fechada em três camadas.** Um acento de marca
+   (`aurora`, o carmesim do amanhecer) mais quatro cores de identidade de
+   módulo — os dragões: `hakuryuu`, `seiryuu`, `ryokuryuu`, `ouryuu`. Os
+   semânticos são apelidos dessas mesmas cores, não cores novas: `jade`
+   (acerto) é o verde do Ryokuryuu e `warn` é o ouro. **Cor de dragão só
+   aparece para dizer de que módulo algo é** — nunca como decoração. Não
+   introduzir cor fora dessa lista; o cabeçalho de `src/styles/index.css`
+   documenta a estrutura.
+   - **Acerto nunca usa o acento.** Num app de questões, "certo" em carmesim ao
+     lado de "errado" em vermelho é indistinguível. Acerto é `jade`.
+   - **Cor de desempenho sai de `tomDominio()`** (`engine/mastery.ts`). Barra,
+     anel e rótulo têm de vir da mesma função, senão 74% aparece com rótulo
+     verde sobre barra âmbar.
+9. **A temática vive em `src/lib/personagens.ts`.** Nome, papel ou fala de
+   personagem não entram em componente. Arte é opcional
+   (`public/personagens/<id>.webp`); sem arquivo, o app desenha o ícone.
+10. **Todo desenho é SVG autoral.** Ícones em `src/components/ui/Icone.tsx`,
+   retratos de personagem em `src/components/domain/Retrato.tsx` e ornamento
+   (céu da alvorada, selo de tinta, traço de pincel, escamas) em
+   `src/components/ui/Ornamento.tsx`. Nada de glifo Unicode na navegação — no
+   Android vira caixinha — e nada de asset externo: o APK roda sem rede.
+   Desenhar com forma cheia, não traço fino: a marca aparece a partir de 18 px.
 8. **Persistência passa sempre pelo store** (`src/lib/store.ts`). Não
    escrever em `localStorage` direto de dentro de componente.
 
@@ -72,39 +99,49 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 | 3 | Camada de repositório isolada no store | Permite plugar sync Supabase depois sem tocar em UI |
 | 4 | Elo-IRT + revisão espaçada simples e explicável | Funciona com poucos dados; o usuário consegue entender por que uma questão apareceu |
 | 5 | "Explique de outro jeito" com textos pré-autorados | Garante explicação correta e funciona offline; hook de IA fica opcional |
-| 6 | Dark mode único, acento verde-água | Definido pelo cliente |
+| 6 | Dark mode único, paleta "Alvorada": acento carmesim + as 4 cores dos dragões | Definido pelo cliente. Revisto em 24/08/2026, quando o cliente pediu fidelidade à estética da temática — substitui o acento verde-água anterior |
 | 7 | APK gerado por GitHub Actions, não localmente | Build Android exige SDK que não existe no ambiente de dev |
 
 ## Pendências externas
 
-- [ ] Conferir pesos por módulo, nº de questões e nota de corte no Programa
-      Detalhado oficial vigente e atualizar `blueprint.ts` +
-      `pesoVerificado`.
-- [ ] Conferir alíquotas tributárias citadas no conteúdo (mudam por
-      legislação).
-- [ ] Gerar ícones definitivos e keystore de assinatura do APK.
+- [x] ~~Conferir pesos por módulo, nº de questões e nota de corte~~ — feito.
+      Programa Detalhado v1.2 (04/06/2025) e Edital dos Exames v1.4
+      (28/05/2026). Ver `docs/AUDITORIA-CONTEUDO.md`.
+- [ ] Rateio de questões por formato e distribuição por grau de dificuldade:
+      a ANBIMA **não publica** esses dados. Manter fora do `blueprint.ts`
+      enquanto não houver fonte.
+- [~] Alíquotas tributárias: conferidas em 24/08/2026 e todas vigentes — a
+      MP 1.303/2025 não virou lei. Base legal em `docs/ALIQUOTAS.md`. Falta
+      ler o texto das leis: `planalto.gov.br` está bloqueado neste ambiente.
+- [ ] Res. CMN 5.295/2026 (novas regras de captação com garantia do FGC,
+      vigente desde 01/06/2026): incorporar ao conceito `c-fgc`.
+- [ ] Keystore de assinatura do APK. (Os ícones já saem de `public/icon.svg`
+      via `npm run icons`.)
+- [ ] Arte dos personagens é opcional e **não** está no repositório: o app
+      desenha os retratos em SVG. Para usar arte própria, ver
+      `public/personagens/LEIA-ME.md`.
 
 <!-- AUTO:INICIO -->
 <!-- Gerado por scripts/update-claude-md.mjs — não editar à mão. -->
 
 ## Estado atual
 
-_Atualizado em 2026-08-18._
+_Atualizado em 2026-08-24._
 
 | Métrica | Valor |
 |---|---|
 | Macrotemas | 4 |
-| Microtemas | 9 |
+| Microtemas | 20 |
 | Conceitos (aulas) | 14 |
 | Questões no banco | 43 |
 | Páginas | 21 |
-| Componentes | 10 |
+| Componentes | 15 |
 | Arquivos de teste | 2 |
-| Linhas em `src/` | 10.448 |
+| Linhas em `src/` | 12.055 |
 
-**Blueprint vigente:** CPA — Certificação Profissional ANBIMA · versão 2026.1 ·
+**Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte
-0.7 · verificado: **false**
+0.7 · verificado: **true**
 
 **Rotas registradas (22):**
 `/onboarding` · `/` · `/trilha` · `/conteudo/:conceitoId` · `/resumos` · `/mapas` · `/mapas/:conceitoId` · `/questoes` · `/rapido` · `/simulados` · `/simulado/:modo` · `/resultado/:simuladoId` · `/revisao` · `/metas` · `/conquistas` · `/estatisticas` · `/progresso` · `/perfil` · `/config` · `/vespera` · `/baixar` · `*`

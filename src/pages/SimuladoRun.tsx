@@ -239,9 +239,9 @@ export default function SimuladoRun() {
                   }}
                   className={`tnum relative aspect-square rounded-md border text-xs font-semibold transition-colors ${
                     i === indice
-                      ? 'border-aqua bg-aqua text-bg'
+                      ? 'border-aurora bg-aurora text-bg'
                       : feita
-                        ? 'border-aqua/40 bg-aqua/15 text-aqua'
+                        ? 'border-aurora/40 bg-aurora/15 text-aurora'
                         : 'border-line bg-surface text-muted'
                   }`}
                 >
