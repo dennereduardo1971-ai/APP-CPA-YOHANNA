@@ -1,6 +1,7 @@
 import type { Macrotema } from '../types'
 import { CONCEITOS_1_2 } from './m1-2-politica'
 import { CONCEITOS_1_3 } from './m1-3-operacoes'
+import { CONCEITOS_1_4 } from './m1-4-regulacao'
 
 /**
  * MACROTEMA 1 — Estrutura e dinâmica do Sistema Financeiro Nacional.
@@ -442,7 +443,7 @@ export const M1: Macrotema = {
       nome: 'Regulação e infraestrutura de mercado',
       ordem: 4,
       preRequisitos: ['m1.1'],
-      conceitos: [],
+      conceitos: CONCEITOS_1_4,
     },
   ],
 }

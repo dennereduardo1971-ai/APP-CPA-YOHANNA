@@ -10,11 +10,13 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **26** | 88 |
-| Questões | 43 | **110** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **9/20** | 20/20 |
+| Conceitos | 14 | **31** | 88 |
+| Questões | 43 | **133** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **10/20** | 20/20 |
 
 Questões do tipo `calculo`: 3 → **22**.
+
+**Macrotema 1 (SFN, 20% da prova) está completo**: 1.1, 1.2, 1.3 e 1.4 têm aula.
 
 ## Entregue
 
@@ -40,14 +42,26 @@ compulsório. São decisões revistas periodicamente pelo CMN e pelo Copom, e
 questão com número de política monetária envelhece junto com a ata. As aulas
 trazem o mecanismo e marcam onde há número sujeito a revisão.
 
+### 1.4 — Regulação e infraestrutura de mercado ✅
+*5 conceitos, 23 questões.* `content/m1-4-regulacao.ts`, `questions/banco-m1-4.ts`.
+
+Autorregulação e Códigos ANBIMA · SELIC, B3 e custódia · Sistema de Pagamentos
+Brasileiro · Poder sancionador e termo de compromisso · Transparência e
+informação privilegiada.
+
+O erro que este bloco diagnostica é a confusão entre **três camadas**:
+regulação estatal tem poder de polícia; autorregulação é contrato entre
+privados; infraestrutura de mercado não regula ninguém — registra, custodia e
+liquida. Os distratores fazem exatamente essas trocas.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
 |---|---|---:|---|
 | 1 | ~~1.3 Operações do mercado financeiro~~ | 6 | ✅ feito |
 | 2 | ~~1.2 Política econômica~~ | 6 | ✅ feito |
-| 3 | 1.4 Regulação e infraestrutura | 5 | próximo |
-| 4 | 2.4 Serviços bancários | 4 | |
+| 3 | ~~1.4 Regulação e infraestrutura~~ | 5 | ✅ feito |
+| 4 | 2.4 Serviços bancários | 4 | próximo |
 | 5 | 2.3 Produtos de financiamento | 4 | |
 | 6 | 2.5 Seguros de vida e patrimoniais | 2 | |
 | 7 | 3.1 Finanças pessoais | 7 | |
