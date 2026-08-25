@@ -10,8 +10,8 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **64** | 88 |
-| Questões | 43 | **262** | 700 (piso 440) |
+| Conceitos | 14 | **72** | 88 |
+| Questões | 43 | **290** | 700 (piso 440) |
 | Microtemas com aula | 7/20 | **20/20** ✅ | 20/20 |
 
 Questões do tipo `calculo`: 3 → **24**.
@@ -32,8 +32,8 @@ Auditoria em `/admin` na data desta entrega:
 | Defeitos / incompletos / lacunas | **0 / 0 / 0** |
 
 **Isto não é "conteúdo completo".** Cobertura significa que nenhum microtema
-oficial está vazio — não que a profundidade seja suficiente. Faltam 31
-conceitos e cerca de 208 questões para chegar ao piso de 440 do
+oficial está vazio — não que a profundidade seja suficiente. Faltam 23
+conceitos e cerca de 150 questões para chegar ao piso de 440 do
 `LACUNAS.md`, e essa é a lista P1/P2 (§3), com destaque para 2.1 (produtos de
 investimentos, 15 conceitos) e 3.4 (regras e condutas, 6 conceitos).
 
@@ -201,6 +201,28 @@ Os distratores exploram a semelhança de prateleira: CRI ao lado de LCI (mesma
 isenção, garantia diferente), Letra Financeira ao lado de CDB (mesmo emissor,
 sem FGC), COE vendido como "ganho de bolsa sem risco".
 
+### 2.1 — renda variável, fundos e a CVM 175 ✅ *(lote B)*
+*8 conceitos, 28 questões.* `content/m2-1-variavel.ts`, `questions/banco-m2-1-rv.ts`.
+
+Eventos corporativos · Governança e segmentos de listagem da B3 · FIIs ·
+ETF e BDR · Classificação de fundos · CVM 175 (classes e subclasses) ·
+Taxas de ingresso e saída e PL negativo · Fundos abertos × fechados.
+
+Com este lote o microtema 2.1 fecha em **15 conceitos e 56 questões** — o
+maior do app, à altura do peso que tem na prova.
+
+Dois erros organizam os distratores do lote:
+
+**Confundir forma com valor.** Desdobramento, grupamento e bonificação
+rearranjam a posição sem criar nem destruir patrimônio; o preço se ajusta na
+mesma proporção. Quem lê "ganhou ações" como "ficou mais rico" erra a família
+inteira de questões.
+
+**Ler o rótulo no lugar do regulamento.** "Multimercado" não significa
+moderado, FII que distribui todo mês não é renda fixa, e a responsabilidade
+limitada do cotista na CVM 175 **não** é automática: depende de previsão
+expressa no regulamento da classe.
+
 ### O que vem depois: aprofundamento (P1 e P2)
 
 A cobertura está fechada; falta profundidade. A ordem sugerida é por peso da
@@ -208,7 +230,7 @@ prova, e vem de `LACUNAS.md` §3:
 
 | Ordem | Microtema | Conceitos novos | O que falta |
 |---|---|---:|---|
-| 1 | 2.1 Produtos de investimentos — **lote B** | 8 | eventos corporativos, governança e segmentos de listagem, FIIs, ETF e BDR, classificação de fundos, CVM 175 (classes e subclasses), taxas de ingresso/saída e PL negativo, fundos abertos × fechados |
+| ~~1~~ | ~~2.1 Produtos de investimentos — **lote B**~~ | 8 | ✅ feito |
 | 2 | 3.4 Regras e condutas | 6 | os 9 princípios éticos, LGPD, sigilo bancário, e todo o bloco de crimes (insider, spoofing, layering, churning, front running) |
 | 3 | 4.4 Finanças descentralizadas | 2 | tokenização, NFT, ETF cripto, DREX |
 | 4 | 1.1 Sistema financeiro nacional | 2 | CNSP, CNPC, os 17 operadores, FGCCoop, SBP |
@@ -216,8 +238,9 @@ prova, e vem de `LACUNAS.md` §3:
 | 6 | 3.3 Classificação de investidores | 2 | diversificação, investidor profissional × qualificado |
 | — | Ajustes P2 (4.5, 4.7, ESG) | 5 | ver `LACUNAS.md` §3 |
 
-Volume de questões: **262 hoje contra piso de 440**. O gargalo maior está em
-2.1, que tem o maior peso da prova e a maior lista de conceitos pendentes.
+Volume de questões: **290 hoje contra piso de 440**. Com 2.1 fechado, o maior
+gargalo isolado passa a ser 3.4 (regras e condutas), que concentra o bloco de
+crimes contra o mercado — o assunto com maior densidade de pegadinha da prova.
 
 ## Um defeito achado nesta entrega, e o guarda que o impede
 
