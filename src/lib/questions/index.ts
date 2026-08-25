@@ -1,11 +1,13 @@
 import type { Dificuldade, Questao, QuestionKind } from '../types'
 import { BANCO_M1 } from './banco-m1'
+import { BANCO_M1_1 } from './banco-m1-1'
 import { BANCO_M1_2 } from './banco-m1-2'
 import { BANCO_M1_3 } from './banco-m1-3'
 import { BANCO_M1_4 } from './banco-m1-4'
 import { BANCO_M2 } from './banco-m2'
 import { BANCO_M2_1_RF } from './banco-m2-1-rf'
 import { BANCO_M2_1_RV } from './banco-m2-1-rv'
+import { BANCO_M2_2 } from './banco-m2-2'
 import { BANCO_M2_3 } from './banco-m2-3'
 import { BANCO_M2_4 } from './banco-m2-4'
 import { BANCO_M2_5 } from './banco-m2-5'
@@ -27,12 +29,14 @@ import { montarQuestoes, overlayVazio } from '../content/overlay'
  */
 const BASE: Questao[] = [
   ...BANCO_M1,
+  ...BANCO_M1_1,
   ...BANCO_M1_2,
   ...BANCO_M1_3,
   ...BANCO_M1_4,
   ...BANCO_M2,
   ...BANCO_M2_1_RF,
   ...BANCO_M2_1_RV,
+  ...BANCO_M2_2,
   ...BANCO_M2_3,
   ...BANCO_M2_4,
   ...BANCO_M2_5,

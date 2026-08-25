@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_1_1 } from './m1-1-sfn'
 import { CONCEITOS_1_2 } from './m1-2-politica'
 import { CONCEITOS_1_3 } from './m1-3-operacoes'
 import { CONCEITOS_1_4 } from './m1-4-regulacao'
@@ -413,6 +414,7 @@ export const M1: Macrotema = {
           atualizadoEm: '2026-08-24',
           minutosEstimados: 6,
         },
+        ...CONCEITOS_1_1,
       ],
     },
     {

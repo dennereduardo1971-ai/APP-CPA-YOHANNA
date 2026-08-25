@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_2_2 } from './m2-2-previdencia'
 import { CONCEITOS_2_1_RF } from './m2-1-renda-fixa'
 import { CONCEITOS_2_1_RV } from './m2-1-variavel'
 import { CONCEITOS_2_3 } from './m2-3-financiamento'
@@ -727,7 +728,7 @@ export const M2: Macrotema = {
               'No resgate do PGBL, o IR incide sobre o VALOR TOTAL resgatado — principal mais rendimento.',
               'VGBL: não permite dedução. No resgate, o IR incide APENAS sobre o rendimento.',
               'Em ambos, o titular escolhe o regime tributário: progressivo (tabela do IR, com ajuste na declaração) ou regressivo (Lei 11.053/2004: começa em 35% e cai até o piso de 10% acima de 10 anos).',
-              'A escolha do regime regressivo costuma ser irreversível — atenção ao recomendar.',
+              'A opção pelo regime pode ser exercida ATÉ a obtenção do benefício ou o primeiro resgate — Lei 14.803/2024. Só a partir daí é irretratável. Ver a aula de regimes de tributação.',
             ],
             exemploSimples:
               'Cliente com renda tributável de R$ 200 mil/ano que declara no completo pode aportar até R$ 24 mil em PGBL e abater esse valor da base do IR naquele ano. Se ele fosse isento, o PGBL não traria vantagem alguma.',
@@ -738,14 +739,14 @@ export const M2: Macrotema = {
               'PGBL: IR no resgate sobre o TOTAL.',
               'VGBL → simplificado ou isento → sem dedução.',
               'VGBL: IR no resgate só sobre o RENDIMENTO.',
-              'Regime regressivo tende a ser irreversível.',
+              'A opção pelo regime vai até o benefício ou o 1º resgate.',
             ],
             revisaoRapida: [
               'PGBL: declaração completa e contribuição ao INSS, deduz até 12%.',
               'PGBL: no resgate o IR pega o total resgatado.',
               'VGBL: simplificada ou isento, sem dedução.',
               'VGBL: no resgate o IR pega só o rendimento.',
-              'Ambos sob a SUSEP; o regime regressivo tende a ser irreversível.',
+              'Ambos sob a SUSEP; a opção de regime vai até o benefício ou o 1º resgate.',
             ],
           },
           exemplos: [
@@ -762,7 +763,7 @@ export const M2: Macrotema = {
             'PGBL: IR no resgate sobre o total',
             'VGBL: sem dedução; IR só sobre o rendimento',
             'Ambos: SUSEP, e escolha entre regime progressivo e regressivo',
-            'Regime regressivo: piso após 10 anos, e normalmente irreversível',
+            'Regime regressivo: piso de 10% após 10 anos',
           ],
           erroComum:
             'Recomendar PGBL pelo tamanho do aporte. O que decide é o modelo de declaração e a contribuição ao INSS — não o valor.',
@@ -839,12 +840,13 @@ export const M2: Macrotema = {
             entenda:
               'PGBL serve para quem declara no completo e quer abater imposto agora. VGBL serve para quem não tem o que abater.',
             aprofunde:
-              'O limite de 12% da Lei 9.532/1997 incide sobre a renda bruta anual tributável, não sobre a renda total — rendimentos isentos ou tributados exclusivamente na fonte não entram na base. A escolha entre regime progressivo e regressivo é independente da escolha entre PGBL e VGBL, e é onde o horizonte pesa: o regressivo da Lei 11.053/2004 parte de 35% e cai cinco pontos a cada dois anos até o piso de 10% acima de dez anos, o que o torna vantajoso para acumulação longa. O progressivo faz sentido para quem pretende resgatar cedo ou converter em renda mensal de valor baixo, já que permite ajuste na declaração. A portabilidade preserva o prazo já acumulado no regime regressivo, mas não permite trocar de PGBL para VGBL: só se porta entre planos da mesma modalidade.',
+              'O limite de 12% da Lei 9.532/1997 incide sobre a renda bruta anual tributável, não sobre a renda total — rendimentos isentos ou tributados exclusivamente na fonte não entram na base. A escolha entre regime progressivo e regressivo é independente da escolha entre PGBL e VGBL, e é onde o horizonte pesa: o regressivo da Lei 11.053/2004 parte de 35% e cai cinco pontos a cada dois anos até o piso de 10% acima de dez anos, o que o torna vantajoso para acumulação longa. O progressivo faz sentido para quem pretende resgatar cedo ou converter em renda mensal de valor baixo, já que permite ajuste na declaração. A portabilidade preserva o prazo já acumulado no regime regressivo, mas não permite trocar de PGBL para VGBL: só se porta entre planos da mesma modalidade. Um ponto que mudou e que muito material ainda repete errado: desde a Lei 14.803/2024 a opção pelo regime NÃO é mais feita na adesão — ela pode ser exercida até a obtenção do benefício ou a requisição do primeiro resgate.',
           },
-          versao: 2,
-          atualizadoEm: '2026-08-24',
+          versao: 3,
+          atualizadoEm: '2026-08-25',
           minutosEstimados: 8,
         },
+        ...CONCEITOS_2_2,
       ],
     },
     {
