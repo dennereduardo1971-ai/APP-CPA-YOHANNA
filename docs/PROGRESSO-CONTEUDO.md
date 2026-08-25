@@ -10,8 +10,8 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **72** | 88 |
-| Questões | 43 | **290** | 700 (piso 440) |
+| Conceitos | 14 | **78** | 88 |
+| Questões | 43 | **314** | 700 (piso 440) |
 | Microtemas com aula | 7/20 | **20/20** ✅ | 20/20 |
 
 Questões do tipo `calculo`: 3 → **24**.
@@ -159,6 +159,44 @@ O distrator recorrente aqui é o **entusiasmo**: tratar rótulo como carteira,
 imutabilidade como veracidade e ausência de intermediário como ausência de
 risco. São as três confusões que o discurso do setor produz.
 
+### 3.4 — Regras e condutas ✅
+*6 conceitos, 24 questões.* `content/m3-4-conduta.ts`, `questions/banco-m3-4.ts`.
+
+Princípios gerais de conduta · Crimes contra o mercado de capitais · Práticas
+abusivas (spoofing, layering, churning, front running, money pass) · Sigilo
+bancário · LGPD · Técnicas de atendimento e riscos da atividade.
+
+Primeiro lote escrito **com fonte primária lida**, e não conferida por
+terceiro — o ambiente local alcança `planalto.gov.br`, que estava bloqueado na
+sessão remota. Foram lidos no texto vigente, em 25/08/2026:
+
+| Fonte | O que sustenta |
+|---|---|
+| Lei 6.385/1976, arts. 27-C a 27-F | Os três crimes, suas penas e a majorante |
+| LC 105/2001, art. 1º (§§ 3º e 4º) e art. 10 | O que não é violação de sigilo, e a pena da quebra |
+| Lei 13.709/2018, arts. 6º, 7º, 18 e 52 | Princípios, bases legais, direitos e sanções |
+| Código ANBIMA de Distribuição, art. 6º (22/09/2025) | Os princípios gerais de conduta |
+
+Três achados que só apareceram por ler a fonte:
+
+1. **O Código de Distribuição tem DEZ incisos no art. 6º, não nove.** Material
+   de cursinho repete "nove princípios". A aula ensina o conteúdo e o
+   `alertaProva` avisa que a contagem muda a cada revisão do Código — decorar o
+   número é o caminho errado.
+2. **O art. 27-E fala em "assessor de investimento"**, denominação que a Lei
+   14.317/2022 pôs no lugar de "agente autônomo de investimento". Registrado
+   como exemplo, porque enunciado com o nome antigo trata do mesmo profissional.
+3. **A Lei 13.506/2017 tirou o dever de sigilo do tipo básico do art. 27-D** e
+   o transformou em causa de aumento de um terço. O efeito é que o insider
+   secundário passou a caber no tipo — e o § 1º alcança quem apenas repassa,
+   na mesma pena. É o eixo da questão `q-crm-01`.
+
+O erro diagnosticado que organiza o lote é a **confusão entre figuras
+parecidas**, em quatro pares: insider × front running, spoofing × layering,
+reclusão × detenção, e afastamento do sigilo × quebra do sigilo (com o
+paralelo consentimento × obrigação legal na LGPD). Em todos, o distrator
+plausível é o que exige autorização para o que a lei já excepcionou.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -231,16 +269,17 @@ prova, e vem de `LACUNAS.md` §3:
 | Ordem | Microtema | Conceitos novos | O que falta |
 |---|---|---:|---|
 | ~~1~~ | ~~2.1 Produtos de investimentos — **lote B**~~ | 8 | ✅ feito |
-| 2 | 3.4 Regras e condutas | 6 | os 9 princípios éticos, LGPD, sigilo bancário, e todo o bloco de crimes (insider, spoofing, layering, churning, front running) |
+| ~~2~~ | ~~3.4 Regras e condutas~~ | 6 | ✅ feito |
 | 3 | 4.4 Finanças descentralizadas | 2 | tokenização, NFT, ETF cripto, DREX |
 | 4 | 1.1 Sistema financeiro nacional | 2 | CNSP, CNPC, os 17 operadores, FGCCoop, SBP |
 | 5 | 2.2 Previdência complementar | 2 | regimes de tributação em detalhe, portabilidade e carências, as 7 modalidades de renda |
 | 6 | 3.3 Classificação de investidores | 2 | diversificação, investidor profissional × qualificado |
 | — | Ajustes P2 (4.5, 4.7, ESG) | 5 | ver `LACUNAS.md` §3 |
 
-Volume de questões: **290 hoje contra piso de 440**. Com 2.1 fechado, o maior
-gargalo isolado passa a ser 3.4 (regras e condutas), que concentra o bloco de
-crimes contra o mercado — o assunto com maior densidade de pegadinha da prova.
+Volume de questões: **314 hoje contra piso de 440**. Com 2.1 e 3.4 fechados,
+os dois microtemas de maior peso da fila saíram. O que resta em P1 são blocos
+menores — e 2.2 (previdência) segue dependendo da leitura das leis de
+tributação, hoje possível no ambiente local.
 
 ## Um defeito achado nesta entrega, e o guarda que o impede
 

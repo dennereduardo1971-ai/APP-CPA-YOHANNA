@@ -1,6 +1,7 @@
 import type { Macrotema } from '../types'
 import { CONCEITOS_3_1 } from './m3-1-financas'
 import { CONCEITOS_3_2 } from './m3-2-orientacoes'
+import { CONCEITOS_3_4 } from './m3-4-conduta'
 
 /** MACROTEMA 3 — Relacionamento com o cliente. */
 export const M3: Macrotema = {
@@ -430,6 +431,7 @@ export const M3: Macrotema = {
           atualizadoEm: '2026-08-24',
           minutosEstimados: 7,
         },
+        ...CONCEITOS_3_4,
       ],
     },
   ],
