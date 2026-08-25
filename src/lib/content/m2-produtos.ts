@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_2_4 } from './m2-4-servicos'
 
 /**
  * MACROTEMA 2 — Produtos do mercado financeiro.
@@ -856,7 +857,7 @@ export const M2: Macrotema = {
       nome: 'Serviços bancários',
       ordem: 4,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_2_4,
     },
     {
       id: 'm2.5',

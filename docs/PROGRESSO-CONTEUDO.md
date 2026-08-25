@@ -10,9 +10,9 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **31** | 88 |
-| Questões | 43 | **133** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **10/20** | 20/20 |
+| Conceitos | 14 | **35** | 88 |
+| Questões | 43 | **150** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **11/20** | 20/20 |
 
 Questões do tipo `calculo`: 3 → **22**.
 
@@ -54,6 +54,18 @@ regulação estatal tem poder de polícia; autorregulação é contrato entre
 privados; infraestrutura de mercado não regula ninguém — registra, custodia e
 liquida. Os distratores fazem exatamente essas trocas.
 
+### 2.4 — Serviços bancários ✅
+*4 conceitos, 17 questões.* `content/m2-4-servicos.ts`, `questions/banco-m2-4.ts`.
+
+Contas de depósito e conta de pagamento · PIX e transferências · Câmbio no
+varejo (cotação, spread, VET) · Tarifas e serviços essenciais.
+
+Bloco de atendimento: quase toda questão nasce de uma pergunta que o cliente
+faz de verdade. Por isso a proporção de `situacao_pratica` é maior aqui.
+**Nenhuma questão depende de quantidade normativa** — saques gratuitos por
+mês, limites do PIX, alíquota de IOF — porque esses números vêm de norma
+infralegal revista periodicamente.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -61,8 +73,8 @@ liquida. Os distratores fazem exatamente essas trocas.
 | 1 | ~~1.3 Operações do mercado financeiro~~ | 6 | ✅ feito |
 | 2 | ~~1.2 Política econômica~~ | 6 | ✅ feito |
 | 3 | ~~1.4 Regulação e infraestrutura~~ | 5 | ✅ feito |
-| 4 | 2.4 Serviços bancários | 4 | próximo |
-| 5 | 2.3 Produtos de financiamento | 4 | |
+| 4 | ~~2.4 Serviços bancários~~ | 4 | ✅ feito |
+| 5 | 2.3 Produtos de financiamento | 4 | próximo |
 | 6 | 2.5 Seguros de vida e patrimoniais | 2 | |
 | 7 | 3.1 Finanças pessoais | 7 | |
 | 8 | 3.2 Orientações financeiras | 2 | |
