@@ -10,7 +10,7 @@ const VARIANTES: Record<Variante, string> = {
   primaria:
     'bg-alvorada text-bg font-bold hover:brightness-110 active:brightness-95 shadow-alvorada disabled:shadow-none',
   secundaria: 'bg-elevated text-ink border border-line hover:border-aurora/50',
-  contorno: 'border border-aurora/60 text-aurora hover:bg-aurora/10',
+  contorno: 'border border-aurora/60 text-aurora hover:bg-aurora-soft',
   fantasma: 'text-ink-2 hover:text-ink hover:bg-elevated',
   perigo: 'border border-danger/50 text-danger hover:bg-danger/10',
 }

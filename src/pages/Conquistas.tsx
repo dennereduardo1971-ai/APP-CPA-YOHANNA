@@ -89,7 +89,14 @@ export default function Conquistas() {
                     </p>
                   </div>
                 </div>
-                {!liberado && <Barra valor={progresso} altura="h-1" className="mt-3" />}
+                {!liberado && (
+                  <Barra
+                    valor={progresso}
+                    altura="h-1"
+                    className="mt-3"
+                    rotulo={`Progresso para ${desbloqueio.nome}`}
+                  />
+                )}
               </>
             )
 
@@ -100,7 +107,13 @@ export default function Conquistas() {
                     {corpo}
                   </Link>
                 ) : (
-                  <div className={`card p-4 ${liberado ? '' : 'opacity-70'}`}>{corpo}</div>
+                  /*
+                   * Sem esmaecer: o cadeado, o requisito escrito e a barra já
+                   * dizem que está fechado. `opacity` derrubava o texto abaixo
+                   * do contraste mínimo — bloqueado virava ilegível, que é
+                   * outra coisa.
+                   */
+                  <div className="card p-4">{corpo}</div>
                 )}
               </li>
             )
@@ -145,7 +158,7 @@ export default function Conquistas() {
                   <li key={c.id}>
                     <div
                       className={`card p-4 transition-colors ${
-                        obtida ? 'border-aurora/40 bg-aurora/10' : 'opacity-60'
+                        obtida ? 'border-aurora/40 bg-aurora-soft' : ''
                       }`}
                     >
                       <div className="flex items-start gap-3">
@@ -153,7 +166,14 @@ export default function Conquistas() {
                           <Icone nome={c.icone as IconeNome} tamanho={18} />
                         </SeloConquista>
                         <div className="min-w-0">
-                          <p className="font-semibold">{c.nome}</p>
+                          <p className="font-semibold">
+                            {c.nome}
+                            {/* O selo cheio marca "conquistada" para os olhos;
+                                para o leitor de tela, o estado precisa ser texto. */}
+                            <span className="sr-only">
+                              {obtida ? ' — conquistada' : ' — ainda não conquistada'}
+                            </span>
+                          </p>
                           <p className="mt-0.5 text-sm text-muted">{c.descricao}</p>
                         </div>
                       </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
+import { Icone } from '@/components/ui/Icone'
 import { Cabecalho } from '@/components/layout/AppShell'
 import { Card } from '@/components/ui/Card'
 import { ButtonLink } from '@/components/ui/Button'
@@ -46,9 +47,9 @@ export default function Mapas() {
               onClick={() => alternarFavorito('mapas', conceito.id)}
               aria-pressed={favorito}
               aria-label={favorito ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-              className={`text-xl ${favorito ? 'text-aurora' : 'text-muted hover:text-ink'}`}
+              className={favorito ? 'text-aurora' : 'text-muted hover:text-ink'}
             >
-              {favorito ? '★' : '☆'}
+              <Icone nome="estrela" tamanho={20} preenchido={favorito} />
             </button>
           }
         />
@@ -60,7 +61,7 @@ export default function Mapas() {
             aria-pressed={!modoRevisao}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               !modoRevisao
-                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                ? 'border-aurora bg-aurora-soft font-semibold text-aurora'
                 : 'border-line bg-surface text-ink-2'
             }`}
           >
@@ -72,7 +73,7 @@ export default function Mapas() {
             aria-pressed={modoRevisao}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               modoRevisao
-                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                ? 'border-aurora bg-aurora-soft font-semibold text-aurora'
                 : 'border-line bg-surface text-ink-2'
             }`}
           >
@@ -84,9 +85,14 @@ export default function Mapas() {
           <MapaMental raiz={conceito.mapaMental} modoRevisao={modoRevisao} />
         </Card>
 
+        {/*
+          A instrução descreve a FORMA, não a cor. Antes dizia "os pontos em
+          verde-água" — texto que já estava errado desde a troca da paleta e
+          que, mesmo certo, seria inútil para quem não distingue as cores.
+        */}
         <p className="mt-3 text-xs text-muted">
-          Toque em um nó para destacar e ver o detalhe. Os pontos em verde-água marcam o que é
-          essencial na revisão.
+          Toque em um nó para destacar e ver o detalhe. Os nós marcados com um ponto são os
+          essenciais na revisão; as setas do teclado percorrem a árvore.
         </p>
 
         <div className="mt-6 flex flex-col gap-2.5">

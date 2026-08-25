@@ -73,6 +73,17 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    de um traço de `Icone.tsx`, nunca o glifo. Há teste conferindo os nomes.
 8. **Persistência passa sempre pelo store** (`src/lib/store.ts`). Não
    escrever em `localStorage` direto de dentro de componente.
+12. **Acessibilidade é verificada, não presumida.** Três coisas não podem
+   ser afrouxadas sem quebrar teste: (a) todo par texto/fundo passa de 4.5:1
+   e todo indicador gráfico de 3:1 — conferido em `src/test/acessibilidade.test.ts`
+   lendo os tokens do próprio `index.css`; (b) nenhum estado é dito **só**
+   pela cor — certo/errado, conquistado/bloqueado e destacado/apagado têm
+   forma e texto, este último em `sr-only` quando não cabe na tela;
+   (c) `opacity` nunca esmaece texto abaixo do mínimo — "bloqueado" não pode
+   virar "ilegível" (o piso prático é `opacity-65`). Controle composto
+   declara o papel ARIA de verdade e o teclado que ele promete: o player de
+   questões é `radiogroup` com setas, o mapa mental é `tree` com ↑↓←→.
+
 11. **Não derivar conteúdo em constante de módulo.** `MACROTEMAS`,
    `MICROTEMAS`, `CONCEITOS` e `QUESTOES` são mutados **no lugar** por
    `aplicarOverlayLocal` (`src/lib/pacote.ts`) — por isso quem já importou
@@ -101,6 +112,8 @@ src/
     auditoria.ts    saúde do conteúdo (o que falta, o que está quebrado)
     pacote.ts       aplica o overlay: conteúdo primeiro, questões depois
     store.ts        Zustand + persistência local (camada única de I/O)
+                    `merge` funde o gravado POR CIMA dos padrões: estado
+                    salvo por versão antiga não devolve campo `undefined`
   components/ui|layout|domain
   pages/            uma página por rota
 ```
@@ -117,11 +130,13 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 | 3 | Camada de repositório isolada no store | Permite plugar sync Supabase depois sem tocar em UI |
 | 4 | Elo-IRT + revisão espaçada simples e explicável | Funciona com poucos dados; o usuário consegue entender por que uma questão apareceu |
 | 5 | "Explique de outro jeito" com textos pré-autorados | Garante explicação correta e funciona offline; hook de IA fica opcional |
-| 6 | Dark mode único, paleta "Alvorada": acento carmesim + as 4 cores dos dragões | Definido pelo cliente. Revisto em 24/08/2026, quando o cliente pediu fidelidade à estética da temática — substitui o acento verde-água anterior |
+| 6 | Dark mode único, paleta "Alvorada": acento carmesim + as 4 cores dos dragões | Definido pelo cliente. Revisto em 24/08/2026, quando o cliente pediu fidelidade à estética da temática — substitui o acento verde-água anterior. Em 25/08/2026 o carmesim clareou 12% (`237 59 94` → `239 83 113`): no tom anterior o acento não alcançava 4.5:1 como texto sobre `elevated` nem dentro da própria pílula |
 | 7 | APK gerado por GitHub Actions, não localmente | Build Android exige SDK que não existe no ambiente de dev |
 | 9 | Desbloqueio é recompensa, nunca trava | Nada que já estava aberto fecha para caber na lista. Um desbloqueio fechado diz o que falta; os módulos seguem livres (decisão 8) |
 | 10 | Painel `/admin` edita conteúdo por **overlay local**, não substitui o código | Sem backend e sem build no aparelho, a única forma de corrigir hoje. O canônico continua em `src/lib/content/*`; o overlay é exportável para voltar ao repositório, e o painel avisa em toda tela quando há divergência |
 | 8 | Trilha é jornada de nós (`engine/trilha.ts`), não lista de aulas | **Macrotema nunca tranca** — a especificação pede acesso livre aos módulos. O pré-requisito vale entre microtemas (60%) e dentro deles (miniquiz depois das aulas, desafio depois do domínio). A regra vive no motor, não no JSX, para ser testável |
+| 11 | Pílula e chip usam fundo opaco (`*-soft`), nunca `cor/15` | Com transparência o contraste passava a depender da superfície embaixo: o mesmo componente lia bem num card e mal em outro |
+| 12 | Painel `/admin` e bibliotecas em pedaços separados do app | O service worker guarda por nome de arquivo com hash. Junto, corrigir uma alíquota obrigava o aparelho a baixar de novo os ~167 kB de React que não mudaram |
 
 ## Pendências externas
 
@@ -150,7 +165,7 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 
 ## Estado atual
 
-_Atualizado em 2026-08-24._
+_Atualizado em 2026-08-25._
 
 | Métrica | Valor |
 |---|---|
@@ -160,8 +175,8 @@ _Atualizado em 2026-08-24._
 | Questões no banco | 43 |
 | Páginas | 29 |
 | Componentes | 18 |
-| Arquivos de teste | 4 |
-| Linhas em `src/` | 17.219 |
+| Arquivos de teste | 5 |
+| Linhas em `src/` | 17.839 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

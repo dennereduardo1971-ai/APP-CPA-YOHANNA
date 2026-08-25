@@ -179,7 +179,7 @@ export default function Resultado() {
                       aria-hidden
                       className={`tnum mt-px grid h-6 w-6 shrink-0 place-items-center rounded-full border text-xs font-bold ${
                         r.acertou
-                          ? 'border-aurora bg-aurora/15 text-aurora'
+                          ? 'border-aurora bg-aurora-soft text-aurora'
                           : 'border-danger bg-danger-soft text-danger'
                       }`}
                     >

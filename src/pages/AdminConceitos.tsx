@@ -44,7 +44,7 @@ export default function AdminConceitos() {
             onClick={() => setMacroId('')}
             className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
               macroId === ''
-                ? 'border-aurora/40 bg-aurora/15 text-aurora'
+                ? 'border-aurora/40 bg-aurora-soft text-aurora'
                 : 'border-line bg-elevated text-ink-2'
             }`}
           >
@@ -57,7 +57,7 @@ export default function AdminConceitos() {
               onClick={() => setMacroId(m.id)}
               className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
                 macroId === m.id
-                  ? 'border-aurora/40 bg-aurora/15 text-aurora'
+                  ? 'border-aurora/40 bg-aurora-soft text-aurora'
                   : 'border-line bg-elevated text-ink-2'
               }`}
             >

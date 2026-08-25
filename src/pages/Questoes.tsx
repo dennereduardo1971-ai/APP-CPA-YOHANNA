@@ -36,7 +36,7 @@ function Chip({
       aria-pressed={ativo}
       className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
         ativo
-          ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+          ? 'border-aurora bg-aurora-soft font-semibold text-aurora'
           : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
       }`}
     >

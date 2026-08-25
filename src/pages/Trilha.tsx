@@ -27,7 +27,7 @@ function Marco({ rotulo, descricao }: { rotulo: string; descricao: string }) {
     <li className="relative flex items-center gap-3 py-1">
       <span
         aria-hidden
-        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-aurora/40 bg-aurora/10 text-aurora"
+        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-aurora/40 bg-aurora-soft text-aurora"
       >
         <Icone nome="bandeira" tamanho={20} />
       </span>

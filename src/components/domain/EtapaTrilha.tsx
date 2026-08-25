@@ -22,7 +22,7 @@ const ICONE: Record<TipoEtapa, IconeNome> = {
 
 const MARCADOR: Record<SituacaoEtapa, string> = {
   concluida: 'border-jade bg-jade text-bg',
-  disponivel: 'border-aurora text-aurora bg-aurora/10',
+  disponivel: 'border-aurora text-aurora bg-aurora-soft',
   bloqueada: 'border-line text-muted bg-surface',
   vazia: 'border-dashed border-line/70 text-muted bg-surface',
 }

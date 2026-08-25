@@ -241,7 +241,7 @@ export default function SimuladoRun() {
                     i === indice
                       ? 'border-aurora bg-aurora text-bg'
                       : feita
-                        ? 'border-aurora/40 bg-aurora/15 text-aurora'
+                        ? 'border-aurora/40 bg-aurora-soft text-aurora'
                         : 'border-line bg-surface text-muted'
                   }`}
                 >

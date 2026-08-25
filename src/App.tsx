@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
-import { lazy, Suspense, useEffect } from 'react'
+import { lazy, Suspense, useEffect, useRef } from 'react'
 import { AppShell } from '@/components/layout/AppShell'
 import { useStore } from '@/lib/store'
 
@@ -39,11 +39,30 @@ const AdminVersoes = lazy(() => import('@/pages/AdminVersoes'))
 const AdminDados = lazy(() => import('@/pages/AdminDados'))
 import NaoEncontrado from '@/pages/NaoEncontrado'
 
-function RolarAoTopo() {
+/**
+ * Numa SPA o navegador não recarrega nada ao trocar de rota: a barra de
+ * rolagem fica onde estava e — o que é pior — o foco continua no link que
+ * acabou de sumir da tela. Quem usa leitor de tela não ouve que a página
+ * mudou, e quem navega por teclado recomeça o Tab do meio do documento.
+ *
+ * Mover o foco para o `<main>` resolve os dois: o leitor de tela lê a região
+ * a partir do `<h1>`, e o próximo Tab cai no primeiro controle do conteúdo.
+ * A primeira renderização é pulada de propósito — roubar o foco de quem
+ * acabou de abrir o app não anuncia nada.
+ */
+function FocoDeRota() {
   const { pathname } = useLocation()
+  const primeira = useRef(true)
+
   useEffect(() => {
     window.scrollTo({ top: 0 })
+    if (primeira.current) {
+      primeira.current = false
+      return
+    }
+    document.getElementById('conteudo')?.focus({ preventScroll: true })
   }, [pathname])
+
   return null
 }
 
@@ -57,7 +76,7 @@ export default function App() {
 
   return (
     <>
-      <RolarAoTopo />
+      <FocoDeRota />
       <AppShell>
         <Suspense fallback={<p className="py-16 text-center text-sm text-muted">Carregando…</p>}>
           <Routes>

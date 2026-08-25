@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
+import type { KeyboardEvent } from 'react'
 import type { Questao } from '@/lib/types'
 import { getConceito } from '@/lib/content'
 import { ROTULO_DIFICULDADE, ROTULO_TIPO } from '@/lib/questions'
 import { DificuldadeBadge, Pill } from '@/components/ui/Badge'
 import { Button } from '@/components/ui/Button'
+import { Icone } from '@/components/ui/Icone'
 import { PassosSessao } from '@/components/ui/Progress'
 import type { MotivoErro } from '@/lib/engine/mastery'
 import { ROTULO_MOTIVO } from '@/lib/engine/mastery'
@@ -53,6 +55,7 @@ export function QuestaoPlayer({
   const inicio = useRef(Date.now())
   const decorrido = useRef(0)
   const topo = useRef<HTMLDivElement>(null)
+  const opcoes = useRef<(HTMLButtonElement | null)[]>([])
 
   // Reinicia o estado a cada nova questão.
   useEffect(() => {
@@ -82,6 +85,31 @@ export function QuestaoPlayer({
   }, [questao])
 
   const acertou = selecionada === correta.id
+
+  function escolher(id: string) {
+    if (respondida) return
+    setSelecionada(id)
+  }
+
+  /**
+   * Setas percorrem o grupo de rádio, como no padrão ARIA: mover o foco JÁ
+   * marca a opção, e a marcação dá a volta no fim da lista. Depois de
+   * responder as setas não mexem em mais nada — o foco continua livre.
+   */
+  function navegar(e: KeyboardEvent<HTMLButtonElement>, i: number) {
+    if (respondida) return
+    const passo =
+      e.key === 'ArrowDown' || e.key === 'ArrowRight'
+        ? 1
+        : e.key === 'ArrowUp' || e.key === 'ArrowLeft'
+          ? -1
+          : 0
+    if (passo === 0) return
+    e.preventDefault()
+    const proximo = (i + passo + ordem.length) % ordem.length
+    setSelecionada(ordem[proximo].id)
+    opcoes.current[proximo]?.focus()
+  }
 
   function responder() {
     if (!selecionada || respondida) return
@@ -138,16 +166,16 @@ export function QuestaoPlayer({
             onClick={onAlternarFavorito}
             aria-pressed={favorita}
             aria-label={favorita ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-            className={`ml-auto text-lg transition-colors ${favorita ? 'text-aurora' : 'text-muted hover:text-ink'}`}
+            className={`ml-auto transition-colors ${favorita ? 'text-aurora' : 'text-muted hover:text-ink'}`}
           >
-            {favorita ? '★' : '☆'}
+            <Icone nome="estrela" tamanho={18} preenchido={favorita} />
           </button>
         )}
       </div>
 
       {porQue && !modoProva && (
         <p className="mb-4 flex items-center gap-2 text-xs text-aurora">
-          <span aria-hidden>◆</span>
+          <Icone nome="losango" tamanho={11} preenchido />
           {porQue}
         </p>
       )}
@@ -158,9 +186,23 @@ export function QuestaoPlayer({
         </div>
       )}
 
-      <p className="mb-5 text-[17px] font-semibold leading-snug">{questao.enunciado}</p>
+      <p id={`enunciado-${questao.id}`} className="mb-5 text-[17px] font-semibold leading-snug">
+        {questao.enunciado}
+      </p>
 
-      <ul className="flex flex-col gap-2.5">
+      {/*
+        Grupo de rádio, não uma lista de botões: é uma escolha entre opções
+        exclusivas, e é assim que o leitor de tela precisa anunciá-la ("opção
+        2 de 4, marcada"). O foco entra uma vez no grupo e as setas percorrem
+        as alternativas — quem navega por teclado não dá quatro Tabs por
+        questão. Só a opção marcada fica no Tab (tabindex rotativo), como
+        manda o padrão ARIA.
+      */}
+      <div
+        role="radiogroup"
+        aria-labelledby={`enunciado-${questao.id}`}
+        className="flex flex-col gap-2.5"
+      >
         {ordem.map((alt, i) => {
           const escolhida = selecionada === alt.id
           const revelaCerta = respondida && !modoProva && alt.correta
@@ -173,12 +215,27 @@ export function QuestaoPlayer({
           if (respondida && modoProva && escolhida) estilo = 'border-aurora bg-aurora/10'
 
           return (
-            <li key={alt.id}>
+            <div key={alt.id}>
               <button
+                ref={(el) => {
+                  opcoes.current[i] = el
+                }}
                 type="button"
-                disabled={respondida}
-                onClick={() => setSelecionada(alt.id)}
-                className={`flex w-full items-start gap-3 rounded-xl border p-3.5 text-left transition-all disabled:cursor-default ${estilo}`}
+                role="radio"
+                aria-checked={escolhida}
+                /*
+                 * `aria-disabled` em vez de `disabled`: depois de responder as
+                 * alternativas continuam alcançáveis pelo teclado, para reler
+                 * o enunciado junto com a justificativa. `disabled` as tiraria
+                 * da ordem de foco justo quando há mais o que ler nelas.
+                 */
+                aria-disabled={respondida || undefined}
+                tabIndex={(selecionada ? escolhida : i === 0) ? 0 : -1}
+                onClick={() => escolher(alt.id)}
+                onKeyDown={(e) => navegar(e, i)}
+                className={`flex w-full items-start gap-3 rounded-xl border p-3.5 text-left transition-all ${
+                  respondida ? 'cursor-default' : ''
+                } ${estilo}`}
               >
                 <span
                   aria-hidden
@@ -192,9 +249,22 @@ export function QuestaoPlayer({
                           : 'border-line text-muted'
                   }`}
                 >
-                  {revelaCerta ? '✓' : revelaErrada ? '✕' : String.fromCharCode(65 + i)}
+                  {revelaCerta ? (
+                    <Icone nome="check" tamanho={14} />
+                  ) : revelaErrada ? (
+                    <Icone nome="x" tamanho={13} />
+                  ) : (
+                    String.fromCharCode(65 + i)
+                  )}
                 </span>
                 <span className="text-[15px] leading-snug">{alt.texto}</span>
+                {/*
+                  Certo e errado não podem ser só a cor da borda e o traço do
+                  ícone: quem usa leitor de tela ouviria quatro alternativas
+                  idênticas depois de responder.
+                */}
+                {revelaCerta && <span className="sr-only">Resposta correta.</span>}
+                {revelaErrada && <span className="sr-only">Sua resposta. Incorreta.</span>}
               </button>
 
               {respondida && !modoProva && (escolhida || alt.correta) && (
@@ -206,10 +276,10 @@ export function QuestaoPlayer({
                   {alt.justificativa}
                 </p>
               )}
-            </li>
+            </div>
           )
         })}
-      </ul>
+      </div>
 
       {!respondida && (
         <Button
@@ -225,7 +295,13 @@ export function QuestaoPlayer({
 
       {respondida && !modoProva && (
         <div className="mt-6 animate-fade-up">
+          {/*
+            O veredito aparece sem que nada receba foco. `role="status"` faz o
+            leitor de tela anunciá-lo assim que entra na tela, em vez de o
+            usuário ter de sair procurando o que mudou.
+          */}
           <div
+            role="status"
             className={`rounded-2xl border p-4 ${
               acertou ? 'border-jade/40 bg-jade/10' : 'border-danger/40 bg-danger-soft'
             }`}

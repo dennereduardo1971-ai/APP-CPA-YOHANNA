@@ -707,6 +707,30 @@ export const useStore = create<Estado & Acoes>()(
       // divirjam — já foram duas cópias.
       partialize: snapshot,
       /*
+       * O merge padrão do zustand é raso: `preferencias` gravado por uma
+       * versão antiga do app SUBSTITUI o objeto inteiro, e um campo criado
+       * depois volta `undefined`. Isso já produzia um interruptor sem estado
+       * em Configurações — `aria-checked` sumia, e a interface mostrava
+       * "desligado" para uma preferência que nunca foi decidida.
+       *
+       * Os campos abaixo são os objetos de configuração de forma fixa; para
+       * eles, o gravado entra POR CIMA do padrão, em vez de no lugar dele.
+       * Coleções (`estados`, `respostas`, `favoritos`…) continuam com o
+       * comportamento de substituição, que é o correto: ali o gravado é a
+       * verdade inteira.
+       */
+      merge: (gravado, atual) => {
+        const salvo = (gravado ?? {}) as Partial<Estado>
+        return {
+          ...atual,
+          ...salvo,
+          perfil: { ...atual.perfil, ...salvo.perfil },
+          metas: { ...atual.metas, ...salvo.metas },
+          preferencias: { ...atual.preferencias, ...salvo.preferencias },
+          sequencia: { ...atual.sequencia, ...salvo.sequencia },
+        }
+      },
+      /*
        * O conteúdo precisa ser remontado com o overlay ANTES do primeiro
        * render: componentes leem `MACROTEMAS` na montagem, e aplicar depois
        * deixaria a primeira tela com o conteúdo do código.

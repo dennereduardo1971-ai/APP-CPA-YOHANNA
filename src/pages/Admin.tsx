@@ -111,7 +111,7 @@ export default function Admin() {
                 onClick={() => setFiltro(chave)}
                 className={`shrink-0 rounded-full border px-3 py-1.5 text-xs font-semibold transition-colors ${
                   filtro === chave
-                    ? 'border-aurora/40 bg-aurora/15 text-aurora'
+                    ? 'border-aurora/40 bg-aurora-soft text-aurora'
                     : 'border-line bg-elevated text-ink-2'
                 }`}
               >

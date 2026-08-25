@@ -36,6 +36,12 @@ export type IconeNome =
   | 'bandeira'
   | 'check'
   | 'estrela'
+  | 'x'
+  | 'chevron'
+  | 'losango'
+  | 'nivel1'
+  | 'nivel2'
+  | 'nivel3'
 
 /** Exportado para que testes possam validar nomes de ícone vindos de dados. */
 export const ICONES: Record<IconeNome, string> = {
@@ -66,6 +72,15 @@ export const ICONES: Record<IconeNome, string> = {
   bandeira: 'M6 21V4m0 1.2c4-2 8 2 12 0v8.6c-4 2-8-2-12 0',
   check: 'm5 12.6 4.6 4.6L19 7.4',
   estrela: 'M12 3.4 14.7 9l6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.9 9.3 9 12 3.4Z',
+  x: 'M6.6 6.6l10.8 10.8M17.4 6.6 6.6 17.4',
+  chevron: 'm9.5 5.2 7 6.8-7 6.8',
+  losango: 'M12 3.2 20.8 12 12 20.8 3.2 12Z',
+  // Medidor de dificuldade: 1, 2 ou 3 pontos cheios. A forma diz o nível
+  // sozinha — a cor é reforço, e o rótulo em texto vem ao lado.
+  nivel1: 'M9.4 12a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Z',
+  nivel2: 'M5.8 12a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Zm7.2 0a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Z',
+  nivel3:
+    'M2.9 12a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Zm6.5 0a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Zm6.5 0a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Z',
 }
 
 interface Props {
@@ -75,18 +90,23 @@ interface Props {
   className?: string
   /** Passe um rótulo só quando o ícone não estiver ao lado do texto. */
   titulo?: string
+  /**
+   * Preenche o traço em vez de contorná-lo. Só faz sentido em forma fechada
+   * (estrela, losango, pontos) — é o par cheio/vazio de um estado ligado.
+   */
+  preenchido?: boolean
 }
 
-export function Icone({ nome, tamanho = 20, className = '', titulo }: Props) {
+export function Icone({ nome, tamanho = 20, className = '', titulo, preenchido }: Props) {
   return (
     <svg
       viewBox="0 0 24 24"
       width={tamanho}
       height={tamanho}
       className={className}
-      fill="none"
+      fill={preenchido ? 'currentColor' : 'none'}
       stroke="currentColor"
-      strokeWidth={1.75}
+      strokeWidth={preenchido ? 1 : 1.75}
       strokeLinecap="round"
       strokeLinejoin="round"
       role={titulo ? 'img' : undefined}
