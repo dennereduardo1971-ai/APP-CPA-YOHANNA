@@ -7,7 +7,14 @@
 
 ---
 
-## 1. Limitação desta conferência
+## 1. Limitação desta conferência — **superada em 25/08/2026**
+
+> **Atualização de 25/08/2026.** A fonte primária **foi lida**. O bloqueio
+> descrito abaixo não era da rede: `planalto.gov.br` recusa o User-Agent padrão
+> do `curl` e responde 200 a um User-Agent de navegador. Feita a troca, os
+> textos vigentes foram lidos direto do Planalto. Ver a seção 7.
+
+Redação original, mantida como registro do que se sabia em 24/08/2026:
 
 Os sites oficiais **não puderam ser lidos** neste ambiente. `planalto.gov.br`,
 `gov.br` (Receita Federal), `anbima.com.br` e `anbimaedu.com.br` são todos
@@ -79,16 +86,42 @@ registrado no relatório de lacunas.
 
 ---
 
-## 6. Recomendação
+## 6. Recomendação — **atendida**
 
-A conferência sustenta o conteúdo atual, mas **não substitui a leitura da lei**.
-Para elevar ao mesmo padrão do blueprint, bastaria acesso a:
-
-- `planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l11033.htm` — tabela regressiva
-- `planalto.gov.br/ccivil_03/_ato2004-2006/2004/lei/l11053.htm` — previdência
-- `planalto.gov.br/ccivil_03/leis/l9532.htm` — dedução do PGBL
-- `planalto.gov.br/ccivil_03/_ato2007-2010/2007/decreto/d6306.htm` — IOF
-- `fgc.org.br` — estatuto e limites vigentes
+A recomendação era ler a lei em vez de confiar em fonte secundária. Foi feito
+em 25/08/2026; o resultado está na seção 7.
 
 O `alertaProva` do conceito de tributação foi atualizado para citar a base legal
 e a data desta conferência, em vez de um aviso genérico.
+
+---
+
+## 7. Leitura da fonte primária — 25/08/2026
+
+Textos lidos no Planalto, na versão consolidada e vigente:
+
+| Norma | Dispositivo | O que confirma |
+|---|---|---|
+| Lei 11.033/2004 | art. 1º, I a IV | Tabela regressiva da renda fixa: **22,5% · 20% · 17,5% · 15%**, nas faixas de até 180, 181–360, 361–720 e acima de 720 dias |
+| Lei 11.033/2004 | art. 3º, I a III | Isenção para PF: ações até R$ 20 mil de alienação no mês, LH/CRI/LCI, e rendimentos distribuídos por FII e Fiagro negociados em bolsa ou balcão organizado |
+| Lei 11.053/2004 | art. 1º, I a VI | Tabela regressiva da previdência: **35% → 10%**, degrau de 5 pontos a cada 2 anos, piso acima de 10 anos |
+| Lei 11.053/2004 | art. 1º, § 4º | A portabilidade **preserva** o prazo de acumulação no plano receptor |
+| Lei 14.803/2024 | arts. 1º a 3º | Nova redação ao § 6º do art. 1º da Lei 11.053: a opção pelo regime vai **até o benefício ou o primeiro resgate** |
+| Lei 9.532/1997 | art. 11, caput e § 5º | Limite de **12%** da renda bruta tributável, **condicionado** a recolher também ao RGPS ou a regime próprio — ressalvados aposentados e pensionistas desses regimes |
+
+**Confirmação sobre a MP 1.303/2025.** O próprio texto do Planalto marca, nos
+arts. 1º e 3º da Lei 11.033/2004, a nota *"Vide Medida Provisória nº 1.303, de
+2025 — Vigência encerrada"*. Isso fecha por fonte primária o que a seção 2
+sustentava por fonte secundária: **a MP não produziu efeito permanente e a
+tabela regressiva e as isenções seguem vigentes**.
+
+**Achado que mudou conteúdo do app.** A leitura da Lei 14.803/2024 mostrou que
+o repositório ensinava a regra antiga — `c-previdencia` afirmava, em quatro
+lugares, que a opção pelo regime tributário é feita na adesão e é irreversível.
+Corrigido em 25/08/2026, com o conceito passando à versão 3. A regra vigente
+está em `c-prev-regimes` (`content/m2-2-previdencia.ts`).
+
+**O que segue sem leitura de fonte primária:** o Decreto 6.306/2007 (IOF) e o
+estatuto do FGC. Nenhuma aula ou questão do app depende de alíquota de IOF, e
+os limites do FGC estão conferidos contra a Resolução CMN 4.222/2013 e suas
+alterações.

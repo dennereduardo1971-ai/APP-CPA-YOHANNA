@@ -8,13 +8,20 @@
 
 ## 1. Resumo executivo
 
-| | Hoje | Alvo | Delta |
+> **Situação em 25/08/2026: a fila de conceitos deste relatório está fechada.**
+> Os 88 conceitos previstos foram escritos e o banco chegou a 484 questões,
+> acima do piso de 440 — e, o que importa mais, **nenhum conceito ficou abaixo
+> de cinco questões**, que é a forma real do piso (ver §2). O que segue aberto
+> está listado no fim da seção 3.
+
+| | No início | Em 25/08/2026 | Alvo |
 |---|---:|---:|---:|
-| Macrotemas | 4 | 4 | ✅ 0 |
-| Microtemas | 9 | **20** | **+11** |
-| Conceitos (aulas) | 14 | **88** | **+74** |
-| Questões | 43 | **700** | **+657** |
-| Mapas mentais | 9 | 88 + 20 de revisão | +99 |
+| Macrotemas | 4 | 4 ✅ | 4 |
+| Microtemas | 9 | **20** ✅ | 20 |
+| Conceitos (aulas) | 14 | **88** ✅ | 88 |
+| Questões | 43 | **484** | 700 (piso 440 ✅) |
+| Mapas mentais por conceito | 9 | **88** ✅ | 88 |
+| Mapas consolidados | 0 | 0 | 20 + 4 |
 
 Os 14 conceitos existentes **não são descartados** — são migrados para a nova
 estrutura de 9 blocos / 3 níveis e realocados quando estiverem no macrotema errado.
@@ -75,23 +82,37 @@ e o app não prepara para nenhuma questão numérica da prova.
 | Microtema | O que falta | Conceitos novos |
 |---|---|---:|
 | ~~**3.4** Regras e condutas~~ | ✅ **feito em 25/08/2026** — 6 conceitos, 24 questões, com fonte primária lida (Lei 6.385/1976 arts. 27-C a 27-F, LC 105/2001, Lei 13.709/2018, Código ANBIMA de Distribuição de 22/09/2025). Nota: o art. 6º do Código tem **dez** incisos, não nove | 6 |
-| **2.1** Produtos de investimentos | COE, FIIs, LCD, Tesouro Educa+/Renda+, debênture de infraestrutura, eventos corporativos, governança e segmentos de listagem, CVM 175 (classes/subclasses, PL negativo, taxas de ingresso/saída) | 15 |
-| **1.1** Sistema financeiro nacional | CNSP, CNPC, 17 operadores, autorreguladores, FGC/FGCCoop, SBP | 2 |
-| **2.2** Previdência complementar | regimes de tributação em detalhe, portabilidade e carências, as 7 modalidades de renda | 2 |
-| **4.4** Finanças descentralizadas | smart contracts, DEXs, DAOs, tokenização, NFT, stablecoins, ETF cripto, DREX | 4 |
-| **3.3** Classificação de investidores | diversificação, investidor profissional × qualificado | 2 |
-| | | **31** |
+| ~~**2.1** Produtos de investimentos~~ | ✅ **feito** — 15 conceitos, 56 questões, em dois lotes (renda fixa e crédito privado; renda variável, fundos e CVM 175) | 15 |
+| ~~**1.1** Sistema financeiro nacional~~ | ✅ **feito em 25/08/2026** — 2 conceitos, 16 questões. Nota: a Lei 14.711/2023 retirou a CVM do CNSP, e a LC 213/2025 trouxe a proteção patrimonial mutualista para o CNSP/Susep. SBP e autorreguladores já estavam em 1.4; FGC/FGCCoop, em 2.1 | 2 |
+| ~~**2.2** Previdência complementar~~ | ✅ **feito em 25/08/2026** — 3 conceitos, 24 questões. Nota: a Lei 14.803/2024 moveu a opção pelo regime tributário para **até o benefício ou o primeiro resgate**, e isso obrigou a corrigir `c-previdencia` | 3 |
+| ~~**4.4** Finanças descentralizadas~~ | ✅ **feito em 25/08/2026** — 2 conceitos, 15 questões. Drex tratado como projeto, nunca como produto em circulação | 2 |
+| ~~**3.3** Classificação de investidores~~ | ✅ **feito em 25/08/2026** — 2 conceitos, 22 questões. Nota: o art. 10, I, da Res. CVM 30/2021 **não** dispensa de suitability a pessoa natural enquadrada por patrimônio declarado ou por certificação | 2 |
+| | | **31** ✅ |
 
 ### P2 — Ajustes e complementos
 
 | Microtema | Ação | Conceitos novos |
 |---|---|---:|
-| **4.5** Open finance | separar open investment e open insurance | 1 |
-| **4.7** Fintechs | sandbox regulatório, arranjo/adquirente/sub-adquirente | 1 |
-| **4.1 / 4.2 / 4.3** ESG | desmembrar `c-asg` nos três itens oficiais | 3 |
-| | | **5** |
+| ~~**4.5** Open finance~~ | ✅ **feito em 25/08/2026** — são DOIS sistemas, não três: open investment é escopo dentro do open finance; open insurance é sistema separado, sob CNSP e Susep | 1 |
+| ~~**4.7** Fintechs~~ | ✅ feito — arranjo, credenciador e subcredenciador em `c-fintechs-pagamentos` | 1 |
+| ~~**4.1 / 4.2 / 4.3** ESG~~ | ✅ feito — `c-esg-investimentos` e `c-fundos-is` desmembram o antigo `c-asg` | 3 |
+| | | **5** ✅ |
 
-**38 (P0) + 31 (P1) + 5 (P2) = 74 conceitos novos.**
+**38 (P0) + 31 (P1) + 5 (P2) = 74 conceitos novos — todos escritos.**
+
+---
+
+### O que continua aberto, e que não é lacuna de conteúdo
+
+Fechada a fila, sobram quatro itens deste relatório. Nenhum deles é microtema
+sem material, e por isso nenhum viola a Regra de Ouro:
+
+| Item | Onde está descrito | Natureza |
+|---|---|---|
+| Alvo de 700 questões | §2 | Folga de banco. O piso de 440 foi ultrapassado (484), e nenhum conceito ficou abaixo de cinco |
+| Mapas por microtema e macrotema | §6 | Consolidação para revisão; os 88 mapas por conceito existem |
+| Diagnóstico didático do erro | §5 | Campo novo no tipo `Questao`, com impacto nas 484 questões |
+| Rateio por formato e por dificuldade | §8, itens 3 e 4 | **Não publicado pela ANBIMA.** Permanece fora do `blueprint.ts` por decisão, não por falta de trabalho |
 
 ---
 
@@ -182,7 +203,7 @@ obtido e conferido. Situação atual:
 | 3 | `formatos` | ✅ **verificados por nome** — múltipla escolha, árvore de diálogo e cases (§4.3 e §13.4). O rateio entre eles **não é publicado** pela ANBIMA e não foi declarado |
 | 4 | Distribuição de dificuldade 25/50/25 | ⚠️ **não consta em documento oficial** — permanece fora do blueprint |
 | 5 | Pesos por macrotema | ✅ **verificados** — 20/40/30/10, Programa Detalhado |
-| 6 | Alíquotas tributárias do conteúdo | ⏳ aberta — mudam por legislação |
+| 6 | Alíquotas tributárias do conteúdo | ✅ **fechada em 25/08/2026** — fonte primária lida no Planalto: Lei 11.033/2004 arts. 1º e 3º, Lei 11.053/2004 art. 1º, Lei 14.803/2024 e Lei 9.532/1997 art. 11. Ver `docs/ALIQUOTAS.md` §7 |
 
 **Achado que altera a pedagogia:** o edital (§13.10 e §13.11) garante
 **calculadora, planilha eletrônica e formulário de fórmulas** dentro do sistema
@@ -209,3 +230,13 @@ especificação permanece violada e a aplicação não deve ser anunciada como
 completa. A interface já tem `AvisoVerificacao` para sinalizar dados não
 verificados; convém um indicador equivalente de **cobertura de microtema**, para
 o estudante saber o que ainda não está coberto — proposto para a Fase 4.
+
+> **Encerramento em 25/08/2026.** O aviso acima cumpriu sua função: os 20
+> microtemas têm material, os 88 conceitos estão escritos e o banco tem 484
+> questões. A Regra de Ouro está satisfeita e `coberturaPendente()` devolve
+> `false`.
+>
+> Uma ressalva que convém manter: **cobertura não é qualidade**. O que este
+> relatório mede é se existe material em cada item do Programa Detalhado, e
+> isso agora é verdade. Se o material é bom o bastante para aprovar alguém é
+> outra pergunta, e ela só se responde com uso real — não com contagem.

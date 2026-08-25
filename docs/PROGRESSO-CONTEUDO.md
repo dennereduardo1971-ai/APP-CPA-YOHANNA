@@ -10,11 +10,21 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **78** | 88 |
-| Questões | 43 | **314** | 700 (piso 440) |
+| Conceitos | 14 | **88** ✅ | 88 |
+| Questões | 43 | **484** ✅ | 700 (piso 440) |
 | Microtemas com aula | 7/20 | **20/20** ✅ | 20/20 |
 
-Questões do tipo `calculo`: 3 → **24**.
+Questões do tipo `calculo`: 3 → **28**.
+
+**A fila de conteúdo do `LACUNAS.md` está fechada.** Os 88 conceitos previstos
+na seção 1 estão escritos, e o piso de questões foi ultrapassado: 484 contra as
+440 do mínimo viável. Mais importante que o total, **nenhum conceito ficou
+abaixo de cinco questões** — que é a forma real do piso, já que ele existe para
+o motor Elo ter material de calibração. Há teste guardando isso em
+`src/test/conteudo.test.ts` ("todo conceito tem ao menos cinco questões").
+
+O que resta não é fila: é o alvo de 700 questões, que é folga de banco, não
+cobertura.
 
 ## A Regra de Ouro foi cumprida
 
@@ -27,15 +37,15 @@ Auditoria em `/admin` na data desta entrega:
 | Métrica | Situação |
 |---|---|
 | Microtemas com aula | 20/20 |
-| Aulas nos 9 blocos obrigatórios | 57/57 |
-| Aulas com ao menos uma questão | 57/57 |
+| Aulas nos 9 blocos obrigatórios | 88/88 |
+| Aulas com ao menos uma questão | 88/88 |
 | Defeitos / incompletos / lacunas | **0 / 0 / 0** |
 
-**Isto não é "conteúdo completo".** Cobertura significa que nenhum microtema
-oficial está vazio — não que a profundidade seja suficiente. Faltam 23
-conceitos e cerca de 150 questões para chegar ao piso de 440 do
-`LACUNAS.md`, e essa é a lista P1/P2 (§3), com destaque para 2.1 (produtos de
-investimentos, 15 conceitos) e 3.4 (regras e condutas, 6 conceitos).
+**Isto não era "conteúdo completo" quando foi escrito.** Cobertura significa
+que nenhum microtema oficial está vazio — não que a profundidade seja
+suficiente. Naquele momento faltavam 23 conceitos e cerca de 150 questões para
+o piso do `LACUNAS.md`. Essa era a lista P1/P2 (§3), e ela foi concluída em
+25/08/2026.
 
 ## Entregue
 
@@ -197,6 +207,105 @@ reclusão × detenção, e afastamento do sigilo × quebra do sigilo (com o
 paralelo consentimento × obrigação legal na LGPD). Em todos, o distrator
 plausível é o que exige autorização para o que a lei já excepcionou.
 
+### 1.1 — Sistema financeiro nacional ✅ *(complemento)*
+*2 conceitos, 16 questões.* `content/m1-1-sfn.ts`, `questions/banco-m1-1.ts`.
+
+Seguros e previdência: os outros dois ramos normativos · Os operadores: quem
+pode fazer o quê.
+
+O erro que organiza o lote é **confundir quem vende com quem regula**. O cliente
+compra previdência no banco, paga a maquininha com uma fintech e investe por uma
+corretora — três balcões, três reguladores, e a intuição do balcão erra os três.
+
+Dois achados de fonte primária:
+
+1. **A Lei 14.711/2023 tirou a CVM do CNSP.** O art. 18, II, revogou o inciso VI
+   do art. 33 do Decreto-Lei 73/1966. Material corrente ainda lista os seis
+   membros antigos. A aula ensina o que é estável — presidência da Fazenda,
+   assento da Susep — e desaconselha decorar a composição.
+2. **A LC 213/2025 trouxe a proteção patrimonial mutualista para dentro do
+   sistema de seguros**, sob CNSP e Susep, como figura própria e distinta de
+   seguro. O que era mercado paralelo passou a ser mercado regulado.
+
+### 2.2 — Previdência complementar ✅ *(aprofundamento)*
+*3 conceitos, 24 questões.* `content/m2-2-previdencia.ts`, `questions/banco-m2-2.ts`.
+
+Regime progressivo e regressivo · Portabilidade, resgate, BPD e carência · As
+modalidades de renda.
+
+**O achado que obrigou a corrigir conteúdo já publicado.** A Lei 14.803/2024 deu
+nova redação ao § 6º do art. 1º da Lei 11.053/2004: a opção pelo regime de
+tributação **não é mais feita na adesão** — vai até a obtenção do benefício ou a
+requisição do primeiro resgate. O art. 2º abriu ainda uma volta ao progressivo
+para quem já havia optado, e o art. 3º fecha tudo depois do primeiro pagamento.
+
+O repositório ensinava a regra antiga: `c-previdencia` afirmava em quatro
+lugares que a escolha "tende a ser irreversível". Corrigido, com o conceito
+passando à versão 3.
+
+Segundo achado: o art. 11 da Lei 9.532/1997 **condiciona** a dedução dos 12% ao
+recolhimento também ao RGPS ou a regime próprio (§ 5º excetua aposentados e
+pensionistas desses regimes). "PGBL deduz 12%" sozinho é incompleto.
+
+As sete modalidades de renda vieram da página oficial da Susep. A confusão que
+os distratores exploram é **temporária × prazo certo**: nomes que sugerem a
+mesma coisa e resultados invertidos na morte do participante.
+
+### 3.3 — Classificação das pessoas investidoras ✅ *(aprofundamento)*
+*2 conceitos, 22 questões.* `content/m3-3-investidores.ts`, `questions/banco-m3-3.ts`.
+
+Investidor profissional, qualificado e varejo · Diversificação: o que ela reduz
+e o que não reduz.
+
+**A exceção que quase todo material omite.** O art. 10, I, da Res. CVM 30/2021
+dispensa a verificação de adequação para o investidor qualificado, *"com exceção
+das pessoas naturais mencionadas no inciso IV do art. 11 e nos incisos II e III
+do art. 12"*. Ou seja: quem se enquadrou por patrimônio declarado ou por
+certificação **continua** com direito ao processo de suitability. A frase
+corrente "qualificado é dispensado de suitability" é falsa justamente para o
+caso mais comum no balcão.
+
+A leitura revela uma escolha de política regulatória: a CVM assume que dinheiro
+não é conhecimento. A dispensa integral fica com quem tem estrutura profissional
+dedicada — instituição financeira, seguradora, fundo, entidade de previdência.
+
+### 4.4 e 4.5 — cripto e sistemas abertos ✅ *(aprofundamento)*
+*3 conceitos, 25 questões.* `content/m4-4-cripto.ts`, `content/m4-5-open.ts`,
+`questions/banco-m4-45.ts`.
+
+Tokenização, stablecoins e o regime das prestadoras · Contratos inteligentes,
+DEX, DAO e NFT · Open investment e open insurance: um sistema ou três?
+
+**São dois sistemas, não três.** Open investment é escopo dentro do open finance
+(Res. Conjunta 1/2020, art. 5º, que já inclui produtos com natureza de
+investimento); open insurance é sistema separado, sob CNSP e Susep. O nome do
+microtema oficial sugere três coisas onde há duas, e é exatamente isso que a
+prova explora.
+
+**O consentimento não tem mais teto de doze meses.** Comparando a redação
+original da Res. Conjunta 1/2020 (*"limitado a doze meses"*) com a consolidada
+(*"prazo de validade compatível com as finalidades"*), o teto saiu pela Res.
+Conjunta 7/2023. Material corrente ainda o ensina.
+
+**Tratamento deliberado do Drex.** O piloto teve a plataforma descontinuada e o
+projeto foi reorientado; não há Drex em circulação. A aula diz em que estágio
+ele está, e `q-tokn-05` cobra exatamente isso.
+
+### Complemento de cobertura — o piso por conceito ✅
+*83 questões.* `questions/banco-m1-piso.ts`, `banco-m2-piso.ts`,
+`banco-m3-piso.ts`, `banco-m4-piso.ts`.
+
+Não é conteúdo novo: é **requisito do motor**. O `LACUNAS.md` fixa cinco
+questões por conceito porque abaixo disso o Elo não tem material para calibrar
+dificuldade e um simulado começa a repetir item. Cinquenta e nove conceitos
+vinham de lotes anteriores com três ou quatro — `c-openfinance` tinha duas.
+
+Ficam em arquivos separados por macrotema, e não dentro dos bancos existentes,
+para preservar a divisão de pedaços do `vite.config.ts` (decisão 13): o padrão
+`banco-mN` já os encaminha para o pedaço certo.
+
+Há teste guardando o piso, para que ele não regrida em silêncio.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -216,6 +325,14 @@ plausível é o que exige autorização para o que a lei já excepcionou.
 | 12 | ~~4.4 Finanças descentralizadas~~ | 2 | ✅ feito |
 | 13 | ~~4.7 Fintechs e meios de pagamento~~ | 1 | ✅ feito |
 | — | **Cobertura 20/20 atingida** | | ✅ |
+| 14 | ~~2.1 Produtos de investimentos (lotes A e B)~~ | 15 | ✅ feito |
+| 15 | ~~3.4 Regras e condutas~~ | 6 | ✅ feito |
+| 16 | ~~1.1 Sistema financeiro nacional~~ | 2 | ✅ feito |
+| 17 | ~~2.2 Previdência complementar~~ | 3 | ✅ feito |
+| 18 | ~~3.3 Classificação das pessoas investidoras~~ | 2 | ✅ feito |
+| 19 | ~~4.4 Finanças descentralizadas (aprofundamento)~~ | 2 | ✅ feito |
+| 20 | ~~4.5 Open investment e open insurance~~ | 1 | ✅ feito |
+| — | **Fila concluída — 88/88 conceitos, 484 questões** | | ✅ |
 
 ### 2.1 — produtos de renda fixa e crédito privado ✅ *(lote A)*
 *7 conceitos, 28 questões.* `content/m2-1-renda-fixa.ts`, `questions/banco-m2-1-rf.ts`.
@@ -261,25 +378,25 @@ moderado, FII que distribui todo mês não é renda fixa, e a responsabilidade
 limitada do cotista na CVM 175 **não** é automática: depende de previsão
 expressa no regulamento da classe.
 
-### O que vem depois: aprofundamento (P1 e P2)
+### O que vem depois — a fila acabou, e o que sobra não é fila
 
-A cobertura está fechada; falta profundidade. A ordem sugerida é por peso da
-prova, e vem de `LACUNAS.md` §3:
+Todo o P1 e o P2 do `LACUNAS.md` §3 foram entregues em 25/08/2026. O placar
+fechou em **88 conceitos e 484 questões**, com nenhum conceito abaixo de cinco
+questões.
 
-| Ordem | Microtema | Conceitos novos | O que falta |
-|---|---|---:|---|
-| ~~1~~ | ~~2.1 Produtos de investimentos — **lote B**~~ | 8 | ✅ feito |
-| ~~2~~ | ~~3.4 Regras e condutas~~ | 6 | ✅ feito |
-| 3 | 4.4 Finanças descentralizadas | 2 | tokenização, NFT, ETF cripto, DREX |
-| 4 | 1.1 Sistema financeiro nacional | 2 | CNSP, CNPC, os 17 operadores, FGCCoop, SBP |
-| 5 | 2.2 Previdência complementar | 2 | regimes de tributação em detalhe, portabilidade e carências, as 7 modalidades de renda |
-| 6 | 3.3 Classificação de investidores | 2 | diversificação, investidor profissional × qualificado |
-| — | Ajustes P2 (4.5, 4.7, ESG) | 5 | ver `LACUNAS.md` §3 |
+O que continua aberto **não é cobertura**, e convém não confundir as duas
+coisas:
 
-Volume de questões: **314 hoje contra piso de 440**. Com 2.1 e 3.4 fechados,
-os dois microtemas de maior peso da fila saíram. O que resta em P1 são blocos
-menores — e 2.2 (previdência) segue dependendo da leitura das leis de
-tributação, hoje possível no ambiente local.
+| Item | Natureza | Por que não é fila |
+|---|---|---|
+| Alvo de 700 questões | Folga de banco | 484 já supera o piso de 440. Mais questões melhoram a variedade de simulado, não a cobertura |
+| Mapas por microtema e por macrotema | Consolidação | `LACUNAS.md` §6: hoje há um mapa por conceito. Os consolidados são material de revisão, não matéria faltante |
+| Diagnóstico didático do erro | Campo novo no tipo | `LACUNAS.md` §5: "por que você errou", "o que você precisa entender", "como lembrar na prova". Exige mexer em `types.ts` e nas 484 questões |
+| Formatos `case` e árvore de diálogo | Distribuição | O edital nomeia os formatos; a ANBIMA não publica o rateio. O banco tem poucos de cada |
+
+**Nenhum desses depende de fonte externa que ainda falte ler.** A pendência de
+alíquotas foi fechada com leitura de fonte primária em 25/08/2026 — ver
+`docs/ALIQUOTAS.md` §7.
 
 ## Um defeito achado nesta entrega, e o guarda que o impede
 

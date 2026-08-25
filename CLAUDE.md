@@ -147,11 +147,15 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 - [ ] Rateio de questões por formato e distribuição por grau de dificuldade:
       a ANBIMA **não publica** esses dados. Manter fora do `blueprint.ts`
       enquanto não houver fonte.
-- [~] Alíquotas tributárias: conferidas em 24/08/2026 e todas vigentes — a
-      MP 1.303/2025 não virou lei. Base legal em `docs/ALIQUOTAS.md`. Falta
-      ler o texto das leis: `planalto.gov.br` está bloqueado neste ambiente.
-- [ ] Res. CMN 5.295/2026 (novas regras de captação com garantia do FGC,
-      vigente desde 01/06/2026): incorporar ao conceito `c-fgc`.
+- [x] ~~Alíquotas tributárias~~ — fechada em 25/08/2026 **com fonte primária
+      lida**. `planalto.gov.br` não estava bloqueado: ele recusa o User-Agent
+      padrão do `curl` e responde 200 a um de navegador. Lidas as Leis
+      11.033/2004 (arts. 1º e 3º), 11.053/2004 (art. 1º), 14.803/2024 e
+      9.532/1997 (art. 11). A MP 1.303/2025 consta como *vigência encerrada* no
+      próprio texto. Ver `docs/ALIQUOTAS.md` §7.
+- [x] ~~Res. CMN 5.295/2026~~ — incorporada ao `c-fgc` em 25/08/2026. Ponto que
+      a aula destaca: a norma aperta o lado do BANCO (contribuição adicional e
+      alocação em títulos públicos); **a cobertura do investidor não mudou**.
 - [ ] Monitoramento automático das publicações da ANBIMA. O app roda offline
       e sem servidor, então `/admin/versoes` é um registro **manual** — quem
       confere a fonte é uma pessoa. Automatizar exigiria backend.
@@ -172,12 +176,12 @@ _Atualizado em 2026-08-25._
 |---|---|
 | Macrotemas | 4 |
 | Microtemas | 20 |
-| Conceitos (aulas) | 78 |
-| Questões no banco | 314 |
+| Conceitos (aulas) | 88 |
+| Questões no banco | 484 |
 | Páginas | 29 |
 | Componentes | 18 |
 | Arquivos de teste | 5 |
-| Linhas em `src/` | 30.280 |
+| Linhas em `src/` | 34.425 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

@@ -12,13 +12,19 @@
 | | |
 |---|---|
 | Branch | `claude/markdown-document-analysis-37g2pr` |
-| Último commit | `82f5c14` — *Conteudo 2.1 lote B* |
+| Último commit | ver `git log` — a fila de conteúdo fechou em 25/08/2026 |
 | Árvore | limpa, empurrada, nada pendente |
-| Testes | 175 passando em 5 arquivos |
-| Typecheck / build | verdes |
-| Conceitos · Questões | **72 · 290** |
+| Testes | 176 passando em 5 arquivos |
+| Typecheck / build | verdes, build sem nenhum aviso |
+| Conceitos · Questões | **88 · 484** — alvo de conceitos atingido, piso de questões ultrapassado |
 | Microtemas com aula | **20/20** |
 | Auditoria `/admin` | 0 defeitos · 0 incompletos · 0 lacunas |
+
+> **Atualização de 25/08/2026.** Este arquivo foi escrito ao fim da sessão
+> remota. A sessão local que o recebeu executou a fila inteira: as seções 2.1,
+> 3 e 6 estão resolvidas e ficaram marcadas como tal, com o texto original
+> preservado para se saber o que se acreditava antes. As seções 4 e 5 seguem
+> valendo — são método e armadilhas, não estado.
 
 O plano de 10 fases (`/root/.claude/plans/steady-dazzling-dragon.md` na sessão
 remota) está **concluído**. O que resta não é engenharia: é **autoria de
@@ -41,7 +47,26 @@ Depois, mande o Claude ler, nesta ordem:
 
 ## 2. O que o PC destrava (e a sessão remota não conseguiu)
 
-### 2.1 Fontes legais bloqueadas — o gargalo real
+### 2.1 Fontes legais bloqueadas — ✅ RESOLVIDA em 25/08/2026
+
+> **O diagnóstico estava errado, e isso é o mais útil a registrar.**
+> `planalto.gov.br` **não** está bloqueado por rede. Ele recusa o User-Agent
+> padrão do `curl` e responde **200** a um User-Agent de navegador:
+>
+> ```
+> curl -sL -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 >   (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36" <url>
+> ```
+>
+> Feita a troca, todos os textos abaixo foram lidos direto do Planalto. O que
+> se seguiu está em `docs/ALIQUOTAS.md` §7 e nos commits de 1.1, 2.2, 3.3, 4.4
+> e 4.5. **Antes de declarar um domínio bloqueado, troque o User-Agent.**
+>
+> Achado que a leitura produziu e que corrigiu conteúdo já publicado: a **Lei
+> 14.803/2024** moveu a opção pelo regime tributário da previdência da adesão
+> para o momento do benefício ou do primeiro resgate. O repositório ensinava a
+> regra antiga em quatro lugares de `c-previdencia`.
+
+Redação original, mantida como registro:
 
 `planalto.gov.br` está **bloqueado** no ambiente remoto. Isso trava dois
 assuntos que a prova cobra e o app hoje trata por cima:
@@ -119,7 +144,22 @@ fazer é ir buscar a arte original.
 
 ---
 
-## 3. A fila de trabalho, na ordem
+## 3. A fila de trabalho — ✅ CONCLUÍDA em 25/08/2026
+
+> Todos os seis itens da tabela abaixo foram entregues. Placar final: **88
+> conceitos e 484 questões**, com **nenhum conceito abaixo de cinco questões**
+> — que é a forma real do piso, já que ele existe para o motor Elo ter material
+> de calibração. Há teste guardando isso em `src/test/conteudo.test.ts`.
+>
+> O que sobra não é fila: alvo de 700 questões (folga de banco), mapas
+> consolidados por microtema e macrotema, e o diagnóstico didático do erro.
+> Estão listados em `docs/LACUNAS.md` §3, ao fim.
+>
+> Uma observação sobre a linha 1 da tabela: ela pedia "os 9 princípios éticos".
+> O art. 6º do Código de Distribuição vigente tem **dez** incisos. A aula ensina
+> o conteúdo e avisa que decorar a contagem é o caminho errado.
+
+Redação original, mantida como registro:
 
 Vem de `docs/LACUNAS.md` §3, ordenada por peso na prova. Volume: **290
 questões contra piso de 440** — faltam ~150.
@@ -226,9 +266,15 @@ nova, como tarefa própria — antes de escrever mais 150 questões, não depois
 
 ## 7. Pendências que continuam abertas
 
-- [ ] Tributação com texto legal citado (seção 2.1 deste arquivo)
-- [ ] Res. CMN 5.295/2026 no conceito `c-fgc`
+- [x] ~~Tributação com texto legal citado~~ — feito em 25/08/2026, com leitura
+      no Planalto. Ver `docs/ALIQUOTAS.md` §7
+- [x] ~~Res. CMN 5.295/2026 no conceito `c-fgc`~~ — feito em 25/08/2026. A norma
+      aperta o lado do banco; a cobertura do investidor não mudou
 - [ ] Rateio por formato e dificuldade — **sem fonte, manter fora do blueprint**
+- [ ] Registrar em `/admin/versoes` as normas incorporadas em 25/08/2026. Esse
+      registro é **manual e local** (fica no store, não no repositório), então
+      só você pode fazê-lo: Lei 14.803/2024, Lei 14.711/2023, LC 213/2025,
+      Res. CMN 5.295/2026, Res. Conjunta 7/2023 e Res. BCB 519 a 521
 - [ ] Monitoramento automático da ANBIMA — exige backend; hoje `/admin/versoes`
       é registro **manual**, e quem confere é uma pessoa
 - [ ] Keystore de assinatura do APK (os ícones já saem de `public/icon.svg` via

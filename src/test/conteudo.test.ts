@@ -264,6 +264,17 @@ describe('cobertura de conteúdo', () => {
       expect(c).toBeLessThanOrEqual(1)
     }
   })
+
+  // O piso de cinco questões por conceito não é meta editorial: é requisito do
+  // MOTOR. Abaixo disso o Elo não tem material para calibrar dificuldade e um
+  // simulado começa a repetir item. Ver `docs/LACUNAS.md`, seção 2.
+  it('todo conceito tem ao menos cinco questões — o piso do motor adaptativo', () => {
+    const abaixo = CONCEITOS.map((c) => ({
+      id: c.id,
+      n: questoesDoConceito(c.id).length,
+    })).filter((x) => x.n < 5)
+    expect(abaixo.map((x) => `${x.id} (${x.n})`)).toEqual([])
+  })
 })
 
 describe('lição em nove blocos e três níveis', () => {

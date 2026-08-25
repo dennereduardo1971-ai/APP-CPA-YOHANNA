@@ -1,22 +1,26 @@
 import type { Dificuldade, Questao, QuestionKind } from '../types'
 import { BANCO_M1 } from './banco-m1'
 import { BANCO_M1_1 } from './banco-m1-1'
+import { BANCO_M1_PISO } from './banco-m1-piso'
 import { BANCO_M1_2 } from './banco-m1-2'
 import { BANCO_M1_3 } from './banco-m1-3'
 import { BANCO_M1_4 } from './banco-m1-4'
 import { BANCO_M2 } from './banco-m2'
 import { BANCO_M2_1_RF } from './banco-m2-1-rf'
 import { BANCO_M2_1_RV } from './banco-m2-1-rv'
+import { BANCO_M2_PISO } from './banco-m2-piso'
 import { BANCO_M2_2 } from './banco-m2-2'
 import { BANCO_M2_3 } from './banco-m2-3'
 import { BANCO_M2_4 } from './banco-m2-4'
 import { BANCO_M2_5 } from './banco-m2-5'
+import { BANCO_M3_PISO } from './banco-m3-piso'
 import { BANCO_M3_1 } from './banco-m3-1'
 import { BANCO_M3_2 } from './banco-m3-2'
 import { BANCO_M3_3 } from './banco-m3-3'
 import { BANCO_M3_4 } from './banco-m3-4'
 import { BANCO_M34 } from './banco-m34'
 import { BANCO_M4_6 } from './banco-m4-6'
+import { BANCO_M4_PISO } from './banco-m4-piso'
 import { BANCO_M4_45 } from './banco-m4-45'
 import { BANCO_M4_RESTO } from './banco-m4-resto'
 import { MACROTEMAS } from '../content'
@@ -32,6 +36,7 @@ import { montarQuestoes, overlayVazio } from '../content/overlay'
 const BASE: Questao[] = [
   ...BANCO_M1,
   ...BANCO_M1_1,
+  ...BANCO_M1_PISO,
   ...BANCO_M1_2,
   ...BANCO_M1_3,
   ...BANCO_M1_4,
@@ -39,16 +44,19 @@ const BASE: Questao[] = [
   ...BANCO_M2_1_RF,
   ...BANCO_M2_1_RV,
   ...BANCO_M2_2,
+  ...BANCO_M2_PISO,
   ...BANCO_M2_3,
   ...BANCO_M2_4,
   ...BANCO_M2_5,
   ...BANCO_M3_1,
   ...BANCO_M3_2,
   ...BANCO_M3_3,
+  ...BANCO_M3_PISO,
   ...BANCO_M3_4,
   ...BANCO_M34,
   ...BANCO_M4_6,
   ...BANCO_M4_45,
+  ...BANCO_M4_PISO,
   ...BANCO_M4_RESTO,
 ]
 
