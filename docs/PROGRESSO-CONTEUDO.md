@@ -10,9 +10,9 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **35** | 88 |
-| Questões | 43 | **150** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **11/20** | 20/20 |
+| Conceitos | 14 | **39** | 88 |
+| Questões | 43 | **166** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **12/20** | 20/20 |
 
 Questões do tipo `calculo`: 3 → **22**.
 
@@ -66,6 +66,18 @@ faz de verdade. Por isso a proporção de `situacao_pratica` é maior aqui.
 mês, limites do PIX, alíquota de IOF — porque esses números vêm de norma
 infralegal revista periodicamente.
 
+### 2.3 — Produtos de financiamento ✅
+*4 conceitos, 16 questões.* `content/m2-3-financiamento.ts`, `questions/banco-m2-3.ts`.
+
+Modalidades de crédito PF · Custo Efetivo Total · Financiamento imobiliário
+(SFH, SFI, alienação fiduciária) · Leasing e CDC.
+
+A lógica se inverte em relação ao resto do macrotema 2: em aplicação, taxa
+maior é melhor; em crédito, taxa maior é pior — e o número que decide não é a
+taxa anunciada, é o CET. Boa parte dos distratores explora essa inversão,
+oferecendo a proposta de menor taxa nominal quando a estrutura de tarifas a
+torna a mais cara.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -74,8 +86,8 @@ infralegal revista periodicamente.
 | 2 | ~~1.2 Política econômica~~ | 6 | ✅ feito |
 | 3 | ~~1.4 Regulação e infraestrutura~~ | 5 | ✅ feito |
 | 4 | ~~2.4 Serviços bancários~~ | 4 | ✅ feito |
-| 5 | 2.3 Produtos de financiamento | 4 | próximo |
-| 6 | 2.5 Seguros de vida e patrimoniais | 2 | |
+| 5 | ~~2.3 Produtos de financiamento~~ | 4 | ✅ feito |
+| 6 | 2.5 Seguros de vida e patrimoniais | 2 | próximo |
 | 7 | 3.1 Finanças pessoais | 7 | |
 | 8 | 3.2 Orientações financeiras | 2 | |
 | 9 | 4.6 Inteligência artificial | 2 | |

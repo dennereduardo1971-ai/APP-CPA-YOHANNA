@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_2_3 } from './m2-3-financiamento'
 import { CONCEITOS_2_4 } from './m2-4-servicos'
 
 /**
@@ -848,7 +849,7 @@ export const M2: Macrotema = {
       nome: 'Produtos de financiamento',
       ordem: 3,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_2_3,
     },
     {
       id: 'm2.4',
