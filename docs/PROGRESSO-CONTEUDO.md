@@ -10,9 +10,9 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **41** | 88 |
-| Questões | 43 | **176** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **13/20** | 20/20 |
+| Conceitos | 14 | **48** | 88 |
+| Questões | 43 | **197** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **14/20** | 20/20 |
 
 Questões do tipo `calculo`: 3 → **22**.
 
@@ -90,6 +90,24 @@ prejuízo e obedece ao princípio indenizatório; **seguro de pessoas** paga
 capital contratado, admite cumulação de apólices e não comporta sub-rogação.
 Quase toda pegadinha do tema aplica a regra de um ao outro.
 
+### 3.1 — Finanças pessoais ✅
+*7 conceitos, 21 questões.* `content/m3-1-financas.ts`, `questions/banco-m3-1.ts`.
+
+Orçamento e fluxo de caixa · Balanço patrimonial pessoal · Reserva de
+emergência · Endividamento e superendividamento · Objetivos e horizonte ·
+Ciclo de vida financeiro · Planejamento da aposentadoria.
+
+Este microtema precede tecnicamente todo o resto do macrotema 3: não há
+suitability honesto sem orçamento, reserva e objetivo definidos. As sete
+aulas seguem uma ordem que é também um método — medir, proteger, projetar e
+converter em meta de longo prazo.
+
+Aqui o banco cobra **julgamento, não memória**: os distratores são
+recomendações plausíveis e comercialmente convenientes (aplicar a sobra de
+quem tem rotativo aberto, seguir o perfil arrojado num objetivo de doze
+meses, manter reserva no que rende mais). São as escolhas que atendem à meta
+e não ao cliente.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -100,8 +118,8 @@ Quase toda pegadinha do tema aplica a regra de um ao outro.
 | 4 | ~~2.4 Serviços bancários~~ | 4 | ✅ feito |
 | 5 | ~~2.3 Produtos de financiamento~~ | 4 | ✅ feito |
 | 6 | ~~2.5 Seguros de vida e patrimoniais~~ | 2 | ✅ feito |
-| 7 | 3.1 Finanças pessoais | 7 | próximo |
-| 8 | 3.2 Orientações financeiras | 2 | |
+| 7 | ~~3.1 Finanças pessoais~~ | 7 | ✅ feito |
+| 8 | 3.2 Orientações financeiras | 2 | próximo |
 | 9 | 4.6 Inteligência artificial | 2 | |
 | — | P1 e P2 (`LACUNAS.md` §3) | 36 | depois do P0 |
 
