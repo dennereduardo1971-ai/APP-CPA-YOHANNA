@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_2_1_RF } from './m2-1-renda-fixa'
 import { CONCEITOS_2_3 } from './m2-3-financiamento'
 import { CONCEITOS_2_4 } from './m2-4-servicos'
 import { CONCEITOS_2_5 } from './m2-5-seguros'
@@ -693,6 +694,7 @@ export const M2: Macrotema = {
           atualizadoEm: '2026-08-24',
           minutosEstimados: 7,
         },
+        ...CONCEITOS_2_1_RF,
       ],
     },
     {

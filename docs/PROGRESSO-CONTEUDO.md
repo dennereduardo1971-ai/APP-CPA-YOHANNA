@@ -10,8 +10,8 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **57** | 88 |
-| Questões | 43 | **234** | 700 (piso 440) |
+| Conceitos | 14 | **64** | 88 |
+| Questões | 43 | **262** | 700 (piso 440) |
 | Microtemas com aula | 7/20 | **20/20** ✅ | 20/20 |
 
 Questões do tipo `calculo`: 3 → **24**.
@@ -179,6 +179,28 @@ risco. São as três confusões que o discurso do setor produz.
 | 13 | ~~4.7 Fintechs e meios de pagamento~~ | 1 | ✅ feito |
 | — | **Cobertura 20/20 atingida** | | ✅ |
 
+### 2.1 — produtos de renda fixa e crédito privado ✅ *(lote A)*
+*7 conceitos, 28 questões.* `content/m2-1-renda-fixa.ts`, `questions/banco-m2-1-rf.ts`.
+
+Tesouro Direto (a família inteira, com Renda+ e Educa+) · CDB, RDB e Letra
+Financeira · LCI, LCA e LCD · CRI e CRA · Debêntures (comuns, incentivadas e
+de infraestrutura) · COE · Risco de crédito, rating e spread.
+
+Três perguntas resolvem quase todo o bloco, e as aulas voltam a elas:
+**quem emite** (define se há FGC), **qual lastro** (define o risco real) e
+**de quem é o benefício fiscal** — porque nem todo incentivo chega ao
+investidor.
+
+A distinção mais afiada do lote é entre **debênture incentivada** (o benefício
+é do investidor pessoa física, que fica isento) e **debênture de
+infraestrutura** (o benefício é do emissor, e o investidor PF é tributado).
+Nomes quase iguais, beneficiários opostos, e os dois papéis competem no mesmo
+balcão.
+
+Os distratores exploram a semelhança de prateleira: CRI ao lado de LCI (mesma
+isenção, garantia diferente), Letra Financeira ao lado de CDB (mesmo emissor,
+sem FGC), COE vendido como "ganho de bolsa sem risco".
+
 ### O que vem depois: aprofundamento (P1 e P2)
 
 A cobertura está fechada; falta profundidade. A ordem sugerida é por peso da
@@ -186,7 +208,7 @@ prova, e vem de `LACUNAS.md` §3:
 
 | Ordem | Microtema | Conceitos novos | O que falta |
 |---|---|---:|---|
-| 1 | 2.1 Produtos de investimentos | 15 | COE, FIIs, LCD, Tesouro Educa+/Renda+, debênture de infraestrutura, eventos corporativos, segmentos de listagem, CVM 175 |
+| 1 | 2.1 Produtos de investimentos — **lote B** | 8 | eventos corporativos, governança e segmentos de listagem, FIIs, ETF e BDR, classificação de fundos, CVM 175 (classes e subclasses), taxas de ingresso/saída e PL negativo, fundos abertos × fechados |
 | 2 | 3.4 Regras e condutas | 6 | os 9 princípios éticos, LGPD, sigilo bancário, e todo o bloco de crimes (insider, spoofing, layering, churning, front running) |
 | 3 | 4.4 Finanças descentralizadas | 2 | tokenização, NFT, ETF cripto, DREX |
 | 4 | 1.1 Sistema financeiro nacional | 2 | CNSP, CNPC, os 17 operadores, FGCCoop, SBP |
@@ -194,7 +216,7 @@ prova, e vem de `LACUNAS.md` §3:
 | 6 | 3.3 Classificação de investidores | 2 | diversificação, investidor profissional × qualificado |
 | — | Ajustes P2 (4.5, 4.7, ESG) | 5 | ver `LACUNAS.md` §3 |
 
-Volume de questões: **234 hoje contra piso de 440**. O gargalo maior está em
+Volume de questões: **262 hoje contra piso de 440**. O gargalo maior está em
 2.1, que tem o maior peso da prova e a maior lista de conceitos pendentes.
 
 ## Um defeito achado nesta entrega, e o guarda que o impede
