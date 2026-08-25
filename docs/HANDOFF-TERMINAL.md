@@ -197,7 +197,7 @@ teste. E nada de glifo Unicode na navegação: no Android vira caixinha.
 
 ---
 
-## 6. Uma decisão de arquitetura que está madura e é sua
+## 6. Uma decisão de arquitetura que está madura e é sua — ✅ RESOLVIDA em 25/08/2026
 
 O pedaço `conteudo` do bundle saiu de **137,91 kB** (fim da Fase 10) para
 **615,81 kB** (182,42 kB gzip) e carrega inteiro na abertura — o registro
@@ -208,6 +208,19 @@ demanda**. É trabalho de arquitetura de verdade (mexe no registro mutável e no
 `aplicarOverlayLocal`), não cabe de raspão numa entrega de conteúdo, e por isso
 não foi feito. **A decisão é sua**: se quiser, peça explicitamente na sessão
 nova, como tarefa própria — antes de escrever mais 150 questões, não depois.
+
+> **Feito.** O pedaço único virou oito: `conteudo-m1..m4` e `questoes-m1..m4`,
+> mais as camadas de registro. O `index` caiu de 182 kB para 72 kB porque as
+> telas do estudante passaram a carregar sob demanda. Detalhes e a regra de
+> ordem entre camadas estão na decisão 13 do `CLAUDE.md` e no cabeçalho de
+> `vite.config.ts`.
+>
+> O que **não** foi feito, e continua em aberto: adiar o TEXTO das aulas e das
+> questões para depois do primeiro paint. Não dá sem separar estrutura de
+> prosa no tipo `Conceito`, porque `planner.ts` e `trilha.ts` precisam do
+> corpus inteiro para decidir o que mostrar na Home — e `conteudo.test.ts`
+> valida a prosa de todos os conceitos de forma síncrona. É refatoração de
+> tipo, não de empacotamento.
 
 ---
 

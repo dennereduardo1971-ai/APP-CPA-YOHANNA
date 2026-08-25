@@ -137,6 +137,7 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 | 8 | Trilha é jornada de nós (`engine/trilha.ts`), não lista de aulas | **Macrotema nunca tranca** — a especificação pede acesso livre aos módulos. O pré-requisito vale entre microtemas (60%) e dentro deles (miniquiz depois das aulas, desafio depois do domínio). A regra vive no motor, não no JSX, para ser testável |
 | 11 | Pílula e chip usam fundo opaco (`*-soft`), nunca `cor/15` | Com transparência o contraste passava a depender da superfície embaixo: o mesmo componente lia bem num card e mal em outro |
 | 12 | Painel `/admin` e bibliotecas em pedaços separados do app | O service worker guarda por nome de arquivo com hash. Junto, corrigir uma alíquota obrigava o aparelho a baixar de novo os ~167 kB de React que não mudaram |
+| 13 | Um pedaço de conteúdo e um de questões **por macrotema**, e telas do estudante sob demanda | Mesmo motivo do 12, levado adiante: com um `conteudo` único de 854 kB, corrigir uma aula do módulo 2 invalidava o cache das aulas dos módulos 1, 3 e 4. A divisão vive em `vite.config.ts`, e a ordem das camadas lá **não é estética**: `registro-questoes → questoes-mN → questoes-motor → registro-conteudo → conteudo-mN`, sempre num sentido só. Um ciclo entre pedaços quebraria a abertura, porque `content/index.ts` executa `reconstruir()` no topo do módulo |
 
 ## Pendências externas
 
@@ -176,7 +177,7 @@ _Atualizado em 2026-08-25._
 | Páginas | 29 |
 | Componentes | 18 |
 | Arquivos de teste | 5 |
-| Linhas em `src/` | 30.272 |
+| Linhas em `src/` | 30.280 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

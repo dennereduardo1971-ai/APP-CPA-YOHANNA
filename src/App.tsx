@@ -5,24 +5,32 @@ import { useStore } from '@/lib/store'
 
 import Onboarding from '@/pages/Onboarding'
 import Home from '@/pages/Home'
-import Trilha from '@/pages/Trilha'
-import Aula from '@/pages/Aula'
-import Resumos from '@/pages/Resumos'
-import Mapas from '@/pages/Mapas'
-import Questoes from '@/pages/Questoes'
-import EstudoRapido from '@/pages/EstudoRapido'
-import Simulados from '@/pages/Simulados'
-import SimuladoRun from '@/pages/SimuladoRun'
-import Resultado from '@/pages/Resultado'
-import Revisao from '@/pages/Revisao'
-import Metas from '@/pages/Metas'
-import Conquistas from '@/pages/Conquistas'
-import Estatisticas from '@/pages/Estatisticas'
-import Progresso from '@/pages/Progresso'
-import Perfil from '@/pages/Perfil'
-import Config from '@/pages/Config'
-import Vespera from '@/pages/Vespera'
-import Baixar from '@/pages/Baixar'
+
+/*
+ * Só a Home e o onboarding entram no pacote inicial: são o primeiro paint.
+ * As demais telas do estudante carregam sob demanda — o `Suspense` que já
+ * envolvia o painel cobre todas elas. O ganho não é de rede (dentro do APK
+ * os pedaços são arquivos locais), é de trabalho na abertura: o aparelho
+ * deixa de analisar o código de vinte telas para desenhar uma.
+ */
+const Trilha = lazy(() => import('@/pages/Trilha'))
+const Aula = lazy(() => import('@/pages/Aula'))
+const Resumos = lazy(() => import('@/pages/Resumos'))
+const Mapas = lazy(() => import('@/pages/Mapas'))
+const Questoes = lazy(() => import('@/pages/Questoes'))
+const EstudoRapido = lazy(() => import('@/pages/EstudoRapido'))
+const Simulados = lazy(() => import('@/pages/Simulados'))
+const SimuladoRun = lazy(() => import('@/pages/SimuladoRun'))
+const Resultado = lazy(() => import('@/pages/Resultado'))
+const Revisao = lazy(() => import('@/pages/Revisao'))
+const Metas = lazy(() => import('@/pages/Metas'))
+const Conquistas = lazy(() => import('@/pages/Conquistas'))
+const Estatisticas = lazy(() => import('@/pages/Estatisticas'))
+const Progresso = lazy(() => import('@/pages/Progresso'))
+const Perfil = lazy(() => import('@/pages/Perfil'))
+const Config = lazy(() => import('@/pages/Config'))
+const Vespera = lazy(() => import('@/pages/Vespera'))
+const Baixar = lazy(() => import('@/pages/Baixar'))
 /*
  * O painel de conteúdo carrega sob demanda. São oito telas de formulário que
  * um estudante nunca abre — deixá-las no pacote principal engordaria o app
