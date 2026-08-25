@@ -10,15 +10,32 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **52** | 88 |
-| Questões | 43 | **213** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **16/20** | 20/20 |
+| Conceitos | 14 | **57** | 88 |
+| Questões | 43 | **234** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **20/20** ✅ | 20/20 |
 
-Questões do tipo `calculo`: 3 → **22**.
+Questões do tipo `calculo`: 3 → **24**.
 
-**Toda a prioridade P0 do `LACUNAS.md` está concluída.** Macrotemas 1, 2 e 3
-completos (1.1–1.4, 2.1–2.5, 3.1–3.4) — **90% do peso da prova** com todos os
-microtemas cobertos. Faltam 4.2, 4.3, 4.4 e 4.7, todos no macrotema 4 (10%).
+## A Regra de Ouro foi cumprida
+
+**Os vinte microtemas do Programa Detalhado têm aula.** O painel `/admin`
+reporta cobertura de 100% e `coberturaPendente()` passou a devolver `false` —
+o aviso de cobertura incompleta sai do app.
+
+Auditoria em `/admin` na data desta entrega:
+
+| Métrica | Situação |
+|---|---|
+| Microtemas com aula | 20/20 |
+| Aulas nos 9 blocos obrigatórios | 57/57 |
+| Aulas com ao menos uma questão | 57/57 |
+| Defeitos / incompletos / lacunas | **0 / 0 / 0** |
+
+**Isto não é "conteúdo completo".** Cobertura significa que nenhum microtema
+oficial está vazio — não que a profundidade seja suficiente. Faltam 31
+conceitos e cerca de 208 questões para chegar ao piso de 440 do
+`LACUNAS.md`, e essa é a lista P1/P2 (§3), com destaque para 2.1 (produtos de
+investimentos, 15 conceitos) e 3.4 (regras e condutas, 6 conceitos).
 
 ## Entregue
 
@@ -126,6 +143,22 @@ legislativa.** Nenhuma aula ou questão afirma existir norma vigente sobre o
 tema — descrevem o que já é aplicável hoje (proteção de dados, dever de
 adequação, dever de informação) e tratam o resto como matéria em discussão.
 
+### 4.2, 4.3, 4.4 e 4.7 — o que faltava do macrotema 4 ✅
+*5 conceitos, 19 questões.* `content/m4-resto.ts`, `questions/banco-m4-resto.ts`.
+
+Investimentos ESG (estratégias e greenwashing) · Fundos IS × fundos que
+integram ESG · Blockchain e ativos virtuais · Finanças descentralizadas ·
+Fintechs e arranjos de pagamento.
+
+É o macrotema mais volátil do programa — taxonomia ESG, regulação de ativos
+virtuais e arranjos de pagamento estão todos em construção normativa. Nenhuma
+questão afirma exigência normativa específica: todas cobram o mecanismo e a
+lógica da distinção, que é o que se consegue cobrar de um tema em movimento.
+
+O distrator recorrente aqui é o **entusiasmo**: tratar rótulo como carteira,
+imutabilidade como veracidade e ausência de intermediário como ausência de
+risco. São as três confusões que o discurso do setor produz.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -140,11 +173,62 @@ adequação, dever de informação) e tratam o resto como matéria em discussão
 | 8 | ~~3.2 Orientações financeiras~~ | 2 | ✅ feito |
 | 9 | ~~4.6 Inteligência artificial~~ | 2 | ✅ feito |
 | — | **P0 concluído** | | ✅ |
-| 10 | 4.2 Introdução aos investimentos ESG | 1 | próximo |
-| 11 | 4.3 Fundos de investimento sustentável | 1 | |
-| 12 | 4.4 Finanças descentralizadas | 4 | |
-| 13 | 4.7 Fintechs e meios de pagamento | 1 | |
-| — | Restante de P1 e P2 (`LACUNAS.md` §3) | 29 | |
+| 10 | ~~4.2 Introdução aos investimentos ESG~~ | 1 | ✅ feito |
+| 11 | ~~4.3 Fundos de investimento sustentável~~ | 1 | ✅ feito |
+| 12 | ~~4.4 Finanças descentralizadas~~ | 2 | ✅ feito |
+| 13 | ~~4.7 Fintechs e meios de pagamento~~ | 1 | ✅ feito |
+| — | **Cobertura 20/20 atingida** | | ✅ |
+
+### O que vem depois: aprofundamento (P1 e P2)
+
+A cobertura está fechada; falta profundidade. A ordem sugerida é por peso da
+prova, e vem de `LACUNAS.md` §3:
+
+| Ordem | Microtema | Conceitos novos | O que falta |
+|---|---|---:|---|
+| 1 | 2.1 Produtos de investimentos | 15 | COE, FIIs, LCD, Tesouro Educa+/Renda+, debênture de infraestrutura, eventos corporativos, segmentos de listagem, CVM 175 |
+| 2 | 3.4 Regras e condutas | 6 | os 9 princípios éticos, LGPD, sigilo bancário, e todo o bloco de crimes (insider, spoofing, layering, churning, front running) |
+| 3 | 4.4 Finanças descentralizadas | 2 | tokenização, NFT, ETF cripto, DREX |
+| 4 | 1.1 Sistema financeiro nacional | 2 | CNSP, CNPC, os 17 operadores, FGCCoop, SBP |
+| 5 | 2.2 Previdência complementar | 2 | regimes de tributação em detalhe, portabilidade e carências, as 7 modalidades de renda |
+| 6 | 3.3 Classificação de investidores | 2 | diversificação, investidor profissional × qualificado |
+| — | Ajustes P2 (4.5, 4.7, ESG) | 5 | ver `LACUNAS.md` §3 |
+
+Volume de questões: **234 hoje contra piso de 440**. O gargalo maior está em
+2.1, que tem o maior peso da prova e a maior lista de conceitos pendentes.
+
+## Um defeito achado nesta entrega, e o guarda que o impede
+
+Dois IDs de questão colidiram (`q-of-01` e `q-of-02`, de objetivos financeiros
+contra open finance). `montarQuestoes` monta o banco num `Map` indexado por id
+— precisa disso para o overlay aplicar patch por id —, então a segunda questão
+**substituiu** a primeira e as duas sumiram do banco sem erro nenhum.
+
+O teste de unicidade não pegava: ele roda sobre o array já deduplicado, onde a
+colisão já aconteceu. Quem pegou foi a divergência entre a contagem do
+`npm run docs` (que conta no código-fonte) e a contagem em tempo de execução.
+
+O `q()` de `questions/builder.ts` passou a manter o conjunto de ids já
+emitidos e **falha alto** na colisão, no ponto exato da chamada — junto das
+outras validações que ele já fazia (gabarito único, justificativa em toda
+alternativa, conceito existente).
+
+## Tamanho do pacote de conteúdo
+
+Medição da Fase 10, agora com quase quatro vezes mais material:
+
+| Momento | Conceitos | Questões | Pedaço `conteudo` |
+|---|---:|---:|---:|
+| Fase 10 | 14 | 43 | 137,91 kB (43,02 kB gzip) |
+| Agora | 57 | 234 | **615,81 kB (182,42 kB gzip)** |
+
+O conteúdo é carregado **na abertura do app**, porque o registro mutável
+(regra 11) exige que `MACROTEMAS` esteja disponível de forma síncrona. No
+alvo de 88 conceitos e 700 questões isso passa de 1 MB.
+
+**Quando agir:** ao ultrapassar ~70 conceitos, vale carregar o conteúdo por
+macrotema sob demanda. Isso exige rever o registro mutável, e é trabalho de
+arquitetura — não de autoria. Enquanto isso, o número aparece em todo build.
 
 ## Padrão editorial destas aulas
 

@@ -171,12 +171,12 @@ _Atualizado em 2026-08-25._
 |---|---|
 | Macrotemas | 4 |
 | Microtemas | 20 |
-| Conceitos (aulas) | 52 |
-| Questões no banco | 215 |
+| Conceitos (aulas) | 57 |
+| Questões no banco | 234 |
 | Páginas | 29 |
 | Componentes | 18 |
 | Arquivos de teste | 5 |
-| Linhas em `src/` | 25.378 |
+| Linhas em `src/` | 26.318 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte

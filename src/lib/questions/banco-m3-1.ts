@@ -209,7 +209,7 @@ export const BANCO_M3_1 = [
   }),
 
   /* ---- c-objetivos-financeiros -------------------------------------------- */
-  q('q-of-01', {
+  q('q-obj-01', {
     c: 'c-objetivos-financeiros', tipo: 'situacao_pratica', dif: 'media',
     hab: 'Resolver divergência entre perfil e objetivo',
     ctx: 'Um cliente de perfil arrojado vai usar em 12 meses o dinheiro reservado para a entrada de um imóvel.',
@@ -223,7 +223,7 @@ export const BANCO_M3_1 = [
     exp: 'A data não se move, e o mercado não pergunta se o cliente é arrojado.',
     tags: ['objetivos', 'horizonte', 'suitability'],
   }),
-  q('q-of-02', {
+  q('q-obj-02', {
     c: 'c-objetivos-financeiros', tipo: 'conceitual', dif: 'facil',
     hab: 'Identificar os elementos de um objetivo financeiro',
     e: 'Para permitir a recomendação de um produto, um objetivo financeiro precisa ter definidos:',
@@ -236,7 +236,7 @@ export const BANCO_M3_1 = [
     exp: 'Objetivo sem prazo e sem valor não é objetivo: é desejo.',
     tags: ['objetivos', 'planejamento', 'conceitual'],
   }),
-  q('q-of-03', {
+  q('q-obj-03', {
     c: 'c-objetivos-financeiros', tipo: 'aplicacao', dif: 'media',
     hab: 'Aplicar o casamento de prazos',
     e: 'Casar o vencimento do título com a data do objetivo tem como principal efeito:',
