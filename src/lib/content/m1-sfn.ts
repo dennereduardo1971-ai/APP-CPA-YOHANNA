@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_1_3 } from './m1-3-operacoes'
 
 /**
  * MACROTEMA 1 — Estrutura e dinâmica do Sistema Financeiro Nacional.
@@ -427,8 +428,11 @@ export const M1: Macrotema = {
       codigo: '1.3',
       nome: 'Operações do mercado financeiro',
       ordem: 3,
-      preRequisitos: ['m1.2'],
-      conceitos: [],
+      // Pré-requisito removido: 1.3 é matemática financeira e não depende de
+      // política econômica. Exigir 1.2 antes travava a única porta de entrada
+      // para as questões de cálculo.
+      preRequisitos: [],
+      conceitos: CONCEITOS_1_3,
     },
     {
       id: 'm1.4',
