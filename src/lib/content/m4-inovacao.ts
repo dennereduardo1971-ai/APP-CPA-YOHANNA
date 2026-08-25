@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_4_6 } from './m4-6-ia'
 
 /** MACROTEMA 4 — Inovação e desenvolvimento do mercado. */
 export const M4: Macrotema = {
@@ -305,7 +306,7 @@ export const M4: Macrotema = {
       nome: 'Inteligência artificial',
       ordem: 6,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_4_6,
     },
     {
       id: 'm4.7',

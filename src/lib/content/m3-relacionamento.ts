@@ -1,5 +1,6 @@
 import type { Macrotema } from '../types'
 import { CONCEITOS_3_1 } from './m3-1-financas'
+import { CONCEITOS_3_2 } from './m3-2-orientacoes'
 
 /** MACROTEMA 3 — Relacionamento com o cliente. */
 export const M3: Macrotema = {
@@ -27,7 +28,7 @@ export const M3: Macrotema = {
       nome: 'Orientações financeiras para o cliente',
       ordem: 2,
       preRequisitos: ['m3.1'],
-      conceitos: [],
+      conceitos: CONCEITOS_3_2,
     },
     {
       id: 'm3.3',

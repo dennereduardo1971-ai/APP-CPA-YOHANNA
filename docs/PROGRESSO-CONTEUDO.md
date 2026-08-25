@@ -10,14 +10,15 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **48** | 88 |
-| Questões | 43 | **197** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **14/20** | 20/20 |
+| Conceitos | 14 | **52** | 88 |
+| Questões | 43 | **213** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **16/20** | 20/20 |
 
 Questões do tipo `calculo`: 3 → **22**.
 
-**Macrotemas 1 e 2 estão completos** — 1.1 a 1.4 e 2.1 a 2.5 têm aula. Somados,
-são **60% do peso da prova** com todos os microtemas cobertos.
+**Toda a prioridade P0 do `LACUNAS.md` está concluída.** Macrotemas 1, 2 e 3
+completos (1.1–1.4, 2.1–2.5, 3.1–3.4) — **90% do peso da prova** com todos os
+microtemas cobertos. Faltam 4.2, 4.3, 4.4 e 4.7, todos no macrotema 4 (10%).
 
 ## Entregue
 
@@ -108,6 +109,23 @@ quem tem rotativo aberto, seguir o perfil arrojado num objetivo de doze
 meses, manter reserva no que rende mais). São as escolhas que atendem à meta
 e não ao cliente.
 
+### 3.2 — Orientações financeiras ✅
+*2 conceitos, 9 questões.* `content/m3-2-orientacoes.ts`, `questions/banco-m3-2.ts`.
+
+Processo de orientação (coletar, diagnosticar, recomendar, implementar,
+acompanhar) · Comunicar risco e expectativa sem prometer.
+
+### 4.6 — Inteligência artificial ✅
+*2 conceitos, 7 questões.* `content/m4-6-ia.ts`, `questions/banco-m4-6.ts`.
+
+IA no mercado financeiro (apoio × decisão automatizada) · Riscos e governança
+(viés, dados pessoais, responsabilidade).
+
+**A regulação específica de IA no Brasil ainda está em construção
+legislativa.** Nenhuma aula ou questão afirma existir norma vigente sobre o
+tema — descrevem o que já é aplicável hoje (proteção de dados, dever de
+adequação, dever de informação) e tratam o resto como matéria em discussão.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -119,9 +137,14 @@ e não ao cliente.
 | 5 | ~~2.3 Produtos de financiamento~~ | 4 | ✅ feito |
 | 6 | ~~2.5 Seguros de vida e patrimoniais~~ | 2 | ✅ feito |
 | 7 | ~~3.1 Finanças pessoais~~ | 7 | ✅ feito |
-| 8 | 3.2 Orientações financeiras | 2 | próximo |
-| 9 | 4.6 Inteligência artificial | 2 | |
-| — | P1 e P2 (`LACUNAS.md` §3) | 36 | depois do P0 |
+| 8 | ~~3.2 Orientações financeiras~~ | 2 | ✅ feito |
+| 9 | ~~4.6 Inteligência artificial~~ | 2 | ✅ feito |
+| — | **P0 concluído** | | ✅ |
+| 10 | 4.2 Introdução aos investimentos ESG | 1 | próximo |
+| 11 | 4.3 Fundos de investimento sustentável | 1 | |
+| 12 | 4.4 Finanças descentralizadas | 4 | |
+| 13 | 4.7 Fintechs e meios de pagamento | 1 | |
+| — | Restante de P1 e P2 (`LACUNAS.md` §3) | 29 | |
 
 ## Padrão editorial destas aulas
 
