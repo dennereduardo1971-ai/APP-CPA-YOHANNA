@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
 import { readdirSync, statSync } from 'node:fs'
-import { join } from 'node:path'
+import { join, sep } from 'node:path'
 import { ICONES } from '@/components/ui/Icone'
 
 /**
@@ -133,7 +133,7 @@ function arquivosFonte(dir: string, saida: string[] = []): string[] {
   for (const nome of readdirSync(dir)) {
     const caminho = join(dir, nome)
     if (statSync(caminho).isDirectory()) arquivosFonte(caminho, saida)
-    else if (/\.tsx?$/.test(caminho) && !caminho.includes('/test/')) saida.push(caminho)
+    else if (/\.tsx?$/.test(caminho) && !caminho.split(sep).join('/').includes('/test/')) saida.push(caminho)
   }
   return saida
 }

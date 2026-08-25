@@ -6,7 +6,7 @@
  * sessão do Claude Code. Também pode ser chamado à mão: `npm run docs`.
  */
 import { readFileSync, writeFileSync, readdirSync, statSync, existsSync } from 'node:fs'
-import { join, relative } from 'node:path'
+import { join, relative, sep } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const ROOT = fileURLToPath(new URL('..', import.meta.url))
@@ -83,7 +83,7 @@ ${rotas.map((r) => `\`${r}\``).join(' · ') || '_nenhuma_'}
 
 **Arquivos do motor:**
 ${walk(join(ROOT, 'src/lib/engine'))
-  .map((f) => `- \`${relative(ROOT, f)}\``)
+  .map((f) => `- \`${relative(ROOT, f).split(sep).join('/')}\``)
   .join('\n') || '_nenhum_'}
 ${FIM}`
 
