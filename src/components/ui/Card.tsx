@@ -54,11 +54,12 @@ export function Secao({
   return (
     <section className="mb-8">
       <div className="mb-3 flex items-end justify-between gap-3">
-        <div>
+        <div className="min-w-0">
           <h2 className="display text-lg">{titulo}</h2>
           {descricao && <p className="mt-0.5 text-sm text-muted">{descricao}</p>}
         </div>
-        {acao}
+        {/* A ação é curta por contrato; quem encolhe é o texto, não ela. */}
+        {acao && <div className="shrink-0">{acao}</div>}
       </div>
       {children}
     </section>

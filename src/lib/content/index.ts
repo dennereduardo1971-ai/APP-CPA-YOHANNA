@@ -3,23 +3,63 @@ import { M1 } from './m1-sfn'
 import { M2 } from './m2-produtos'
 import { M3 } from './m3-relacionamento'
 import { M4 } from './m4-inovacao'
+import type { OverlayConteudo } from './overlay'
+import { montarConteudo, overlayVazio } from './overlay'
 
 /**
  * Pacote de conteúdo. Adicionar matéria = adicionar entrada aqui.
  * Nenhum componente deve conter texto de aula.
+ *
+ * As listas são MUTADAS NO LUGAR por `aplicarOverlay`, nunca reatribuídas.
+ * A diferença importa: metade do app importa `MACROTEMAS` uma única vez, e um
+ * `MACROTEMAS = outraLista` deixaria essas cópias apontando para a versão
+ * antiga. Mutar o array que todos já seguram mantém a leitura consistente.
+ *
+ * Quem derivar algo de `MACROTEMAS` no nível do módulo (um `const X =
+ * MACROTEMAS.map(...)`) precisa virar função — senão congela o conteúdo de
+ * antes do overlay. Ver `engine/gamification.ts`.
  */
-export const MACROTEMAS: Macrotema[] = [M1, M2, M3, M4].sort((a, b) => a.ordem - b.ordem)
+const BASE: Macrotema[] = [M1, M2, M3, M4]
 
-export const MICROTEMAS: Microtema[] = MACROTEMAS.flatMap((m) => m.microtemas)
+export const MACROTEMAS: Macrotema[] = []
+export const MICROTEMAS: Microtema[] = []
+export const CONCEITOS: Conceito[] = []
 
-export const CONCEITOS: Conceito[] = MICROTEMAS.flatMap((mt) => mt.conceitos)
+const mapaMacro = new Map<string, Macrotema>()
+const mapaMicro = new Map<string, Microtema>()
+const mapaConceito = new Map<string, Conceito>()
 
-const porId = <T extends { id: string }>(lista: T[]) =>
-  new Map(lista.map((item) => [item.id, item]))
+/** Overlay em vigor. Só `aplicarOverlay` escreve aqui. */
+let overlayAtual: OverlayConteudo = overlayVazio()
 
-const mapaMacro = porId(MACROTEMAS)
-const mapaMicro = porId(MICROTEMAS)
-const mapaConceito = porId(CONCEITOS)
+function reconstruir() {
+  const arvore = montarConteudo(BASE, overlayAtual)
+
+  MACROTEMAS.splice(0, MACROTEMAS.length, ...arvore)
+  MICROTEMAS.splice(0, MICROTEMAS.length, ...arvore.flatMap((m) => m.microtemas))
+  CONCEITOS.splice(0, CONCEITOS.length, ...MICROTEMAS.flatMap((mt) => mt.conceitos))
+
+  mapaMacro.clear()
+  mapaMicro.clear()
+  mapaConceito.clear()
+  for (const m of MACROTEMAS) mapaMacro.set(m.id, m)
+  for (const mt of MICROTEMAS) mapaMicro.set(mt.id, mt)
+  for (const c of CONCEITOS) mapaConceito.set(c.id, c)
+}
+
+/**
+ * Troca o overlay em vigor e remonta o conteúdo.
+ * Chamado na hidratação do store e a cada edição no painel `/admin`.
+ */
+export function aplicarOverlay(overlay: OverlayConteudo) {
+  overlayAtual = overlay
+  reconstruir()
+}
+
+/** O conteúdo do código, sem overlay — base de comparação para o painel. */
+export const conteudoOriginal = (): Macrotema[] => montarConteudo(BASE, overlayVazio())
+
+reconstruir()
 
 export const getMacrotema = (id: string) => mapaMacro.get(id)
 export const getMicrotema = (id: string) => mapaMicro.get(id)
@@ -51,7 +91,7 @@ export function pesosEfetivos(): Record<string, number> {
 }
 
 /** `true` quando algum peso ainda não foi conferido contra o programa oficial. */
-export const PESOS_PENDENTES = MACROTEMAS.some((m) => !m.pesoVerificado)
+export const pesosPendentes = () => MACROTEMAS.some((m) => !m.pesoVerificado)
 
 /* ------------------------------------------------------------------ */
 /* Cobertura de conteúdo                                               */
@@ -79,4 +119,4 @@ export function coberturaGeral(): number {
 }
 
 /** `true` enquanto houver microtema oficial sem nenhuma aula. */
-export const COBERTURA_PENDENTE = MICROTEMAS.some((mt) => mt.conceitos.length === 0)
+export const coberturaPendente = () => MICROTEMAS.some((mt) => mt.conceitos.length === 0)

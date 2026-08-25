@@ -27,6 +27,21 @@ const B_INICIAL: Record<Dificuldade, number> = {
   dificil: 0.9,
 }
 
+/*
+ * IDs já emitidos nesta carga do módulo.
+ *
+ * `montarQuestoes` monta o banco num Map indexado por id — precisa disso para
+ * o overlay aplicar patch por id. O efeito colateral é que um id repetido não
+ * dá erro: a segunda questão simplesmente SUBSTITUI a primeira, e as duas
+ * somem do banco como se nunca tivessem sido escritas. Já aconteceu: dois
+ * `q-of-*` de objetivos financeiros colidiram com os de open finance e
+ * derrubaram duas questões sem que nenhum teste percebesse, porque o teste de
+ * unicidade roda sobre o array já deduplicado.
+ *
+ * Aqui a colisão falha alto, no ponto exato da chamada.
+ */
+const idsEmitidos = new Set<string>()
+
 const microPorConceito = new Map(CONCEITOS.map((c) => [c.id, c.microtemaId]))
 const macroPorMicro = new Map(MICROTEMAS.map((m) => [m.id, m.macrotemaId]))
 
@@ -36,6 +51,11 @@ const macroPorMicro = new Map(MICROTEMAS.map((m) => [m.id, m.macrotemaId]))
  * que toda alternativa traz justificativa — inclusive as incorretas.
  */
 export function q(id: string, spec: QSpec): Questao {
+  if (idsEmitidos.has(id)) {
+    throw new Error(`Questão ${id}: id repetido — a segunda substituiria a primeira no banco.`)
+  }
+  idsEmitidos.add(id)
+
   const microtemaId = microPorConceito.get(spec.c)
   if (!microtemaId) throw new Error(`Questão ${id}: conceito "${spec.c}" não existe.`)
   const macrotemaId = macroPorMicro.get(microtemaId)

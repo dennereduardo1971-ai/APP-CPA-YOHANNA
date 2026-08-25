@@ -31,8 +31,20 @@ export type IconeNome =
   | 'chama'
   | 'lanca'
   | 'pena'
+  | 'livro'
+  | 'cadeado'
+  | 'bandeira'
+  | 'check'
+  | 'estrela'
+  | 'x'
+  | 'chevron'
+  | 'losango'
+  | 'nivel1'
+  | 'nivel2'
+  | 'nivel3'
 
-const TRACOS: Record<IconeNome, string> = {
+/** Exportado para que testes possam validar nomes de ícone vindos de dados. */
+export const ICONES: Record<IconeNome, string> = {
   inicio: 'M3 11.2 12 4l9 7.2M5.5 9.7V19a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1V9.7M9.8 20v-5.4h4.4V20',
   trilha: 'M6 20V9m0 0a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm12 11a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Zm0-5V9a3 3 0 0 0-3-3H9',
   raio: 'M13.2 3 5 13.4h5.3L9.8 21 18 10.6h-5.3L13.2 3Z',
@@ -55,6 +67,20 @@ const TRACOS: Record<IconeNome, string> = {
   chama: 'M12 21c3.3 0 5.5-2.2 5.5-5.2 0-3.7-3-5.5-3.5-9.3-1.6 1.3-2.4 2.8-2.4 4.4 0 .9-.7 1.4-1.3 1-.9-.7-1.3-1.8-1.3-3-1.4 1.6-2.5 3.7-2.5 6.1C6.5 18.6 8.9 21 12 21Z',
   lanca: 'M4 20 20 4M20 4h-5m5 0v5M4 20l3.5-1.2L5.2 16.5 4 20Z',
   pena: 'M4 20c0-7 4.5-13 15-14-1 10-6 13.5-12 13.5H4Zm3.5-2.5L14 11',
+  livro: 'M4 5.2c2.7-.9 5.3-.9 8 0v14c-2.7-.9-5.3-.9-8 0v-14Zm16 0c-2.7-.9-5.3-.9-8 0v14c2.7-.9 5.3-.9 8 0v-14Z',
+  cadeado: 'M6.5 10.5h11a1 1 0 0 1 1 1V19a1 1 0 0 1-1 1h-11a1 1 0 0 1-1-1v-7.5a1 1 0 0 1 1-1Zm1.8 0V8a3.7 3.7 0 0 1 7.4 0v2.5M12 14v2.5',
+  bandeira: 'M6 21V4m0 1.2c4-2 8 2 12 0v8.6c-4 2-8-2-12 0',
+  check: 'm5 12.6 4.6 4.6L19 7.4',
+  estrela: 'M12 3.4 14.7 9l6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1L3.2 9.9 9.3 9 12 3.4Z',
+  x: 'M6.6 6.6l10.8 10.8M17.4 6.6 6.6 17.4',
+  chevron: 'm9.5 5.2 7 6.8-7 6.8',
+  losango: 'M12 3.2 20.8 12 12 20.8 3.2 12Z',
+  // Medidor de dificuldade: 1, 2 ou 3 pontos cheios. A forma diz o nível
+  // sozinha — a cor é reforço, e o rótulo em texto vem ao lado.
+  nivel1: 'M9.4 12a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Z',
+  nivel2: 'M5.8 12a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Zm7.2 0a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Z',
+  nivel3:
+    'M2.9 12a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Zm6.5 0a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Zm6.5 0a2.6 2.6 0 1 0 5.2 0 2.6 2.6 0 1 0-5.2 0Z',
 }
 
 interface Props {
@@ -64,18 +90,23 @@ interface Props {
   className?: string
   /** Passe um rótulo só quando o ícone não estiver ao lado do texto. */
   titulo?: string
+  /**
+   * Preenche o traço em vez de contorná-lo. Só faz sentido em forma fechada
+   * (estrela, losango, pontos) — é o par cheio/vazio de um estado ligado.
+   */
+  preenchido?: boolean
 }
 
-export function Icone({ nome, tamanho = 20, className = '', titulo }: Props) {
+export function Icone({ nome, tamanho = 20, className = '', titulo, preenchido }: Props) {
   return (
     <svg
       viewBox="0 0 24 24"
       width={tamanho}
       height={tamanho}
       className={className}
-      fill="none"
+      fill={preenchido ? 'currentColor' : 'none'}
       stroke="currentColor"
-      strokeWidth={1.75}
+      strokeWidth={preenchido ? 1 : 1.75}
       strokeLinecap="round"
       strokeLinejoin="round"
       role={titulo ? 'img' : undefined}
@@ -84,7 +115,7 @@ export function Icone({ nome, tamanho = 20, className = '', titulo }: Props) {
       focusable="false"
     >
       {titulo && <title>{titulo}</title>}
-      <path d={TRACOS[nome]} />
+      <path d={ICONES[nome]} />
     </svg>
   )
 }

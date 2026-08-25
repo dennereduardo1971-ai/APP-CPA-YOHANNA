@@ -33,8 +33,17 @@
   --ink-2: 195 188 209;
   --muted: 139 131 157;
 
-  /* ── 2. Aurora ─── acento da marca: navegação, links, ênfase, seleção ─ */
-  --aurora: 237 59 94;
+  /*
+   * ── 2. Aurora ─── acento da marca: navegação, links, ênfase, seleção ─
+   *
+   * O carmesim é 12% mais claro que o tom original (237 59 94). Não é troca
+   * de cor: naquele valor o acento batia 4.20:1 como TEXTO sobre `elevated`
+   * e 4.00:1 dentro da própria pílula — abaixo do mínimo de 4.5:1 da WCAG AA.
+   * Como o acento aparece muito como texto (links, rótulos, números), clarear
+   * o token é mais honesto do que manter dois carmesins quase iguais. Os
+   * pares são conferidos por teste em `src/test/acessibilidade.test.ts`.
+   */
+  --aurora: 239 83 113;
   --aurora-dim: 184 38 72;
   --aurora-soft: 48 16 30;
 
@@ -77,11 +86,23 @@
 
   ::selection { background: rgb(var(--aurora) / .3); }
 
+  /*
+   * O anel de foco é claro, não carmesim: sobre o botão primário — que já é
+   * um gradiente de carmesim — um anel carmesim vira brilho decorativo e some.
+   * O `outline-offset` desenha o anel fora do elemento, sobre o fundo escuro
+   * da página, onde a tinta clara contrasta 14:1 em qualquer superfície.
+   */
   :focus-visible {
-    outline: 2px solid rgb(var(--aurora));
+    outline: 2px solid rgb(var(--ink));
     outline-offset: 2px;
     border-radius: 6px;
   }
+
+  /*
+   * Foco vindo do teclado dentro de uma região que recebeu foco por programa
+   * (troca de rota): não desenha o anel na própria região, só nos controles.
+   */
+  main:focus { outline: none; }
 
   /* Scrollbar discreta */
   ::-webkit-scrollbar { width: 10px; height: 10px; }

@@ -7,14 +7,17 @@ import { ButtonLink } from '@/components/ui/Button'
 import { MACROTEMAS } from '@/lib/content'
 import { ROTULO_DIFICULDADE } from '@/lib/questions'
 import type { Dificuldade } from '@/lib/types'
+import type { Agregado } from '@/lib/engine/stats'
 import { useStore } from '@/lib/store'
 import {
   agregar,
   evolucaoDiaria,
   porDificuldade,
   porMacrotema,
+  porMicrotema,
   prontidao,
 } from '@/lib/engine/stats'
+import { tomAcerto } from '@/lib/engine/mastery'
 import { BLUEPRINT } from '@/lib/blueprint'
 
 function GraficoEvolucao({ dados }: { dados: { dia: string; taxa: number; total: number }[] }) {
@@ -29,6 +32,8 @@ function GraficoEvolucao({ dados }: { dados: { dia: string; taxa: number; total:
   const largura = 320
   const altura = 100
   const passo = largura / (dados.length - 1)
+  // A linha de corte sai do blueprint (regra 3), não de um 0.3 digitado aqui.
+  const yCorte = altura * (1 - BLUEPRINT.notaCorte)
   const pontos = dados.map((d, i) => `${i * passo},${altura - d.taxa * altura}`).join(' ')
   const area = `0,${altura} ${pontos} ${largura},${altura}`
 
@@ -43,9 +48,9 @@ function GraficoEvolucao({ dados }: { dados: { dia: string; taxa: number; total:
       >
         <line
           x1="0"
-          y1={altura * 0.3}
+          y1={yCorte}
           x2={largura}
-          y2={altura * 0.3}
+          y2={yCorte}
           stroke="rgb(var(--line))"
           strokeWidth="1"
           strokeDasharray="3 4"
@@ -69,10 +74,46 @@ function GraficoEvolucao({ dados }: { dados: { dia: string; taxa: number; total:
       </svg>
       <div className="mt-1 flex justify-between text-[11px] text-muted">
         <span>{new Date(`${dados[0].dia}T12:00`).toLocaleDateString('pt-BR')}</span>
-        <span>70% é a linha de corte</span>
+        <span>{Math.round(BLUEPRINT.notaCorte * 100)}% é a linha de corte</span>
         <span>{new Date(`${dados.at(-1)!.dia}T12:00`).toLocaleDateString('pt-BR')}</span>
       </div>
     </div>
+  )
+}
+
+/** Rótulo + fração + barra. Usado pelo macrotema e pelos microtemas dele. */
+function LinhaDesempenho({
+  rotulo,
+  codigo,
+  dados,
+  miuda = false,
+}: {
+  rotulo: string
+  codigo?: string
+  dados: Agregado
+  miuda?: boolean
+}) {
+  return (
+    <>
+      <div
+        className={`mb-1.5 flex items-baseline justify-between gap-3 ${
+          miuda ? 'text-[13px]' : 'text-sm'
+        }`}
+      >
+        <span className={`min-w-0 truncate ${miuda ? 'text-ink-2' : 'font-medium'}`}>
+          {codigo && <span className="tnum mr-1.5 text-muted">{codigo}</span>}
+          {rotulo}
+        </span>
+        <span className="tnum shrink-0 text-[11px] text-muted">
+          {dados.acertos}/{dados.total} · {Math.round(dados.taxaAcerto * 100)}%
+        </span>
+      </div>
+      <Barra
+        valor={dados.taxaAcerto}
+        altura={miuda ? 'h-1' : 'h-2'}
+        tom={tomAcerto(dados.taxaAcerto)}
+      />
+    </>
   )
 }
 
@@ -83,6 +124,7 @@ export default function Estatisticas() {
 
   const geral = useMemo(() => agregar(respostas), [respostas])
   const temas = useMemo(() => porMacrotema(respostas), [respostas])
+  const micros = useMemo(() => porMicrotema(respostas), [respostas])
   const dificuldades = useMemo(() => porDificuldade(respostas), [respostas])
   const evolucao = useMemo(() => evolucaoDiaria(respostas), [respostas])
   const pront = useMemo(() => prontidao(respostas, estados, agora), [respostas, estados, agora])
@@ -92,7 +134,7 @@ export default function Estatisticas() {
       <div>
         <Cabecalho titulo="Estatísticas" />
         <Vazio
-          icone="◔"
+          icone="estatistica"
           titulo="Sem dados ainda"
           descricao="As estatísticas aparecem depois das primeiras questões respondidas."
           acao={<ButtonLink to="/rapido">Fazer uma sessão</ButtonLink>}
@@ -156,11 +198,7 @@ export default function Estatisticas() {
                   corte: {Math.round(BLUEPRINT.notaCorte * 100)}%
                 </span>
               </div>
-              <Barra
-                valor={pront.valor}
-                className="mt-3"
-                tom={pront.valor >= BLUEPRINT.notaCorte ? 'aurora' : 'warn'}
-              />
+              <Barra valor={pront.valor} className="mt-3" tom={tomAcerto(pront.valor)} />
               <p className="mt-3 text-xs leading-relaxed text-muted">
                 Domínio ponderado pelos pesos dos macrotemas, com desconto de esquecimento.
                 Indicador pedagógico — não é previsão de aprovação.
@@ -176,23 +214,36 @@ export default function Estatisticas() {
         </Card>
       </Secao>
 
-      <Secao titulo="Desempenho por assunto">
-        <ul className="flex flex-col gap-3">
+      <Secao
+        titulo="Desempenho por assunto"
+        descricao={`Verde a partir de ${Math.round(BLUEPRINT.notaCorte * 100)}%, a nota de corte da prova.`}
+      >
+        <ul className="flex flex-col gap-5">
           {MACROTEMAS.map((m) => {
             const dados = temas[m.id]
             if (!dados?.total) return null
+            // Só microtemas respondidos: esta página fala do que você fez.
+            // A cobertura do programa (inclusive o que falta escrever) é a
+            // conversa da página de Progresso.
+            const filhos = m.microtemas.filter((mt) => micros[mt.id]?.total)
             return (
               <li key={m.id}>
-                <div className="mb-1.5 flex items-baseline justify-between gap-3 text-sm">
-                  <span className="truncate font-medium">{m.nome}</span>
-                  <span className="tnum shrink-0 text-muted">
-                    {dados.acertos}/{dados.total} · {Math.round(dados.taxaAcerto * 100)}%
-                  </span>
-                </div>
-                <Barra
-                  valor={dados.taxaAcerto}
-                  tom={dados.taxaAcerto >= 0.7 ? 'jade' : dados.taxaAcerto >= 0.5 ? 'warn' : 'danger'}
-                />
+                <LinhaDesempenho rotulo={m.nome} dados={dados} />
+
+                {filhos.length > 0 && (
+                  <ul className="mt-2.5 flex flex-col gap-2 border-l border-line pl-3">
+                    {filhos.map((mt) => (
+                      <li key={mt.id}>
+                        <LinhaDesempenho
+                          rotulo={mt.nome}
+                          codigo={mt.codigo}
+                          dados={micros[mt.id]}
+                          miuda
+                        />
+                      </li>
+                    ))}
+                  </ul>
+                )}
               </li>
             )
           })}
@@ -212,10 +263,7 @@ export default function Estatisticas() {
                     {dados.acertos}/{dados.total} · {Math.round(dados.taxaAcerto * 100)}%
                   </span>
                 </div>
-                <Barra
-                  valor={dados.taxaAcerto}
-                  tom={dados.taxaAcerto >= 0.7 ? 'jade' : dados.taxaAcerto >= 0.5 ? 'warn' : 'danger'}
-                />
+                <Barra valor={dados.taxaAcerto} tom={tomAcerto(dados.taxaAcerto)} />
               </li>
             )
           })}

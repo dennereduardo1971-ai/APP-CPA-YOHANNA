@@ -181,7 +181,7 @@ export default function SimuladoRun() {
   if (!questoes.length) {
     return (
       <Vazio
-        icone="⏱"
+        icone="cronometro"
         titulo="Sem questões para este recorte"
         descricao="Não há questões suficientes com os filtros escolhidos."
         acao={<ButtonLink to="/simulados">Voltar aos simulados</ButtonLink>}
@@ -241,7 +241,7 @@ export default function SimuladoRun() {
                     i === indice
                       ? 'border-aurora bg-aurora text-bg'
                       : feita
-                        ? 'border-aurora/40 bg-aurora/15 text-aurora'
+                        ? 'border-aurora/40 bg-aurora-soft text-aurora'
                         : 'border-line bg-surface text-muted'
                   }`}
                 >

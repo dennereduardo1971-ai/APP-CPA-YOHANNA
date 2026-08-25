@@ -4,6 +4,7 @@ import { Cabecalho } from '@/components/layout/AppShell'
 import { Card, Secao } from '@/components/ui/Card'
 import { Button, ButtonLink } from '@/components/ui/Button'
 import { Barra } from '@/components/ui/Progress'
+import { Icone, type IconeNome } from '@/components/ui/Icone'
 import { Vazio } from '@/components/ui/Empty'
 import { useStore, useNivel } from '@/lib/store'
 import { tituloDoNivel } from '@/lib/engine/gamification'
@@ -12,7 +13,24 @@ import { getConceito } from '@/lib/content'
 import { getQuestao, ROTULO_TIPO } from '@/lib/questions'
 import { SIMULADO_PRESETS } from '@/lib/blueprint'
 
-const AVATARES = ['◆', '◉', '★', '▲', '■', '⬟']
+/*
+ * O avatar é DADO — vai para o `localStorage` e volta. Por isso guarda o
+ * NOME de um traço de `Icone.tsx`, nunca o desenho: um glifo Unicode gravado
+ * no perfil vira caixinha no Android e não tem conserto do lado do app
+ * (regra 10). Perfis salvos antes disso guardam um glifo; `avatarValido`
+ * devolve o padrão nesse caso, em vez de renderizar lixo.
+ */
+const AVATARES: { nome: IconeNome; rotulo: string }[] = [
+  { nome: 'losango', rotulo: 'Losango' },
+  { nome: 'estrela', rotulo: 'Estrela' },
+  { nome: 'escudo', rotulo: 'Escudo' },
+  { nome: 'chama', rotulo: 'Chama' },
+  { nome: 'asa', rotulo: 'Asa' },
+  { nome: 'pena', rotulo: 'Pena' },
+]
+
+const avatarValido = (guardado: string | null): IconeNome =>
+  AVATARES.find((a) => a.nome === guardado)?.nome ?? 'losango'
 
 type Aba = 'historico' | 'favoritos'
 
@@ -60,9 +78,9 @@ export default function Perfil() {
         <div className="flex items-start gap-4">
           <span
             aria-hidden
-            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-aurora/40 bg-aurora/10 text-2xl text-aurora"
+            className="grid h-14 w-14 shrink-0 place-items-center rounded-2xl border border-aurora/40 bg-aurora-soft text-aurora"
           >
-            {estado.perfil.avatar ?? '◆'}
+            <Icone nome={avatarValido(estado.perfil.avatar)} tamanho={28} preenchido />
           </span>
           <div className="min-w-0 flex-1">
             {editando ? (
@@ -109,18 +127,18 @@ export default function Perfil() {
         <div className="mt-4 flex flex-wrap gap-2 border-t border-line pt-4">
           {AVATARES.map((a) => (
             <button
-              key={a}
+              key={a.nome}
               type="button"
-              onClick={() => atualizarPerfil({ avatar: a })}
-              aria-pressed={estado.perfil.avatar === a}
-              aria-label={`Escolher avatar ${a}`}
-              className={`grid h-9 w-9 place-items-center rounded-xl border text-base transition-colors ${
-                estado.perfil.avatar === a
-                  ? 'border-aurora bg-aurora/15 text-aurora'
+              onClick={() => atualizarPerfil({ avatar: a.nome })}
+              aria-pressed={avatarValido(estado.perfil.avatar) === a.nome}
+              aria-label={`Escolher avatar ${a.rotulo}`}
+              className={`grid h-9 w-9 place-items-center rounded-xl border transition-colors ${
+                avatarValido(estado.perfil.avatar) === a.nome
+                  ? 'border-aurora bg-aurora-soft text-aurora'
                   : 'border-line bg-elevated text-muted hover:border-aurora/40'
               }`}
             >
-              {a}
+              <Icone nome={a.nome} tamanho={18} preenchido />
             </button>
           ))}
         </div>
@@ -163,7 +181,7 @@ export default function Perfil() {
             aria-pressed={aba === chave}
             className={`rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
               aba === chave
-                ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                ? 'border-aurora bg-aurora-soft font-semibold text-aurora'
                 : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
             }`}
           >
@@ -211,7 +229,7 @@ export default function Perfil() {
       {aba === 'favoritos' &&
         (totalFavoritos === 0 ? (
           <Vazio
-            icone="☆"
+            icone="estrela"
             titulo="Nenhum favorito ainda"
             descricao="Use a estrela nas aulas, questões e mapas para salvar aqui."
           />

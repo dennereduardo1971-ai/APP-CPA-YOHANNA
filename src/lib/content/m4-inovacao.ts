@@ -1,4 +1,6 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_4_6 } from './m4-6-ia'
+import { CONCEITOS_4_2, CONCEITOS_4_3, CONCEITOS_4_4, CONCEITOS_4_7 } from './m4-resto'
 
 /** MACROTEMA 4 — Inovação e desenvolvimento do mercado. */
 export const M4: Macrotema = {
@@ -146,7 +148,7 @@ export const M4: Macrotema = {
       nome: 'Introdução aos investimentos ESG',
       ordem: 2,
       preRequisitos: ['m4.1'],
-      conceitos: [],
+      conceitos: CONCEITOS_4_2,
     },
     {
       id: 'm4.3',
@@ -155,7 +157,7 @@ export const M4: Macrotema = {
       nome: 'Identificação dos fundos de investimento sustentável (IS) e fundos que integram questões ESG',
       ordem: 3,
       preRequisitos: ['m4.2'],
-      conceitos: [],
+      conceitos: CONCEITOS_4_3,
     },
     {
       id: 'm4.4',
@@ -164,7 +166,7 @@ export const M4: Macrotema = {
       nome: 'Finanças descentralizadas (DEFI)',
       ordem: 4,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_4_4,
     },
     {
       id: 'm4.5',
@@ -305,7 +307,7 @@ export const M4: Macrotema = {
       nome: 'Inteligência artificial',
       ordem: 6,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_4_6,
     },
     {
       id: 'm4.7',
@@ -314,7 +316,7 @@ export const M4: Macrotema = {
       nome: 'Fintechs e meios de pagamento',
       ordem: 7,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_4_7,
     },
   ],
 }

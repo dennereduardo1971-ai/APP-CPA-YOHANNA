@@ -1,20 +1,25 @@
 import type { ReactNode } from 'react'
+import { Icone, type IconeNome } from '@/components/ui/Icone'
 
+/*
+ * O ícone é um traço autoral, não um glifo Unicode: no Android símbolos como
+ * ⏱ e ◔ caem em caixinha, e o APK roda sem rede para buscar fonte (regra 10).
+ */
 export function Vazio({
-  icone = '○',
+  icone = 'estrela',
   titulo,
   descricao,
   acao,
 }: {
-  icone?: string
+  icone?: IconeNome
   titulo: string
   descricao?: string
   acao?: ReactNode
 }) {
   return (
     <div className="card flex flex-col items-center px-6 py-10 text-center">
-      <span aria-hidden className="mb-3 text-3xl text-muted/50">
-        {icone}
+      <span aria-hidden className="mb-3 text-muted/50">
+        <Icone nome={icone} tamanho={34} />
       </span>
       <p className="font-semibold">{titulo}</p>
       {descricao && <p className="mt-1 max-w-sm text-sm text-muted">{descricao}</p>}

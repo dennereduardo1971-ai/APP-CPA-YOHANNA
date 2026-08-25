@@ -1,20 +1,37 @@
+/*
+ * Uma barra sem nome acessível é ruído: o leitor de tela anuncia "barra de
+ * progresso, 74%" logo depois de já ter lido "74%" no rótulo ao lado. Por
+ * isso a barra só vira `progressbar` quando recebe `rotulo`; sem ele, ela é
+ * a ilustração de um número que já está escrito na tela, e some da leitura.
+ */
 interface BarraProps {
   valor: number
   className?: string
   altura?: string
   tom?: 'aurora' | 'jade' | 'warn' | 'danger'
+  /** Nome acessível. Passe só quando a barra for a ÚNICA fonte do número. */
+  rotulo?: string
 }
 
-export function Barra({ valor, className = '', altura = 'h-2', tom = 'aurora' }: BarraProps) {
+export function Barra({
+  valor,
+  className = '',
+  altura = 'h-2',
+  tom = 'aurora',
+  rotulo,
+}: BarraProps) {
   const pct = Math.max(0, Math.min(1, valor)) * 100
   const cores = { aurora: 'bg-aurora', jade: 'bg-jade', warn: 'bg-warn', danger: 'bg-danger' }
   return (
     <div
       className={`w-full overflow-hidden rounded-full bg-elevated ${altura} ${className}`}
-      role="progressbar"
-      aria-valuenow={Math.round(pct)}
-      aria-valuemin={0}
-      aria-valuemax={100}
+      role={rotulo ? 'progressbar' : undefined}
+      aria-label={rotulo}
+      aria-hidden={rotulo ? undefined : true}
+      aria-valuenow={rotulo ? Math.round(pct) : undefined}
+      aria-valuemin={rotulo ? 0 : undefined}
+      aria-valuemax={rotulo ? 100 : undefined}
+      aria-valuetext={rotulo ? `${Math.round(pct)}%` : undefined}
     >
       <div
         className={`h-full rounded-full transition-[width] duration-500 ease-out ${cores[tom]}`}
@@ -83,10 +100,16 @@ export function Anel({
   )
 }
 
-/** Indicador de progresso de uma sessão: pontinhos por item. */
+/**
+ * Indicador de progresso de uma sessão: pontinhos por item.
+ *
+ * Decorativo de propósito: quem usa o componente escreve "Questão 3 de 10"
+ * em texto logo abaixo. Um `aria-label` aqui faria o leitor de tela repetir
+ * a mesma frase duas vezes — e num `div` sem papel ele nem seria exposto.
+ */
 export function PassosSessao({ total, atual }: { total: number; atual: number }) {
   return (
-    <div className="flex items-center gap-1" aria-label={`Questão ${atual + 1} de ${total}`}>
+    <div className="flex items-center gap-1" aria-hidden>
       {Array.from({ length: total }, (_, i) => (
         <span
           key={i}

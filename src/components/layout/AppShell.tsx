@@ -58,7 +58,7 @@ function BarraLateral() {
         <DivisorPincel className="mt-2 opacity-70" />
       </div>
 
-      <nav className="flex-1 overflow-y-auto px-3 pb-4">
+      <nav aria-label="Seções do app" className="flex-1 overflow-y-auto px-3 pb-4">
         <ul className="flex flex-col gap-0.5">
           {NAVEGACAO.map((item) => (
             <li key={item.para}>
@@ -68,7 +68,7 @@ function BarraLateral() {
                 className={({ isActive }) =>
                   `flex items-center gap-3 rounded-lg px-3 py-2 text-sm transition-colors ${
                     isActive
-                      ? 'bg-aurora/10 font-semibold text-aurora'
+                      ? 'bg-aurora-soft font-semibold text-aurora'
                       : 'text-ink-2 hover:bg-elevated hover:text-ink'
                   }`
                 }
@@ -92,7 +92,7 @@ function BarraLateral() {
         </p>
         <div className="mt-2 flex items-center gap-1.5 text-xs text-muted">
           <span aria-hidden className="text-aurora">
-            ≡
+            <Icone nome="chama" tamanho={14} />
           </span>
           <span className="tnum">{sequencia}</span>{' '}
           {sequencia === 1 ? 'dia seguido' : 'dias seguidos'}
@@ -104,7 +104,10 @@ function BarraLateral() {
 
 function BarraInferior() {
   return (
-    <nav className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pt-1 backdrop-blur lg:hidden">
+    <nav
+      aria-label="Navegação principal"
+      className="safe-bottom fixed inset-x-0 bottom-0 z-40 border-t border-line bg-surface/95 pt-1 backdrop-blur lg:hidden"
+    >
       <ul className="mx-auto flex max-w-md items-stretch justify-around">
         {MOBILE.map((item) => (
           <li key={item.para} className="flex-1">
@@ -138,10 +141,33 @@ export function AppShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
+      {/*
+        Atalho para o conteúdo. Sem ele, quem navega por teclado percorre os
+        catorze itens da barra lateral de novo a cada página. Fica escondido
+        até receber foco — é o primeiro alvo do Tab.
+
+        É um botão, não um link `#conteudo`: o app usa HashRouter, e trocar o
+        hash da URL levaria o roteador para uma rota inexistente.
+      */}
+      <button
+        type="button"
+        onClick={() => document.getElementById('conteudo')?.focus()}
+        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-lg focus:bg-elevated focus:px-4 focus:py-2 focus:text-sm focus:font-semibold focus:text-ink"
+      >
+        Pular para o conteúdo
+      </button>
       {!imersivo && <BarraLateral />}
       <div className="relative flex min-w-0 flex-1 flex-col">
         {!imersivo && <CeuAlvorada />}
         <main
+          id="conteudo"
+          /*
+           * `tabIndex={-1}` existe para que a troca de rota possa mover o foco
+           * para cá por programa (ver `FocoDeRota` em App.tsx). Sem isso, o
+           * foco fica preso no link clicado e o leitor de tela não sabe que a
+           * página mudou.
+           */
+          tabIndex={-1}
           className={`safe-top mx-auto w-full max-w-3xl flex-1 px-4 pb-28 pt-4 sm:px-6 lg:max-w-4xl lg:pb-10 ${
             imersivo ? 'max-w-2xl' : ''
           }`}

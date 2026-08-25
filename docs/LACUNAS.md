@@ -74,7 +74,7 @@ e o app não prepara para nenhuma questão numérica da prova.
 
 | Microtema | O que falta | Conceitos novos |
 |---|---|---:|
-| **3.4** Regras e condutas | 9 princípios éticos nominais, técnicas de atendimento, riscos da atividade, LGPD, sigilo bancário, **todo o bloco de crimes e ilícitos** (insider trading, spoofing, layering, churning, front running, money pass) | 6 |
+| ~~**3.4** Regras e condutas~~ | ✅ **feito em 25/08/2026** — 6 conceitos, 24 questões, com fonte primária lida (Lei 6.385/1976 arts. 27-C a 27-F, LC 105/2001, Lei 13.709/2018, Código ANBIMA de Distribuição de 22/09/2025). Nota: o art. 6º do Código tem **dez** incisos, não nove | 6 |
 | **2.1** Produtos de investimentos | COE, FIIs, LCD, Tesouro Educa+/Renda+, debênture de infraestrutura, eventos corporativos, governança e segmentos de listagem, CVM 175 (classes/subclasses, PL negativo, taxas de ingresso/saída) | 15 |
 | **1.1** Sistema financeiro nacional | CNSP, CNPC, 17 operadores, autorreguladores, FGC/FGCCoop, SBP | 2 |
 | **2.2** Previdência complementar | regimes de tributação em detalhe, portabilidade e carências, as 7 modalidades de renda | 2 |

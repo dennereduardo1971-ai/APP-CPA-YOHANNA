@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Button, ButtonLink } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
+import { Icone } from '@/components/ui/Icone'
 import { EtiquetaBadge } from '@/components/ui/Badge'
 import { Vazio } from '@/components/ui/Empty'
 import { MapaMental } from '@/components/domain/MapaMental'
@@ -76,9 +77,9 @@ export default function Aula() {
             onClick={() => alternarFavorito('conceitos', conceito.id)}
             aria-pressed={favorita}
             aria-label={favorita ? 'Remover dos favoritos' : 'Salvar nos favoritos'}
-            className={`ml-auto text-lg ${favorita ? 'text-aurora' : 'text-muted hover:text-ink'}`}
+            className={`ml-auto ${favorita ? 'text-aurora' : 'text-muted hover:text-ink'}`}
           >
-            {favorita ? '★' : '☆'}
+            <Icone nome="estrela" tamanho={19} preenchido={favorita} />
           </button>
         </div>
         <h1 className="display text-2xl sm:text-3xl">{conceito.titulo}</h1>
@@ -204,8 +205,8 @@ export default function Aula() {
         <ul className="flex flex-col gap-2">
           {conceito.explicacao.lembrarNaProva.map((linha, i) => (
             <li key={i} className="flex gap-2.5 text-[15px] leading-relaxed">
-              <span aria-hidden className="mt-0.5 shrink-0 font-bold text-aurora">
-                ✓
+              <span aria-hidden className="mt-1 shrink-0 text-aurora">
+                <Icone nome="check" tamanho={14} />
               </span>
               {linha}
             </li>

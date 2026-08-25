@@ -145,6 +145,26 @@ export interface Conceito {
   atualizadoEm?: string
 }
 
+/**
+ * Uma entrada do histórico de versões de conteúdo.
+ *
+ * O `.md` da especificação pedia um bloco `[ATUALIZAÇÃO DETECTADA]` que
+ * monitorasse as fontes da ANBIMA sozinho. O app roda offline e sem backend,
+ * então não há como detectar nada: o registro é MANUAL e diz exatamente isso.
+ * Monitoramento automático segue como pendência externa.
+ */
+export interface VersaoConteudo {
+  id: string
+  /** Rótulo curto, ex.: "Programa Detalhado v1.2". */
+  rotulo: string
+  /** Data ISO (AAAA-MM-DD) em que a mudança foi aplicada. */
+  data: string
+  /** O que mudou e por quê. */
+  notas: string
+  /** Documento oficial que embasou a mudança, quando houver. */
+  fonte?: string
+}
+
 export interface Exemplo {
   titulo: string
   corpo: string
@@ -295,7 +315,7 @@ export interface Conquista {
   descricao: string
   icone: string
   /** Categoria pedagógica que a conquista incentiva. */
-  incentiva: 'consistencia' | 'revisao' | 'conclusao' | 'desempenho' | 'meta'
+  incentiva: 'consistencia' | 'revisao' | 'conclusao' | 'desempenho' | 'meta' | 'guardioes'
 }
 
 export interface EventoXP {

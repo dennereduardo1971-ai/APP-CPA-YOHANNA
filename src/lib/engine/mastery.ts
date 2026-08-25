@@ -1,4 +1,5 @@
 import type { Dificuldade, EstadoConceito, NivelDominio } from '../types'
+import { BLUEPRINT } from '../blueprint'
 
 /**
  * Motor de domínio — Elo/IRT de um parâmetro.
@@ -169,6 +170,20 @@ export const TEXTO_DOMINIO: Record<TomDominio, string> = {
   warn: 'text-warn',
   danger: 'text-danger',
 }
+
+/**
+ * Tom de TAXA DE ACERTO — escala diferente da de domínio, de propósito.
+ *
+ * Domínio é uma estimativa de memória e usa as faixas pedagógicas (75% / 40%).
+ * Taxa de acerto é contagem crua de questões, e a única referência que o aluno
+ * tem para ela é a nota de corte da prova: verde a partir do corte, e nunca
+ * abaixo dele. Por isso o limiar sai do `BLUEPRINT` em vez de ser digitado —
+ * se a ANBIMA mudar o corte, a cor acompanha (regra 3).
+ *
+ * As duas escalas coexistem, mas nunca colorem o mesmo número na mesma tela.
+ */
+export const tomAcerto = (taxa: number): TomDominio =>
+  taxa >= BLUEPRINT.notaCorte ? 'jade' : taxa >= BLUEPRINT.notaCorte * 0.7 ? 'warn' : 'danger'
 
 /** Dificuldade sugerida para manter a chance de acerto perto de 80%. */
 export function dificuldadeAlvo(theta: number): Dificuldade {

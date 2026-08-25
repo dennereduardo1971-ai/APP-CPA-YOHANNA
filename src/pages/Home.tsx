@@ -3,13 +3,15 @@ import { Link } from 'react-router-dom'
 import { Card, CardTitulo, Secao } from '@/components/ui/Card'
 import { ButtonLink } from '@/components/ui/Button'
 import { Anel, Barra } from '@/components/ui/Progress'
-import { Pill } from '@/components/ui/Badge'
 import { Vazio } from '@/components/ui/Empty'
 import { useStore, progressoDoDia, proximosConceitos, diasParaProva, useNivel } from '@/lib/store'
-import { agregar, progressoGeral, ranking } from '@/lib/engine/stats'
+import { agregar, progressoGeral } from '@/lib/engine/stats'
 import { errosAbertos, filaDeRevisao } from '@/lib/engine/scheduler'
-import { nivelDominio, ROTULO_NIVEL, tomDominio } from '@/lib/engine/mastery'
+import { tomDominio } from '@/lib/engine/mastery'
 import { tituloDoNivel } from '@/lib/engine/gamification'
+import type { AcaoRecomendada, Recomendacao } from '@/lib/engine/planner'
+import { recomendar, ROTULO_ACAO } from '@/lib/engine/planner'
+import { Icone, type IconeNome } from '@/components/ui/Icone'
 import { getConceito, MACROTEMAS } from '@/lib/content'
 import { MarcaPersonagem, FaixaPersonagem } from '@/components/domain/Personagem'
 import { GUIA_PRINCIPAL } from '@/lib/personagens'
@@ -19,6 +21,46 @@ function saudacao(hora: number) {
   if (hora < 12) return 'Bom dia'
   if (hora < 18) return 'Boa tarde'
   return 'Boa noite'
+}
+
+/**
+ * Um passo recomendado. O ícone diz o TIPO de ação e o texto diz o MOTIVO —
+ * uma recomendação sem motivo é só um atalho, e o aluno não aprende a
+ * confiar nela.
+ */
+const ICONE_ACAO: Record<AcaoRecomendada, IconeNome> = {
+  aula: 'livro',
+  praticar: 'questao',
+  revisar: 'revisao',
+}
+
+function CartaoRecomendacao({ recomendacao: r }: { recomendacao: Recomendacao }) {
+  return (
+    <Card to={r.destino} className="animate-fade-up">
+      <div className="flex items-start gap-3">
+        <span
+          aria-hidden
+          className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-elevated text-aurora"
+        >
+          <Icone nome={ICONE_ACAO[r.acao]} tamanho={18} />
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <div className="flex items-baseline justify-between gap-2">
+            <p className="min-w-0 truncate text-[11px] uppercase tracking-wider text-muted">
+              {r.microtema || r.macrotema}
+            </p>
+            <span className="tnum shrink-0 text-[11px] text-muted">{r.minutos} min</span>
+          </div>
+          <p className="mt-0.5 font-semibold">{r.titulo}</p>
+          <p className="mt-1 text-sm leading-relaxed text-muted">{r.justificativa}</p>
+          <p className="mt-2 text-[11px] font-semibold uppercase tracking-wider text-aurora">
+            {ROTULO_ACAO[r.acao]} →
+          </p>
+        </div>
+      </div>
+    </Card>
+  )
 }
 
 export default function Home() {
@@ -38,11 +80,22 @@ export default function Home() {
     [estado.respostas],
   )
   const desempenho = agregar(recentes)
-  const fracos = useMemo(
-    () => ranking(estado.estados, agora).filter((r) => r.respostas > 0),
-    [estado.estados, agora],
+
+  const recomendacoes = useMemo(
+    () =>
+      recomendar({
+        minutos: estado.metas.minutosDia,
+        estados: estado.estados,
+        agora,
+        // Conceitos vistos nas últimas 24h entram penalizados: recomendar
+        // agora o que acabou de ser estudado é conselho vazio.
+        recentes: new Set(
+          estado.respostas.filter((r) => r.data > agora - 86_400_000).map((r) => r.conceitoId),
+        ),
+        jaVistas: new Set(estado.respostas.map((r) => r.questaoId)),
+      }),
+    [estado.estados, estado.respostas, estado.metas.minutosDia, agora],
   )
-  const recomendacao = fracos[0]
 
   const primeiroAcesso = estado.respostas.length === 0 && estado.sessoes.length === 0
 
@@ -119,28 +172,19 @@ export default function Home() {
       {/* A fala de guia só no primeiro acesso — depois vira ruído diário. */}
       {primeiroAcesso && <FaixaPersonagem personagem={GUIA_PRINCIPAL} className="mb-6" />}
 
-      {/* Recomendação */}
-      <Secao titulo="Recomendação de estudo">
-        {recomendacao ? (
-          <Card to="/rapido">
-            <div className="flex items-start justify-between gap-3">
-              <div className="min-w-0">
-                <Pill tom={tomDominio(recomendacao.dominio)}>
-                  {ROTULO_NIVEL[nivelDominio(recomendacao.dominio)]}
-                </Pill>
-                <p className="mt-2 font-semibold">{recomendacao.nome}</p>
-                <p className="mt-1 text-sm text-muted">
-                  Seu ponto mais fraco agora, com{' '}
-                  <span className="tnum">{Math.round(recomendacao.dominio * 100)}%</span> de domínio.
-                  A próxima sessão vai priorizar este tema.
-                </p>
-              </div>
-              <span aria-hidden className="text-muted">
-                →
-              </span>
-            </div>
-          </Card>
-        ) : (
+      {/* Estude agora */}
+      <Secao
+        titulo="Estude agora"
+        descricao="Em ordem de prioridade. Cada cartão diz por que está aí."
+        acao={
+          recomendacoes.length > 0 ? (
+            <Link to="/rapido" className="text-sm font-semibold text-aurora">
+              Sessão completa
+            </Link>
+          ) : undefined
+        }
+      >
+        {recomendacoes.length === 0 ? (
           <Card to="/rapido">
             <p className="font-semibold">Vamos descobrir onde você está</p>
             <p className="mt-1 text-sm text-muted">
@@ -148,6 +192,14 @@ export default function Home() {
               estudo pelos seus pontos fracos.
             </p>
           </Card>
+        ) : (
+          <ul className="flex flex-col gap-2.5">
+            {recomendacoes.map((r) => (
+              <li key={r.conceitoId}>
+                <CartaoRecomendacao recomendacao={r} />
+              </li>
+            ))}
+          </ul>
         )}
       </Secao>
 
@@ -205,7 +257,7 @@ export default function Home() {
       <Secao titulo="Desempenho recente" descricao="Últimas 20 questões respondidas">
         {desempenho.total === 0 ? (
           <Vazio
-            icone="◔"
+            icone="estatistica"
             titulo="Sem dados ainda"
             descricao="Responda algumas questões para ver seu desempenho aqui."
           />

@@ -103,7 +103,7 @@ export default function Metas() {
                 aria-pressed={estado.metas.minutosDia === v}
                 className={`tnum rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                   estado.metas.minutosDia === v
-                    ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                    ? 'border-aurora bg-aurora-soft font-semibold text-aurora'
                     : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                 }`}
               >
@@ -122,7 +122,7 @@ export default function Metas() {
                 aria-pressed={estado.metas.questoesDia === v}
                 className={`tnum rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                   estado.metas.questoesDia === v
-                    ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                    ? 'border-aurora bg-aurora-soft font-semibold text-aurora'
                     : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                 }`}
               >
@@ -141,7 +141,7 @@ export default function Metas() {
                 aria-pressed={estado.metas.diasSemana === v}
                 className={`tnum rounded-lg border px-3 py-1.5 text-[13px] transition-colors ${
                   estado.metas.diasSemana === v
-                    ? 'border-aurora bg-aurora/15 font-semibold text-aurora'
+                    ? 'border-aurora bg-aurora-soft font-semibold text-aurora'
                     : 'border-line bg-surface text-ink-2 hover:border-aurora/40'
                 }`}
               >

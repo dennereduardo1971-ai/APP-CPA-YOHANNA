@@ -1,4 +1,7 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_3_1 } from './m3-1-financas'
+import { CONCEITOS_3_2 } from './m3-2-orientacoes'
+import { CONCEITOS_3_4 } from './m3-4-conduta'
 
 /** MACROTEMA 3 — Relacionamento com o cliente. */
 export const M3: Macrotema = {
@@ -17,7 +20,7 @@ export const M3: Macrotema = {
       nome: 'Finanças pessoais',
       ordem: 1,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_3_1,
     },
     {
       id: 'm3.2',
@@ -26,7 +29,7 @@ export const M3: Macrotema = {
       nome: 'Orientações financeiras para o cliente',
       ordem: 2,
       preRequisitos: ['m3.1'],
-      conceitos: [],
+      conceitos: CONCEITOS_3_2,
     },
     {
       id: 'm3.3',
@@ -428,6 +431,7 @@ export const M3: Macrotema = {
           atualizadoEm: '2026-08-24',
           minutosEstimados: 7,
         },
+        ...CONCEITOS_3_4,
       ],
     },
   ],

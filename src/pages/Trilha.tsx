@@ -4,56 +4,93 @@ import { Card } from '@/components/ui/Card'
 import { Barra } from '@/components/ui/Progress'
 import { Pill } from '@/components/ui/Badge'
 import { AvisoVerificacao } from '@/components/ui/Empty'
+import { Icone } from '@/components/ui/Icone'
+import { DivisorPincel, Horizonte } from '@/components/ui/Ornamento'
 import { MarcaPersonagem, TOM_PERSONAGEM } from '@/components/domain/Personagem'
+import { EtapaTrilha } from '@/components/domain/EtapaTrilha'
 import { guardiaoDoMacrotema } from '@/lib/personagens'
 import {
-  COBERTURA_PENDENTE,
-  MACROTEMAS,
+  coberturaPendente,
   MICROTEMAS,
-  PESOS_PENDENTES,
+  pesosPendentes,
   coberturaGeral,
   microtemasSemConteudo,
   pesosEfetivos,
 } from '@/lib/content'
-import { questoesDoMacrotema } from '@/lib/questions'
 import { useStore } from '@/lib/store'
-import { dominioMacrotema } from '@/lib/engine/stats'
-import {
-  dominioEfetivo,
-  nivelDominio,
-  ROTULO_NIVEL,
-  TEXTO_DOMINIO,
-  tomDominio,
-} from '@/lib/engine/mastery'
+import { etapaAtual, montarTrilha, progressoDaTrilha } from '@/lib/engine/trilha'
+import { nivelDominio, ROTULO_NIVEL, TEXTO_DOMINIO, tomDominio } from '@/lib/engine/mastery'
 
-/** Domínio médio de um microtema — usado para liberar pré-requisitos. */
-function dominioMicrotema(
-  conceitos: { id: string }[],
-  estados: ReturnType<typeof useStore.getState>['estados'],
-  agora: number,
-) {
-  if (!conceitos.length) return 0
+/** Marco da jornada — início e chegada. Não é etapa, é moldura. */
+function Marco({ rotulo, descricao }: { rotulo: string; descricao: string }) {
   return (
-    conceitos.reduce((s, c) => s + (estados[c.id] ? dominioEfetivo(estados[c.id], agora) : 0), 0) /
-    conceitos.length
+    <li className="relative flex items-center gap-3 py-1">
+      <span
+        aria-hidden
+        className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-aurora/40 bg-aurora-soft text-aurora"
+      >
+        <Icone nome="bandeira" tamanho={20} />
+      </span>
+      <div className="min-w-0">
+        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-aurora">{rotulo}</p>
+        <p className="mt-0.5 text-sm text-muted">{descricao}</p>
+      </div>
+    </li>
   )
 }
 
-const LIMIAR_LIBERACAO = 0.6
-
 export default function Trilha() {
   const estados = useStore((s) => s.estados)
+  const respostas = useStore((s) => s.respostas)
   const agora = Date.now()
   const pesos = pesosEfetivos()
+
+  const trilha = montarTrilha({ estados, respostas, agora })
+  const atual = etapaAtual(trilha)
+  const jornada = progressoDaTrilha(trilha)
 
   return (
     <div>
       <Cabecalho
         titulo="Trilha de estudos"
-        descricao="Quatro macrotemas. Um tópico abre quando o anterior atinge 60% de domínio."
+        descricao="O caminho inteiro numa tela: lição, miniquiz, desafio e revisão, tópico por tópico."
       />
 
-      {PESOS_PENDENTES && (
+      {/* Próximo passo. Um só — dois destaques na mesma tela não apontam nada. */}
+      {atual && (
+        <Card className="relative mb-6 overflow-hidden border-aurora/40">
+          <Horizonte />
+          <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-aurora">
+            Continue daqui
+          </p>
+          <p className="display mt-1 text-lg leading-tight">{atual.etapa.rotulo}</p>
+          <p className="mt-1 text-sm text-muted">
+            {atual.no.microtema.codigo} {atual.no.microtema.nome} · {atual.etapa.detalhe}
+          </p>
+          {atual.etapa.destino && (
+            <Link
+              to={atual.etapa.destino}
+              className="mt-3 inline-flex items-center gap-1.5 text-sm font-bold text-aurora"
+            >
+              Abrir <span aria-hidden>→</span>
+            </Link>
+          )}
+        </Card>
+      )}
+
+      {jornada.total > 0 && (
+        <div className="mb-6">
+          <div className="mb-1.5 flex items-baseline justify-between text-sm">
+            <span className="font-semibold">Jornada</span>
+            <span className="tnum text-muted">
+              {jornada.concluidas} de {jornada.total} etapas
+            </span>
+          </div>
+          <Barra valor={jornada.concluidas / jornada.total} />
+        </div>
+      )}
+
+      {pesosPendentes() && (
         <div className="mb-6">
           <AvisoVerificacao>
             Os pesos por módulo ainda não foram conferidos contra o Programa Detalhado oficial
@@ -62,7 +99,7 @@ export default function Trilha() {
         </div>
       )}
 
-      {COBERTURA_PENDENTE && (
+      {coberturaPendente() && (
         <div className="mb-6">
           <AvisoVerificacao>
             Cobertura do programa oficial: {Math.round(coberturaGeral() * 100)}% dos microtemas já
@@ -73,198 +110,150 @@ export default function Trilha() {
         </div>
       )}
 
-      <ol className="flex flex-col gap-4">
-        {MACROTEMAS.map((macro, indiceMacro) => {
-          const conceitos = macro.microtemas.flatMap((mt) => mt.conceitos)
+      <ol className="flex flex-col gap-6">
+        <Marco
+          rotulo="Início"
+          descricao="Nenhum módulo tranca: dá para estudar qualquer um por fora da ordem."
+        />
+
+        {trilha.map((estagio) => {
+          const macro = estagio.macrotema
           const guardiao = guardiaoDoMacrotema(macro.id)
           const tom = TOM_PERSONAGEM[guardiao?.cor ?? 'aurora']
-          const concluidas = conceitos.filter((c) => estados[c.id]?.aulaConcluida).length
-          const dominio = dominioMacrotema(macro.id, estados, agora)
-          const totalQuestoes = questoesDoMacrotema(macro.id).length
-          const respondidas = new Set(
-            Object.values(estados)
-              .filter((e) => e.macrotemaId === macro.id)
-              .map((e) => e.conceitoId),
-          ).size
 
           return (
-            <li key={macro.id} className="relative">
-              {indiceMacro < MACROTEMAS.length - 1 && (
-                <span
-                  aria-hidden
-                  className="absolute left-5 top-full h-4 w-px bg-line"
-                />
-              )}
-
-              <Card>
-                <div className="mb-3 flex items-start gap-3">
+            <li key={macro.id}>
+              {/* Cabeçalho do estágio: de quem é o módulo e quanto dele já foi. */}
+              <div className="mb-3 flex items-start gap-3">
+                {guardiao ? (
+                  <MarcaPersonagem personagem={guardiao} tamanho={44} />
+                ) : (
                   <span
                     aria-hidden
-                    className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl border text-sm font-extrabold ${
-                      /*
-                       * A cor identifica o MÓDULO (o dragão que o guarda); o
-                       * preenchimento é que marca o domínio alcançado. Assim a
-                       * cor nunca vira decoração nem duplica a barra abaixo.
-                       */
-                      dominio >= 0.75
-                        ? `${tom.solido} text-bg`
-                        : dominio > 0
-                          ? `${tom.borda} ${tom.texto}`
-                          : 'border-line text-muted'
-                    }`}
+                    className="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-line text-sm font-extrabold text-muted"
                   >
                     {macro.ordem}
                   </span>
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="font-bold">{macro.nome}</h2>
-                      {macro.peso != null && (
-                        <Pill tom={macro.peso >= 0.3 ? 'aurora' : 'neutro'}>
-                          {Math.round(macro.peso * 100)}% da prova
-                          {!macro.pesoVerificado && ' ?'}
-                        </Pill>
-                      )}
-                      {macro.peso == null && (
-                        <Pill>~{Math.round((pesos[macro.id] ?? 0) * 100)}% estimado</Pill>
-                      )}
-                    </div>
-                    <p className="mt-1 text-sm text-muted">{macro.resumo}</p>
-                    {guardiao && (
-                      <p className="mt-1.5 flex items-center gap-1.5 text-xs text-muted">
-                        <MarcaPersonagem personagem={guardiao} tamanho={18} />
-                        <span className="truncate">
-                          <span className={`font-semibold ${tom.texto}`}>{guardiao.nome}</span> ·{' '}
-                          {guardiao.guia}
-                        </span>
-                      </p>
+                )}
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className={`text-[11px] font-bold uppercase tracking-[0.14em] ${tom.texto}`}>
+                      Módulo {macro.ordem}
+                    </span>
+                    {macro.peso != null ? (
+                      <Pill tom={macro.peso >= 0.3 ? 'aurora' : 'neutro'}>
+                        {Math.round(macro.peso * 100)}% da prova
+                        {!macro.pesoVerificado && ' ?'}
+                      </Pill>
+                    ) : (
+                      <Pill>~{Math.round((pesos[macro.id] ?? 0) * 100)}% estimado</Pill>
                     )}
                   </div>
+                  <h2 className="display mt-0.5 text-lg leading-tight">{macro.nome}</h2>
+                  {guardiao && (
+                    <p className="mt-1 text-xs leading-snug text-muted">
+                      <span className={`font-semibold ${tom.texto}`}>{guardiao.nome}</span> ·{' '}
+                      {guardiao.guia}
+                    </p>
+                  )}
                 </div>
+              </div>
 
-                <div className="mb-3 flex items-baseline justify-between text-sm">
-                  <span className={`font-semibold ${TEXTO_DOMINIO[tomDominio(dominio)]}`}>
-                    {ROTULO_NIVEL[nivelDominio(dominio)]}
-                  </span>
-                  <span className="tnum text-muted">{Math.round(dominio * 100)}% de domínio</span>
-                </div>
-                <Barra
-                  valor={dominio}
-                  tom={tomDominio(dominio)}
-                />
+              <div className="mb-3 flex items-baseline justify-between text-sm">
+                <span className={`font-semibold ${TEXTO_DOMINIO[tomDominio(estagio.dominio)]}`}>
+                  {ROTULO_NIVEL[nivelDominio(estagio.dominio)]}
+                </span>
+                <span className="tnum text-muted">
+                  {estagio.aulasConcluidas}/{estagio.totalAulas} aulas ·{' '}
+                  {estagio.totalQuestoes} questões
+                </span>
+              </div>
+              <Barra valor={estagio.dominio} tom={tomDominio(estagio.dominio)} />
 
-                <div className="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-muted">
-                  <span className="tnum">
-                    {concluidas}/{conceitos.length} aulas
-                  </span>
-                  <span className="tnum">{totalQuestoes} questões</span>
-                  <span className="tnum">{respondidas} conceitos praticados</span>
-                </div>
+              <ul className="mt-4 flex flex-col gap-2.5">
+                {estagio.nos.map((no) => (
+                  <li key={no.microtema.id}>
+                    <div
+                      className={`rounded-2xl border p-3.5 ${
+                        no.semConteudo
+                          ? 'border-dashed border-line/70 bg-surface'
+                          : no.liberado
+                            ? 'border-line bg-elevated/40'
+                            : 'border-line/50 bg-surface'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-3">
+                        <p className="min-w-0 truncate text-sm font-bold">
+                          <span className="tnum mr-1.5 text-xs font-normal text-muted">
+                            {no.microtema.codigo}
+                          </span>
+                          {no.microtema.nome}
+                        </p>
+                        {!no.semConteudo && (
+                          <span className="tnum shrink-0 text-xs text-muted">
+                            {Math.round(no.dominio * 100)}%
+                          </span>
+                        )}
+                      </div>
 
-                <ul className="mt-4 flex flex-col gap-2 border-t border-line pt-4">
-                  {macro.microtemas.map((micro) => {
-                    const preOk = micro.preRequisitos.every((reqId) => {
-                      const req = MACROTEMAS.flatMap((m) => m.microtemas).find((m) => m.id === reqId)
-                      return req
-                        ? dominioMicrotema(req.conceitos, estados, agora) >= LIMIAR_LIBERACAO
-                        : true
-                    })
-                    const dominioMicro = dominioMicrotema(micro.conceitos, estados, agora)
-                    const feitas = micro.conceitos.filter((c) => estados[c.id]?.aulaConcluida).length
-                    const semConteudo = micro.conceitos.length === 0
+                      {no.semConteudo && (
+                        <p className="mt-1 text-xs text-muted">
+                          Conteúdo em produção — item do programa oficial ainda sem aula.
+                        </p>
+                      )}
 
-                    return (
-                      <li key={micro.id}>
-                        <div
-                          className={`rounded-xl border p-3 transition-colors ${
-                            semConteudo
-                              ? 'border-dashed border-line/70 bg-surface'
-                              : preOk
-                                ? 'border-line bg-elevated/50'
-                                : 'border-line/50 bg-surface opacity-70'
-                          }`}
-                        >
-                          <div className="flex items-center justify-between gap-3">
-                            <div className="min-w-0">
-                              <p className="truncate text-sm font-semibold">
-                                <span className="tnum mr-1.5 text-xs font-normal text-muted">
-                                  {micro.codigo}
-                                </span>
-                                {micro.nome}
-                                {!preOk && !semConteudo && (
-                                  <span aria-label="bloqueado" className="ml-2 text-xs text-muted">
-                                    bloqueado
-                                  </span>
-                                )}
-                              </p>
-                              {semConteudo ? (
-                                <p className="mt-0.5 text-xs text-muted">
-                                  Conteúdo em produção — item do programa oficial ainda sem aula.
-                                </p>
-                              ) : (
-                                <p className="tnum mt-0.5 text-xs text-muted">
-                                  {feitas}/{micro.conceitos.length} aulas ·{' '}
-                                  {Math.round(dominioMicro * 100)}% domínio
-                                </p>
-                              )}
-                            </div>
-                            {!semConteudo && (
-                              <div className="w-20 shrink-0">
-                                <Barra valor={dominioMicro} tom={tomDominio(dominioMicro)} altura="h-1.5" />
-                              </div>
-                            )}
-                          </div>
+                      {!no.semConteudo && !no.liberado && (
+                        <p className="mt-1.5 flex items-start gap-1.5 text-xs text-muted">
+                          <span className="mt-0.5 shrink-0">
+                            <Icone nome="cadeado" tamanho={13} />
+                          </span>
+                          <span className="min-w-0">
+                            Abre quando <span className="font-semibold">{no.aguarda?.nome}</span>{' '}
+                            chegar a 60% — ou{' '}
+                            <Link to="/questoes" className="font-semibold text-aurora">
+                              teste direto
+                            </Link>{' '}
+                            para destravar.
+                          </span>
+                        </p>
+                      )}
 
-                          {!preOk && !semConteudo && (
-                            <p className="mt-2 text-xs text-muted">
-                              Libera ao atingir 60% no tópico anterior — ou{' '}
-                              <Link to="/questoes" className="font-semibold text-aurora">
-                                teste direto
-                              </Link>{' '}
-                              para destravar.
-                            </p>
-                          )}
-
-                          <ul className="mt-2 flex flex-col gap-1">
-                            {micro.conceitos.map((c) => {
-                              const estado = estados[c.id]
-                              const feita = estado?.aulaConcluida
-                              return (
-                                <li key={c.id}>
-                                  <Link
-                                    to={`/conteudo/${c.id}`}
-                                    className="flex items-center gap-2 rounded-lg px-1 py-1.5 text-[13px] transition-colors hover:bg-elevated"
-                                  >
-                                    <span
-                                      aria-hidden
-                                      className={`grid h-4 w-4 shrink-0 place-items-center rounded-full border text-[9px] ${
-                                        feita ? 'border-jade bg-jade text-bg' : 'border-line text-transparent'
-                                      }`}
-                                    >
-                                      ✓
-                                    </span>
-                                    <span className={`truncate ${feita ? 'text-ink-2' : ''}`}>
-                                      {c.titulo}
-                                    </span>
-                                    {estado && estado.n > 0 && (
-                                      <span className="tnum ml-auto shrink-0 text-[11px] text-muted">
-                                        {Math.round(dominioEfetivo(estado, agora) * 100)}%
-                                      </span>
-                                    )}
-                                  </Link>
-                                </li>
-                              )
-                            })}
+                      {no.etapas.length > 0 && (
+                        <>
+                          <DivisorPincel className="my-2.5 opacity-40" />
+                          <ul className="flex flex-col gap-2.5">
+                            {no.etapas.map((etapa, i) => (
+                              <EtapaTrilha
+                                key={etapa.id}
+                                etapa={etapa}
+                                atual={atual?.etapa.id === etapa.id}
+                                ultima={i === no.etapas.length - 1}
+                              />
+                            ))}
                           </ul>
-                        </div>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </Card>
+                        </>
+                      )}
+                    </div>
+                  </li>
+                ))}
+              </ul>
             </li>
           )
         })}
+
+        <Marco
+          rotulo="Próximo nível"
+          descricao="Trilha percorrida, a prática vira simulado — e o guardião dos desafios assume."
+        />
       </ol>
+
+      <Link
+        to="/simulados"
+        className="mt-4 flex items-center justify-center gap-2 rounded-2xl border border-line bg-elevated/40 p-4 text-sm font-semibold transition-colors hover:border-aurora/50"
+      >
+        <Icone nome="cronometro" tamanho={18} />
+        Ir para os simulados
+      </Link>
     </div>
   )
 }

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import {
-  COBERTURA_PENDENTE,
+  coberturaPendente,
   CONCEITOS,
   MACROTEMAS,
   MICROTEMAS,
@@ -253,8 +253,8 @@ describe('cobertura de conteúdo', () => {
     expect(coberturaGeral()).toBeCloseTo(esperado)
   })
 
-  it('COBERTURA_PENDENTE acompanha a existência de microtema vazio', () => {
-    expect(COBERTURA_PENDENTE).toBe(microtemasSemConteudo().length > 0)
+  it('coberturaPendente acompanha a existência de microtema vazio', () => {
+    expect(coberturaPendente()).toBe(microtemasSemConteudo().length > 0)
   })
 
   it('a cobertura por macrotema fica entre 0 e 1', () => {

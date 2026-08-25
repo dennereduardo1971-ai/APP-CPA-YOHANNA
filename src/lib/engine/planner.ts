@@ -1,5 +1,12 @@
 import type { Conceito, Questao } from '../types'
-import { CONCEITOS, getConceito, MACROTEMAS, pesosEfetivos } from '../content'
+import {
+  CONCEITOS,
+  getConceito,
+  getMicrotema,
+  macrotemaDoConceito,
+  MACROTEMAS,
+  pesosEfetivos,
+} from '../content'
 import { questoesDoConceito } from '../questions'
 import type { ContextoPrioridade, ItemPriorizado, MotivoSelecao } from './scheduler'
 import { escolherQuestao, pontuarConceito, ROTULO_SELECAO } from './scheduler'
@@ -272,4 +279,141 @@ export function montarVespera(opcoes: OpcoesPlano): PlanoSessao {
     justificativa: 'Revisão expressa: pegadinhas, pontos de decorar e seus erros recentes.',
     focos: [],
   }
+}
+
+/* ------------------------------------------------------------------ */
+/* "Estude agora" — recomendações justificadas                         */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A mesma fila de prioridade que monta a sessão, exposta como uma lista
+ * curta de próximos passos.
+ *
+ * A diferença para `montarSessao` é o propósito: a sessão precisa PREENCHER
+ * um orçamento de minutos, e por isso repete microtemas; a recomendação
+ * precisa CABER numa tela e ser lida — três cartões do mesmo assunto não são
+ * três recomendações, são uma repetida. Daí o corte por microtema abaixo.
+ */
+
+export type AcaoRecomendada = 'aula' | 'praticar' | 'revisar'
+
+export const ROTULO_ACAO: Record<AcaoRecomendada, string> = {
+  aula: 'Estudar a aula',
+  praticar: 'Praticar',
+  revisar: 'Revisar',
+}
+
+export interface Recomendacao {
+  conceitoId: string
+  titulo: string
+  microtemaId: string
+  microtema: string
+  macrotemaId: string
+  macrotema: string
+  acao: AcaoRecomendada
+  motivo: MotivoSelecao
+  /** Frase construída com os números do próprio aluno, não um rótulo fixo. */
+  justificativa: string
+  dominio: number
+  minutos: number
+  destino: string
+}
+
+const DIA_MS = 86_400_000
+
+/** Quantas questões uma recomendação de prática propõe. */
+const QUESTOES_SUGERIDAS = 3
+
+function justificarRecomendacao(
+  estado: EstadoConceito | undefined,
+  motivo: MotivoSelecao,
+  minutosAula: number,
+  peso: number,
+  agora: number,
+): string {
+  if (!estado || estado.n === 0) {
+    return estado?.aulaConcluida
+      ? 'Você leu a aula, mas ainda não respondeu nenhuma questão daqui.'
+      : `Conteúdo ainda não estudado — ${minutosAula} min de aula.`
+  }
+
+  const dominio = Math.round(dominioEfetivo(estado, agora) * 100)
+
+  switch (motivo) {
+    case 'erro_recente': {
+      const n = estado.errosAbertos
+      // O número do domínio entra aqui de propósito: sem ele, dois conceitos
+      // com erro aberto rendem cartões de texto idêntico.
+      return `${n} ${n === 1 ? 'erro ainda não superado' : 'erros ainda não superados'}. Domínio hoje: ${dominio}%.`
+    }
+    case 'revisao_vencida': {
+      const dias = Math.max(1, Math.round((agora - estado.revisarEm) / DIA_MS))
+      return `Revisão vencida há ${dias} ${dias === 1 ? 'dia' : 'dias'}. Domínio hoje: ${dominio}%.`
+    }
+    case 'lacuna':
+      return `Domínio em ${dominio}% — é aqui que uma sessão rende mais.`
+    case 'peso_prova':
+      return `Vale cerca de ${Math.round(peso * 100)}% da prova e você está em ${dominio}%.`
+    case 'manutencao':
+      return `Você já domina (${dominio}%). Uma passada curta impede o esquecimento.`
+    default:
+      return ROTULO_SELECAO[motivo]
+  }
+}
+
+export function recomendar(opcoes: OpcoesPlano, limite = 3): Recomendacao[] {
+  const pesos = pesosEfetivos()
+  const saida: Recomendacao[] = []
+  const microtemasUsados = new Set<string>()
+
+  for (const item of ordenarPorPrioridade(opcoes)) {
+    if (saida.length >= limite) break
+
+    const conceito = getConceito(item.conceitoId)
+    if (!conceito || microtemasUsados.has(conceito.microtemaId)) continue
+
+    const estado = opcoes.estados[conceito.id]
+    const acao: AcaoRecomendada = !estado?.aulaConcluida
+      ? 'aula'
+      : item.motivo === 'erro_recente' || item.motivo === 'revisao_vencida'
+        ? 'revisar'
+        : 'praticar'
+
+    // Aula lida e nenhuma questão escrita ainda: não há o que recomendar.
+    if (acao !== 'aula' && questoesDoConceito(conceito.id).length === 0) continue
+
+    const macro = macrotemaDoConceito(conceito.id)
+    microtemasUsados.add(conceito.microtemaId)
+
+    saida.push({
+      conceitoId: conceito.id,
+      titulo: conceito.titulo,
+      microtemaId: conceito.microtemaId,
+      microtema: getMicrotema(conceito.microtemaId)?.nome ?? '',
+      macrotemaId: macro?.id ?? '',
+      macrotema: macro?.nome ?? '',
+      acao,
+      motivo: item.motivo,
+      justificativa: justificarRecomendacao(
+        estado,
+        item.motivo,
+        conceito.minutosEstimados,
+        pesos[macro?.id ?? ''] ?? 0,
+        opcoes.agora,
+      ),
+      dominio: estado ? dominioEfetivo(estado, opcoes.agora) : 0,
+      minutos:
+        acao === 'aula'
+          ? conceito.minutosEstimados
+          : Math.round(QUESTOES_SUGERIDAS * MINUTOS_POR_QUESTAO),
+      destino:
+        acao === 'aula'
+          ? `/conteudo/${conceito.id}`
+          : acao === 'revisar'
+            ? '/revisao'
+            : `/questoes?micro=${conceito.microtemaId}&iniciar=1`,
+    })
+  }
+
+  return saida
 }

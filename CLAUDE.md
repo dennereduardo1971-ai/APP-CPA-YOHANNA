@@ -26,7 +26,9 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    `strict: true` com `noUnusedLocals`; build quebra fácil.
 2. **Conteúdo e questões são DADOS, não código.** Toda mudança de matéria
    acontece em `src/lib/content/*` e `src/lib/questions/*`. Nunca embutir
-   texto de aula em componente.
+   texto de aula em componente. O painel `/admin` grava um *overlay* local
+   por cima disso — serve para correção urgente, não para autoria: o
+   canônico segue no repositório, e o overlay se exporta para voltar pra cá.
 3. **A estrutura da prova vive em `src/lib/blueprint.ts`.** Não espalhar
    número de questões, duração ou nota de corte pelo código. Os 20 microtemas
    oficiais são declarados em `src/lib/content/m*.ts` com o campo `codigo`
@@ -52,8 +54,11 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    documenta a estrutura.
    - **Acerto nunca usa o acento.** Num app de questões, "certo" em carmesim ao
      lado de "errado" em vermelho é indistinguível. Acerto é `jade`.
-   - **Cor de desempenho sai de `tomDominio()`** (`engine/mastery.ts`). Barra,
-     anel e rótulo têm de vir da mesma função, senão 74% aparece com rótulo
+   - **Cor de desempenho sai do motor** (`engine/mastery.ts`), nunca de um
+     ternário dentro da página. São duas escalas, de propósito: `tomDominio()`
+     para nível de domínio (faixas pedagógicas) e `tomAcerto()` para taxa de
+     acerto (ancorada na nota de corte do `blueprint.ts`). Barra, anel e
+     rótulo do mesmo número usam a mesma função, senão 74% aparece com rótulo
      verde sobre barra âmbar.
 9. **A temática vive em `src/lib/personagens.ts`.** Nome, papel ou fala de
    personagem não entram em componente. Arte é opcional
@@ -64,8 +69,28 @@ npm run cap:sync    # build + sincroniza o projeto Android (Capacitor)
    `src/components/ui/Ornamento.tsx`. Nada de glifo Unicode na navegação — no
    Android vira caixinha — e nada de asset externo: o APK roda sem rede.
    Desenhar com forma cheia, não traço fino: a marca aparece a partir de 18 px.
+   Ícone que vem de DADO (conquista, desbloqueio, estado vazio) guarda o **nome**
+   de um traço de `Icone.tsx`, nunca o glifo. Há teste conferindo os nomes.
 8. **Persistência passa sempre pelo store** (`src/lib/store.ts`). Não
    escrever em `localStorage` direto de dentro de componente.
+12. **Acessibilidade é verificada, não presumida.** Três coisas não podem
+   ser afrouxadas sem quebrar teste: (a) todo par texto/fundo passa de 4.5:1
+   e todo indicador gráfico de 3:1 — conferido em `src/test/acessibilidade.test.ts`
+   lendo os tokens do próprio `index.css`; (b) nenhum estado é dito **só**
+   pela cor — certo/errado, conquistado/bloqueado e destacado/apagado têm
+   forma e texto, este último em `sr-only` quando não cabe na tela;
+   (c) `opacity` nunca esmaece texto abaixo do mínimo — "bloqueado" não pode
+   virar "ilegível" (o piso prático é `opacity-65`). Controle composto
+   declara o papel ARIA de verdade e o teclado que ele promete: o player de
+   questões é `radiogroup` com setas, o mapa mental é `tree` com ↑↓←→.
+
+11. **Não derivar conteúdo em constante de módulo.** `MACROTEMAS`,
+   `MICROTEMAS`, `CONCEITOS` e `QUESTOES` são mutados **no lugar** por
+   `aplicarOverlayLocal` (`src/lib/pacote.ts`) — por isso quem já importou
+   continua lendo a versão em vigor. Mas um `const X = MACROTEMAS.map(...)`
+   no topo do arquivo congela o conteúdo de antes da edição. Use função:
+   ver `conquistas()` em `engine/gamification.ts`, que existe por causa
+   disso. Há teste em `src/test/overlay.test.ts` guardando o comportamento.
 
 ## Arquitetura em uma tela
 
@@ -79,10 +104,16 @@ src/
     engine/         motor pedagógico — TS puro, sem React
       mastery.ts      Elo + nível de domínio com esquecimento
       scheduler.ts    revisão espaçada explicável
-      planner.ts      monta a sessão de estudo rápido
-      gamification.ts XP, níveis, conquistas, sequência
-      stats.ts        desempenho por tema, dificuldade e tempo
+      trilha.ts       jornada: estágios, nós e a etapa "você está aqui"
+      planner.ts      monta a sessão de estudo rápido e o "Estude agora"
+      gamification.ts XP, níveis, conquistas, desbloqueios, sequência
+      stats.ts        desempenho por macrotema, microtema, dificuldade e tempo
+    content/overlay.ts  edições locais do painel — funções puras
+    auditoria.ts    saúde do conteúdo (o que falta, o que está quebrado)
+    pacote.ts       aplica o overlay: conteúdo primeiro, questões depois
     store.ts        Zustand + persistência local (camada única de I/O)
+                    `merge` funde o gravado POR CIMA dos padrões: estado
+                    salvo por versão antiga não devolve campo `undefined`
   components/ui|layout|domain
   pages/            uma página por rota
 ```
@@ -99,8 +130,14 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 | 3 | Camada de repositório isolada no store | Permite plugar sync Supabase depois sem tocar em UI |
 | 4 | Elo-IRT + revisão espaçada simples e explicável | Funciona com poucos dados; o usuário consegue entender por que uma questão apareceu |
 | 5 | "Explique de outro jeito" com textos pré-autorados | Garante explicação correta e funciona offline; hook de IA fica opcional |
-| 6 | Dark mode único, paleta "Alvorada": acento carmesim + as 4 cores dos dragões | Definido pelo cliente. Revisto em 24/08/2026, quando o cliente pediu fidelidade à estética da temática — substitui o acento verde-água anterior |
+| 6 | Dark mode único, paleta "Alvorada": acento carmesim + as 4 cores dos dragões | Definido pelo cliente. Revisto em 24/08/2026, quando o cliente pediu fidelidade à estética da temática — substitui o acento verde-água anterior. Em 25/08/2026 o carmesim clareou 12% (`237 59 94` → `239 83 113`): no tom anterior o acento não alcançava 4.5:1 como texto sobre `elevated` nem dentro da própria pílula |
 | 7 | APK gerado por GitHub Actions, não localmente | Build Android exige SDK que não existe no ambiente de dev |
+| 9 | Desbloqueio é recompensa, nunca trava | Nada que já estava aberto fecha para caber na lista. Um desbloqueio fechado diz o que falta; os módulos seguem livres (decisão 8) |
+| 10 | Painel `/admin` edita conteúdo por **overlay local**, não substitui o código | Sem backend e sem build no aparelho, a única forma de corrigir hoje. O canônico continua em `src/lib/content/*`; o overlay é exportável para voltar ao repositório, e o painel avisa em toda tela quando há divergência |
+| 8 | Trilha é jornada de nós (`engine/trilha.ts`), não lista de aulas | **Macrotema nunca tranca** — a especificação pede acesso livre aos módulos. O pré-requisito vale entre microtemas (60%) e dentro deles (miniquiz depois das aulas, desafio depois do domínio). A regra vive no motor, não no JSX, para ser testável |
+| 11 | Pílula e chip usam fundo opaco (`*-soft`), nunca `cor/15` | Com transparência o contraste passava a depender da superfície embaixo: o mesmo componente lia bem num card e mal em outro |
+| 12 | Painel `/admin` e bibliotecas em pedaços separados do app | O service worker guarda por nome de arquivo com hash. Junto, corrigir uma alíquota obrigava o aparelho a baixar de novo os ~167 kB de React que não mudaram |
+| 13 | Um pedaço de conteúdo e um de questões **por macrotema**, e telas do estudante sob demanda | Mesmo motivo do 12, levado adiante: com um `conteudo` único de 854 kB, corrigir uma aula do módulo 2 invalidava o cache das aulas dos módulos 1, 3 e 4. A divisão vive em `vite.config.ts`, e a ordem das camadas lá **não é estética**: `registro-questoes → questoes-mN → questoes-motor → registro-conteudo → conteudo-mN`, sempre num sentido só. Um ciclo entre pedaços quebraria a abertura, porque `content/index.ts` executa `reconstruir()` no topo do módulo |
 
 ## Pendências externas
 
@@ -115,6 +152,9 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
       ler o texto das leis: `planalto.gov.br` está bloqueado neste ambiente.
 - [ ] Res. CMN 5.295/2026 (novas regras de captação com garantia do FGC,
       vigente desde 01/06/2026): incorporar ao conceito `c-fgc`.
+- [ ] Monitoramento automático das publicações da ANBIMA. O app roda offline
+      e sem servidor, então `/admin/versoes` é um registro **manual** — quem
+      confere a fonte é uma pessoa. Automatizar exigiria backend.
 - [ ] Keystore de assinatura do APK. (Os ícones já saem de `public/icon.svg`
       via `npm run icons`.)
 - [ ] Arte dos personagens é opcional e **não** está no repositório: o app
@@ -126,25 +166,25 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 
 ## Estado atual
 
-_Atualizado em 2026-08-24._
+_Atualizado em 2026-08-25._
 
 | Métrica | Valor |
 |---|---|
 | Macrotemas | 4 |
 | Microtemas | 20 |
-| Conceitos (aulas) | 14 |
-| Questões no banco | 43 |
-| Páginas | 21 |
-| Componentes | 15 |
-| Arquivos de teste | 2 |
-| Linhas em `src/` | 12.055 |
+| Conceitos (aulas) | 78 |
+| Questões no banco | 314 |
+| Páginas | 29 |
+| Componentes | 18 |
+| Arquivos de teste | 5 |
+| Linhas em `src/` | 30.280 |
 
 **Blueprint vigente:** CPA — Certificado Profissional Anbima · versão 1.2 ·
 50 questões · 150 min · corte
 0.7 · verificado: **true**
 
-**Rotas registradas (22):**
-`/onboarding` · `/` · `/trilha` · `/conteudo/:conceitoId` · `/resumos` · `/mapas` · `/mapas/:conceitoId` · `/questoes` · `/rapido` · `/simulados` · `/simulado/:modo` · `/resultado/:simuladoId` · `/revisao` · `/metas` · `/conquistas` · `/estatisticas` · `/progresso` · `/perfil` · `/config` · `/vespera` · `/baixar` · `*`
+**Rotas registradas (30):**
+`/onboarding` · `/` · `/trilha` · `/conteudo/:conceitoId` · `/resumos` · `/mapas` · `/mapas/:conceitoId` · `/questoes` · `/rapido` · `/simulados` · `/simulado/:modo` · `/resultado/:simuladoId` · `/revisao` · `/metas` · `/conquistas` · `/estatisticas` · `/progresso` · `/perfil` · `/config` · `/vespera` · `/baixar` · `/admin` · `/admin/estrutura` · `/admin/conceitos` · `/admin/conceito/:conceitoId` · `/admin/questoes` · `/admin/questao/:questaoId` · `/admin/versoes` · `/admin/dados` · `*`
 
 **Arquivos do motor:**
 - `src/lib/engine/gamification.ts`
@@ -152,4 +192,5 @@ _Atualizado em 2026-08-24._
 - `src/lib/engine/planner.ts`
 - `src/lib/engine/scheduler.ts`
 - `src/lib/engine/stats.ts`
+- `src/lib/engine/trilha.ts`
 <!-- AUTO:FIM -->

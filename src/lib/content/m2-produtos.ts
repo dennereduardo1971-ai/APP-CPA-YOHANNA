@@ -1,4 +1,9 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_2_1_RF } from './m2-1-renda-fixa'
+import { CONCEITOS_2_1_RV } from './m2-1-variavel'
+import { CONCEITOS_2_3 } from './m2-3-financiamento'
+import { CONCEITOS_2_4 } from './m2-4-servicos'
+import { CONCEITOS_2_5 } from './m2-5-seguros'
 
 /**
  * MACROTEMA 2 — Produtos do mercado financeiro.
@@ -690,6 +695,8 @@ export const M2: Macrotema = {
           atualizadoEm: '2026-08-24',
           minutosEstimados: 7,
         },
+        ...CONCEITOS_2_1_RF,
+        ...CONCEITOS_2_1_RV,
       ],
     },
     {
@@ -847,7 +854,7 @@ export const M2: Macrotema = {
       nome: 'Produtos de financiamento',
       ordem: 3,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_2_3,
     },
     {
       id: 'm2.4',
@@ -856,7 +863,7 @@ export const M2: Macrotema = {
       nome: 'Serviços bancários',
       ordem: 4,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_2_4,
     },
     {
       id: 'm2.5',
@@ -865,7 +872,7 @@ export const M2: Macrotema = {
       nome: 'Seguros de vida e patrimoniais',
       ordem: 5,
       preRequisitos: [],
-      conceitos: [],
+      conceitos: CONCEITOS_2_5,
     },
   ],
 }
