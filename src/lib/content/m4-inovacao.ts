@@ -1,4 +1,6 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_4_4_CRIPTO } from './m4-4-cripto'
+import { CONCEITOS_4_5 } from './m4-5-open'
 import { CONCEITOS_4_6 } from './m4-6-ia'
 import { CONCEITOS_4_2, CONCEITOS_4_3, CONCEITOS_4_4, CONCEITOS_4_7 } from './m4-resto'
 
@@ -166,7 +168,7 @@ export const M4: Macrotema = {
       nome: 'Finanças descentralizadas (DEFI)',
       ordem: 4,
       preRequisitos: [],
-      conceitos: CONCEITOS_4_4,
+      conceitos: [...CONCEITOS_4_4, ...CONCEITOS_4_4_CRIPTO],
     },
     {
       id: 'm4.5',
@@ -298,6 +300,7 @@ export const M4: Macrotema = {
           atualizadoEm: '2026-08-24',
           minutosEstimados: 6,
         },
+        ...CONCEITOS_4_5,
       ],
     },
     {

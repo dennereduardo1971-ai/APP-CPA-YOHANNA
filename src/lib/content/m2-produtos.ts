@@ -223,7 +223,9 @@ export const M2: Macrotema = {
           erroComum:
             'Somar o limite por produto ("R$ 250 mil no CDB e mais R$ 250 mil na LCI do mesmo banco"). O limite é único por conglomerado.',
           alertaProva:
-            'A pegadinha mais frequente da prova é colocar CRI ou CRA numa lista de produtos "com garantia do FGC".',
+            'A pegadinha mais frequente da prova é colocar CRI ou CRA numa lista de produtos "com garantia do FGC". ' +
+            'Uma segunda armadilha entrou em cena em 2026: a Resolução CMN 5.295 endureceu as regras do FGC, mas do lado do BANCO. ' +
+            'A cobertura do investidor — R$ 250 mil por CPF por conglomerado e o teto global de R$ 1 milhão a cada quatro anos — NÃO mudou.',
           tabela: {
             titulo: 'Tem FGC?',
             colunas: ['Produto', 'FGC?', 'Quem emite'],
@@ -296,10 +298,10 @@ export const M2: Macrotema = {
             entenda:
               'O FGC é um seguro do sistema bancário: se o banco quebrar, ele devolve até R$ 250 mil por pessoa naquele grupo.',
             aprofunde:
-              'O FGC é uma associação privada mantida pelas próprias instituições, que contribuem mensalmente sobre o saldo dos depósitos garantidos — não é dinheiro público. Por isso a cobertura depende da saúde do fundo, e o teto global de R$ 1 milhão a cada quatro anos existe para impedir que um mesmo investidor consuma a garantia repetidamente. Títulos públicos ficam de fora por um motivo conceitual, não por esquecimento: o emissor é o Tesouro Nacional, e não faria sentido um fundo privado garantir o risco soberano. Para as cooperativas de crédito o equivalente é o FGCCoop. Em 2026 a Resolução CMN 5.295 endureceu as regras de captação com garantia do FGC, criando um gatilho ligado à qualidade dos ativos do emissor — o limite de cobertura do investidor, porém, não mudou.',
+              'O FGC é uma associação privada mantida pelas próprias instituições, que contribuem mensalmente sobre o saldo dos depósitos garantidos — não é dinheiro público. Por isso a cobertura depende da saúde do fundo, e o teto global de R$ 1 milhão a cada quatro anos existe para impedir que um mesmo investidor consuma a garantia repetidamente. Títulos públicos ficam de fora por um motivo conceitual, não por esquecimento: o emissor é o Tesouro Nacional, e não faria sentido um fundo privado garantir o risco soberano. Para as cooperativas de crédito o equivalente é o FGCCoop. A Resolução CMN 5.295, de 23 de abril de 2026, em vigor desde 1º de junho, alterou a Resolução 4.222/2013 para atacar um risco de incentivo que ficou visível nos últimos anos: bancos que se financiam quase inteiramente em papel coberto pelo FGC transferem ao fundo — isto é, aos demais bancos — o risco da própria estratégia. A norma trabalha por dois instrumentos, ambos do lado do EMISSOR. O primeiro é a contribuição adicional, que passou a incidir quando o valor de referência da instituição supera simultaneamente quatro vezes o patrimônio líquido ajustado e 60% das captações de referência, patamar mais apertado que o anterior. O segundo é a obrigação de manter parte dos recursos em títulos públicos federais quando a captação garantida ultrapassa limiares de alavancagem ou o chamado ativo de referência, que mede qualidade e diversificação da carteira. Nada disso altera a cobertura do investidor: os R$ 250 mil por CPF por conglomerado e o teto global de R$ 1 milhão a cada quatro anos seguem os mesmos. O efeito prático para quem atende cliente é indireto e vale conhecer — captação apoiada em FGC ficou mais cara para o banco médio, o que tende a comprimir os percentuais de CDI oferecidos por emissores mais alavancados.',
           },
-          versao: 2,
-          atualizadoEm: '2026-08-24',
+          versao: 3,
+          atualizadoEm: '2026-08-25',
           minutosEstimados: 8,
         },
         {
