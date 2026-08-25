@@ -10,13 +10,14 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **39** | 88 |
-| Questões | 43 | **166** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **12/20** | 20/20 |
+| Conceitos | 14 | **41** | 88 |
+| Questões | 43 | **176** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **13/20** | 20/20 |
 
 Questões do tipo `calculo`: 3 → **22**.
 
-**Macrotema 1 (SFN, 20% da prova) está completo**: 1.1, 1.2, 1.3 e 1.4 têm aula.
+**Macrotemas 1 e 2 estão completos** — 1.1 a 1.4 e 2.1 a 2.5 têm aula. Somados,
+são **60% do peso da prova** com todos os microtemas cobertos.
 
 ## Entregue
 
@@ -78,6 +79,17 @@ taxa anunciada, é o CET. Boa parte dos distratores explora essa inversão,
 oferecendo a proposta de menor taxa nominal quando a estrutura de tarifas a
 torna a mais cara.
 
+### 2.5 — Seguros de vida e patrimoniais ✅
+*2 conceitos, 10 questões.* `content/m2-5-seguros.ts`, `questions/banco-m2-5.ts`.
+
+Fundamentos do seguro (prêmio, sinistro, franquia, apólice) · Seguro de vida
+(capital, beneficiário, sucessão).
+
+Uma distinção organiza o microtema inteiro: **seguro de dano** indeniza
+prejuízo e obedece ao princípio indenizatório; **seguro de pessoas** paga
+capital contratado, admite cumulação de apólices e não comporta sub-rogação.
+Quase toda pegadinha do tema aplica a regra de um ao outro.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
@@ -87,8 +99,8 @@ torna a mais cara.
 | 3 | ~~1.4 Regulação e infraestrutura~~ | 5 | ✅ feito |
 | 4 | ~~2.4 Serviços bancários~~ | 4 | ✅ feito |
 | 5 | ~~2.3 Produtos de financiamento~~ | 4 | ✅ feito |
-| 6 | 2.5 Seguros de vida e patrimoniais | 2 | próximo |
-| 7 | 3.1 Finanças pessoais | 7 | |
+| 6 | ~~2.5 Seguros de vida e patrimoniais~~ | 2 | ✅ feito |
+| 7 | 3.1 Finanças pessoais | 7 | próximo |
 | 8 | 3.2 Orientações financeiras | 2 | |
 | 9 | 4.6 Inteligência artificial | 2 | |
 | — | P1 e P2 (`LACUNAS.md` §3) | 36 | depois do P0 |

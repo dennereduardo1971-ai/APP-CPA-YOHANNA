@@ -6,12 +6,13 @@ import { BANCO_M1_4 } from './banco-m1-4'
 import { BANCO_M2 } from './banco-m2'
 import { BANCO_M2_3 } from './banco-m2-3'
 import { BANCO_M2_4 } from './banco-m2-4'
+import { BANCO_M2_5 } from './banco-m2-5'
 import { BANCO_M34 } from './banco-m34'
 import { MACROTEMAS } from '../content'
 import type { OverlayConteudo } from '../content/overlay'
 import { montarQuestoes, overlayVazio } from '../content/overlay'
 
-const BASE: Questao[] = [...BANCO_M1, ...BANCO_M1_2, ...BANCO_M1_3, ...BANCO_M1_4, ...BANCO_M2, ...BANCO_M2_3, ...BANCO_M2_4, ...BANCO_M34]
+const BASE: Questao[] = [...BANCO_M1, ...BANCO_M1_2, ...BANCO_M1_3, ...BANCO_M1_4, ...BANCO_M2, ...BANCO_M2_3, ...BANCO_M2_4, ...BANCO_M2_5, ...BANCO_M34]
 
 /**
  * Banco completo de questões autorais.
