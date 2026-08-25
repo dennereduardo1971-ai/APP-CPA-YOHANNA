@@ -1,4 +1,5 @@
 import type { Macrotema } from '../types'
+import { CONCEITOS_1_2 } from './m1-2-politica'
 import { CONCEITOS_1_3 } from './m1-3-operacoes'
 
 /**
@@ -420,7 +421,7 @@ export const M1: Macrotema = {
       nome: 'Política econômica',
       ordem: 2,
       preRequisitos: ['m1.1'],
-      conceitos: [],
+      conceitos: CONCEITOS_1_2,
     },
     {
       id: 'm1.3',

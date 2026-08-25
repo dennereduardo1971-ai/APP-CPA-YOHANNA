@@ -10,11 +10,11 @@
 
 | | Início do plano | Agora | Alvo |
 |---|---:|---:|---:|
-| Conceitos | 14 | **20** | 88 |
-| Questões | 43 | **78** | 700 (piso 440) |
-| Microtemas com aula | 7/20 | **8/20** | 20/20 |
+| Conceitos | 14 | **26** | 88 |
+| Questões | 43 | **110** | 700 (piso 440) |
+| Microtemas com aula | 7/20 | **9/20** | 20/20 |
 
-Questões do tipo `calculo`: 3 → **19**.
+Questões do tipo `calculo`: 3 → **22**.
 
 ## Entregue
 
@@ -28,13 +28,25 @@ Escolhido primeiro porque `LACUNAS.md` o aponta como o mais crítico: é o únic
 microtema inteiramente quantitativo, e o tipo `calculo` tinha 3 itens no banco
 inteiro — o app não preparava para nenhuma questão numérica da prova.
 
+### 1.2 — Política econômica ✅
+*6 conceitos, 32 questões.* `content/m1-2-politica.ts`, `questions/banco-m1-2.ts`.
+
+PIB e indicadores de atividade · IPCA, INPC e IGP-M · Política monetária
+(Copom, Selic, instrumentos) · Política fiscal (primário, nominal, dívida) ·
+Política cambial e regimes · Balanço de pagamentos.
+
+**Nenhuma questão fixa o valor vigente** da meta de inflação, da Selic ou do
+compulsório. São decisões revistas periodicamente pelo CMN e pelo Copom, e
+questão com número de política monetária envelhece junto com a ata. As aulas
+trazem o mecanismo e marcam onde há número sujeito a revisão.
+
 ## Fila, na ordem de prioridade
 
 | Ordem | Microtema | Conceitos | Situação |
 |---|---|---:|---|
 | 1 | ~~1.3 Operações do mercado financeiro~~ | 6 | ✅ feito |
-| 2 | 1.2 Política econômica | 6 | próximo |
-| 3 | 1.4 Regulação e infraestrutura | 5 | |
+| 2 | ~~1.2 Política econômica~~ | 6 | ✅ feito |
+| 3 | 1.4 Regulação e infraestrutura | 5 | próximo |
 | 4 | 2.4 Serviços bancários | 4 | |
 | 5 | 2.3 Produtos de financiamento | 4 | |
 | 6 | 2.5 Seguros de vida e patrimoniais | 2 | |
