@@ -170,7 +170,7 @@ proposital — permite testar sem DOM e, no futuro, rodar no servidor.
 
 ## Estado atual
 
-_Atualizado em 2026-08-25._
+_Atualizado em 2026-08-26._
 
 | Métrica | Valor |
 |---|---|
